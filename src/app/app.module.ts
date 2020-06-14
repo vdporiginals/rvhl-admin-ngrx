@@ -7,6 +7,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +36,7 @@ registerLocaleData(vi);
     FormsModule,
     ReactiveFormsModule,
     NzMenuModule,
+    ToastrModule.forRoot(),
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule

@@ -32,7 +32,7 @@ export class AuthService {
         const promise = new Promise((resolve, reject) => {
             this.http.post<any>(`${environment.apiUrl}/auth/login`, user).toPromise().then((res: any) => {
                 // Success
-                console.log(res)
+                console.log(res);
                 localStorage.setItem('rvhl_token', JSON.stringify({ token: res.token, user: res.user }));
                 if (localStorage.getItem('rvhl_token') !== null) {
                     this.sharedData.setLogged(true);
@@ -54,6 +54,9 @@ export class AuthService {
 
     public get isLoggedIn(): boolean {
         const authToken = JSON.parse(localStorage.getItem('rvhl_token'));
+        if (!authToken) {
+            return false;
+        }
         const base64Url = authToken.token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
