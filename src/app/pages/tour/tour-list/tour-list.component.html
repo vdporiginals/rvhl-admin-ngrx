@@ -1,1 +1,42 @@
-<p>tour-list works!</p>
+<nz-table
+  nzShowSizeChanger
+  [nzData]="listTour"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total"
+  [nzPageSize]="pageSize"
+  [nzPageIndex]="pageIndex"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+  <thead>
+    <tr>
+      <th nzColumnKey="status" [nzFilters]="filterStatus" [nzFilterFn]="true">
+        Trạng thái
+      </th>
+      <th nzColumnKey="image" [nzSortFn]="true">Hình ảnh</th>
+      <th nzColumnKey="title" [nzSortFn]="true">Tên</th>
+      <th nzColumnKey="description" [nzSortFn]="true">Mô tả</th>
+      <th nzColumnKey="createdAt" [nzSortFn]="true">Ngày tạo</th>
+      <th nzColumnKey="updatedAt" [nzSortFn]="true">Ngày cập nhật</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of listTour">
+      <td>{{ data.image }}</td>
+      <td>{{ data.title }}</td>
+      <td>{{ data.description }}</td>
+      <td>{{ data.status }}</td>
+      <td>{{ data.createdAt }}</td>
+      <td>{{ data.updatedAt }}</td>
+      <td>
+        <button nz-button nzType="primary" [nzSize]="size">
+          <i nz-icon nzType="edit"></i>Sửa
+        </button>
+        <button nz-button nzType="primary" nzDanger>
+          <i nz-icon nzType="delete"></i>Xóa
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

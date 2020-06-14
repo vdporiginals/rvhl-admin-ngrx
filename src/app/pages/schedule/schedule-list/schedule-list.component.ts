@@ -14,11 +14,10 @@ export class ScheduleListComponent implements OnInit {
   loading = true;
   pageSize = 10;
   pageIndex = 1;
-  filterGender = [
-    { text: 'male', value: 'male' },
-    { text: 'female', value: 'female' }
+  filterStatus = [
+    { text: 'Kích hoạt', value: 'true' },
+    { text: 'Chưa kích hoạt', value: 'false' }
   ];
-  x
   size: NzButtonSize = 'default';
 
   constructor() { }

@@ -4,14 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { ScheduleComponent } from './schedule.component';
 import { ScheduleListComponent } from './schedule-list/schedule-list.component';
 import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: ScheduleComponent,
         data: {},
         children: [
             {
@@ -37,7 +35,7 @@ const routes: Routes = [
     }
 ];
 @NgModule({
-    declarations: [ScheduleComponent, ScheduleListComponent, ScheduleDetailComponent],
+    declarations: [ScheduleListComponent, ScheduleDetailComponent],
     imports: [
         CommonModule,
         NzTableModule,

@@ -10,14 +10,14 @@
 >
   <thead>
     <tr>
-      <th nzColumnKey="status" [nzFilters]="filterGender" [nzFilterFn]="true">
+      <th nzColumnKey="status" [nzFilters]="filterStatus" [nzFilterFn]="true">
         Trạng thái
       </th>
       <th nzColumnKey="image" [nzSortFn]="true">Hình ảnh</th>
       <th nzColumnKey="title" [nzSortFn]="true">Tên</th>
-      <th nzColumnKey="name" [nzSortFn]="true">Mô tả</th>
-      <th nzColumnKey="gender" [nzSortFn]="filterGender">Ngày tạo</th>
-      <th nzColumnKey="email" [nzSortFn]="true">Ngày cập nhật</th>
+      <th nzColumnKey="description" [nzSortFn]="true">Mô tả</th>
+      <th nzColumnKey="createdAt" [nzSortFn]="true">Ngày tạo</th>
+      <th nzColumnKey="updatedAt" [nzSortFn]="true">Ngày cập nhật</th>
       <th>Hành động</th>
     </tr>
   </thead>
