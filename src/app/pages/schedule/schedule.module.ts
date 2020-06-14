@@ -6,6 +6,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ScheduleListComponent } from './schedule-list/schedule-list.component';
 import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 
 const routes: Routes = [
     {
@@ -39,6 +40,8 @@ const routes: Routes = [
     imports: [
         CommonModule,
         NzTableModule,
+
+        NzPageHeaderModule,
         NzButtonModule,
         RouterModule.forChild(routes)
     ],
