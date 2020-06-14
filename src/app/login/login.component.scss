@@ -1,0 +1,24 @@
+.login {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+.login-form {
+  width: 350px;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
