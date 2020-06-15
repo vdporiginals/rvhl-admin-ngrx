@@ -11,7 +11,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { vi_VN } from 'ng-zorro-antd/i18n';
@@ -20,6 +20,12 @@ import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
 import { LoginComponent } from './login/login.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './store/reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 
 registerLocaleData(vi);
 
@@ -45,9 +51,28 @@ registerLocaleData(vi);
     ToastrModule.forRoot(),
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        // strictStateImmutability: true,
+        // strictActionImmutability: true,
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+        // disabled until https://github.com/ngrx/platform/issues/2109 is resolved
+        /* strictActionImmutability: true, */
+      }
+    }),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  providers: [{ provide: NZ_I18N, useValue: vi_VN }],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    { provide: NZ_I18N, useValue: vi_VN }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

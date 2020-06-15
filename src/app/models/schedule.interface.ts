@@ -1,5 +1,5 @@
 export interface ISchedule {
-    _id: number;
+    _id: string;
     title: string;
     content: string;
     description?: string;
