@@ -4,16 +4,16 @@ import { Observable, throwError } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError, map } from 'rxjs/operators';
-import { IAdvertise } from 'src/app/models/advertise.interface';
+import { IAccommodation } from 'src/app/models/accommodation.interface';
 
 @Injectable()
-export class AdvertiseService {
+export class AccommodationService {
     apiurl = `${environment.apiUrl}`;
     // apiName = 'blogs'
     constructor(private http: HttpClient) { }
 
-    getDatas(apiName, params?): Observable<IAdvertise[]> {
-        return this.http.get<IAdvertise[]>(`${this.apiurl}/${apiName}`, {
+    getDatas(apiName, params?): Observable<IAccommodation[]> {
+        return this.http.get<IAccommodation[]>(`${this.apiurl}/${apiName}`, {
             params,
         });
         // .pipe(
@@ -21,17 +21,17 @@ export class AdvertiseService {
         // );
     }
 
-    getData(apiName, id): Observable<IAdvertise> {
-        return this.http.get<IAdvertise>(`${this.apiurl}/${apiName}/${id}`).pipe(
+    getData(apiName, id): Observable<IAccommodation> {
+        return this.http.get<IAccommodation>(`${this.apiurl}/${apiName}/${id}`).pipe(
             map((res: any) => res)
         );
     }
 
-    create(apiName, data: IAdvertise): Observable<IAdvertise> {
-        return this.http.post<IAdvertise>(`${this.apiurl}/${apiName}`, data);
+    create(apiName, data: IAccommodation): Observable<IAccommodation> {
+        return this.http.post<IAccommodation>(`${this.apiurl}/${apiName}`, data);
     }
 
-    update(apiName, id, data: Partial<IAdvertise>): Observable<any> {
+    update(apiName, id, data: Partial<IAccommodation>): Observable<any> {
         return this.http.put(`${this.apiurl}/${apiName}/${id}`, data);
         // .pipe(
         //     catchError(this.handleError)
