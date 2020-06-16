@@ -13,7 +13,7 @@ export const initialState = adapter.getInitialState({
     cuisinesLoaded: false
 });
 
-export const CuisineReducer = createReducer(
+export const cuisineReducer = createReducer(
     initialState,
 
     on(cuisineActionTypes.cuisinesLoaded, (state, action) => {

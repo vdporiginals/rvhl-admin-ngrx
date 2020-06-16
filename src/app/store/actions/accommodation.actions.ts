@@ -7,6 +7,7 @@ import { IAccommodation } from 'src/app/models/accommodation.interface';
 export const loadAccommodations = createAction(
     '[Accommodations List] Load Accommodations via Service',
     props<{
+        apiName: string;
         params: {
             select?: string;
             sort?: string;
@@ -18,7 +19,7 @@ export const loadAccommodations = createAction(
 
 export const accommodationsLoaded = createAction(
     '[Accommodations Effect] Accommodations Loaded Successfully',
-    props<{ accommodations: IAccommodation[] }>()
+    props<{ apiName: string, accommodations: IAccommodation[] }>()
 );
 
 // export const AccommodationLoaded = createAction(
@@ -28,17 +29,17 @@ export const accommodationsLoaded = createAction(
 
 export const createAccommodation = createAction(
     '[Create Accommodation Component] Create Accommodation',
-    props<{ accommodation: IAccommodation }>()
+    props<{ apiName: string, accommodation: IAccommodation }>()
 );
 
 export const deleteAccommodation = createAction(
     '[Accommodations List Operations] Delete Accommodation',
-    props<{ accommodationId: string }>()
+    props<{ apiName: string, accommodationId: string }>()
 );
 
 export const updateAccommodation = createAction(
     '[Accommodations List Operations] Update Accommodation',
-    props<{ update: Update<IAccommodation> }>()
+    props<{ apiName: string, update: Update<IAccommodation> }>()
 );
 
 export const accommodationActionTypes = {

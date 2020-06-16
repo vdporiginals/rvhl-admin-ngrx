@@ -38,7 +38,7 @@
             <ul *ngFor="let sub of item.subItems">
               <li nz-menu-item>
                 <a
-                  [routerLink]="[item.link]"
+                  [routerLink]="[sub.link]"
                   routerLinkActive="router-link-active"
                   >{{ sub.text }}</a
                 >

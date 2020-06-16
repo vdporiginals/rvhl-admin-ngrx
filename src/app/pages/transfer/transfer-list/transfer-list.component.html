@@ -1,1 +1,100 @@
-<p>transfer-list works!</p>
+<nz-page-header class="site-page-header" nzTitle="Quản lý lịch trình">
+  <nz-page-header-extra>
+    <!-- <button nz-button>Thêm</button>
+      <button nz-button>Operation</button> -->
+    <button nz-button nzType="primary" (click)="showCreateForm()">Thêm</button>
+  </nz-page-header-extra>
+</nz-page-header>
+<nz-table
+  nzShowSizeChanger
+  [nzData]="schedules$ | async"
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="pageSize"
+  [nzPageIndex]="pageIndex"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  [style.overflow-x]="'auto'"
+>
+  <thead>
+    <tr>
+      <th nzColumnKey="status" [nzFilters]="filterStatus" [nzFilterFn]="true">
+        Trạng thái
+      </th>
+      <th nzColumnKey="image">Hình ảnh</th>
+      <th nzColumnKey="title" [nzSortFn]="true" nzCustomFilter>
+        Tên
+        <nz-filter-trigger
+          [(nzVisible)]="visible"
+          [nzActive]="filterName.length > 0"
+          [nzDropdownMenu]="searchName"
+        >
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+      </th>
+      <th nzColumnKey="description" [nzSortFn]="true">Mô tả</th>
+      <th nzColumnKey="createdAt" [nzSortFn]="true">Ngày tạo</th>
+      <th nzColumnKey="updatedAt" [nzSortFn]="true">Ngày cập nhật</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of schedules$ | async">
+      <td>
+        <!-- {{ data.status }} -->
+        <button
+          nz-button
+          nzType="primary"
+          (click)="changeStatus(data.status, data._id)"
+        >
+          {{ data.status === true ? "Kích hoạt" : "Chưa kích hoạt" }}
+        </button>
+      </td>
+      <td><img [src]="data.image" [style.max-height.px]="75" alt="" /></td>
+      <td>{{ data.title }}</td>
+      <td>{{ data.description }}</td>
+      <td>{{ data.createdAt | date: "short" }}</td>
+      <td>{{ data.updatedAt | date: "short" }}</td>
+      <td>
+        <button
+          nz-button
+          nzType="primary"
+          [nzSize]="size"
+          (click)="showUpdateForm(data)"
+          [style.margin-right.px]="5"
+        >
+          <i nz-icon nzType="edit"></i>Sửa
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="deleteSchedule(data._id)"
+        >
+          <i nz-icon nzType="delete"></i>Xóa
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-dropdown-menu #searchName="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input
+        type="text"
+        nz-input
+        placeholder="Search name"
+        [(ngModel)]="filterName"
+      />
+      <button
+        nz-button
+        nzSize="small"
+        nzType="primary"
+        (click)="loadDataFromServer(1, 10, null, null, [])"
+        class="search-button"
+      >
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

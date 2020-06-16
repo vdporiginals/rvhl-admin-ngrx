@@ -4,12 +4,14 @@ import { accommodationActionTypes, accommodationsLoaded } from '../actions/accom
 import { IAccommodation } from 'src/app/models/accommodation.interface';
 
 export interface AccommodationState extends EntityState<IAccommodation> {
+    apiName: string;
     accommodationsLoaded: boolean;
 }
 
 export const adapter: EntityAdapter<IAccommodation> = createEntityAdapter<IAccommodation>();
 
 export const initialState = adapter.getInitialState({
+    apiName: '',
     accommodationsLoaded: false
 });
 
@@ -19,7 +21,7 @@ export const accommodationReducer = createReducer(
     on(accommodationActionTypes.accommodationsLoaded, (state, action) => {
         return adapter.setAll(
             action.accommodations,
-            { ...state, accommodationsLoaded: true }
+            { ...state, apiName: action.apiName, accommodationsLoaded: true }
         );
     }),
 

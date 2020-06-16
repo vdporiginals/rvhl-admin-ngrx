@@ -13,7 +13,7 @@ export class AccommodationService {
     constructor(private http: HttpClient) { }
 
     getDatas(apiName, params?): Observable<IAccommodation[]> {
-        return this.http.get<IAccommodation[]>(`${this.apiurl}/${apiName}`, {
+        return this.http.get<IAccommodation[]>(`${this.apiurl}/estates/${apiName}`, {
             params,
         });
         // .pipe(
@@ -22,24 +22,24 @@ export class AccommodationService {
     }
 
     getData(apiName, id): Observable<IAccommodation> {
-        return this.http.get<IAccommodation>(`${this.apiurl}/${apiName}/${id}`).pipe(
+        return this.http.get<IAccommodation>(`${this.apiurl}/estates/${apiName}/${id}`).pipe(
             map((res: any) => res)
         );
     }
 
     create(apiName, data: IAccommodation): Observable<IAccommodation> {
-        return this.http.post<IAccommodation>(`${this.apiurl}/${apiName}`, data);
+        return this.http.post<IAccommodation>(`${this.apiurl}/estates/${apiName}`, data);
     }
 
     update(apiName, id, data: Partial<IAccommodation>): Observable<any> {
-        return this.http.put(`${this.apiurl}/${apiName}/${id}`, data);
+        return this.http.put(`${this.apiurl}/estates/${apiName}/${id}`, data);
         // .pipe(
         //     catchError(this.handleError)
         // );
     }
 
     delete(apiName, id): Observable<any> {
-        return this.http.delete(`${this.apiurl}/${apiName}/${id}`)
+        return this.http.delete(`${this.apiurl}/estates/${apiName}/${id}`)
             .pipe(
                 catchError(this.handleError)
             );

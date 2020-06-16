@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import { SanitizeHtmlPipe } from 'src/app/shared/pipe/html-sanitize.pipe';
 import { ImageDrawerComponent } from 'src/app/shared/image-drawer/image-drawer.component';
 import { getAllSchedules } from 'src/app/store/selectors/schedule.selectors';
+import { editConf } from 'src/app/shared/editorconfig';
 
 @Component({
   selector: 'app-schedule-detail',
@@ -22,51 +23,7 @@ import { getAllSchedules } from 'src/app/store/selectors/schedule.selectors';
   styleUrls: ['./schedule-detail.component.scss']
 })
 export class ScheduleDetailComponent implements OnInit {
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: 'auto',
-    minHeight: '0',
-    maxHeight: 'auto',
-    width: 'auto',
-    minWidth: '0',
-    translate: 'yes',
-    enableToolbar: true,
-    showToolbar: true,
-    placeholder: 'Enter text here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
-    ],
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    uploadUrl: 'https://api.reviewhalong.vn/api/image/photos',
-    uploadWithCredentials: false,
-    sanitize: true,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
-    ]
-  };
+  editorConfig: AngularEditorConfig = editConf;
 
   visible = false;
   childrenVisible = false;

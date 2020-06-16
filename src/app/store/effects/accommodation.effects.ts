@@ -12,15 +12,26 @@ export class AccommodationEffects {
     loadAccommodations$ = createEffect(() =>
         this.actions$.pipe(
             ofType(accommodationActionTypes.loadAccommodations),
-            concatMap((actions) => this.accommodationService.getDatas('accommodations', actions.params)),
-            map((accommodations: any) => accommodationActionTypes.accommodationsLoaded({ accommodations: accommodations.data }))
+            concatMap((actions) => this.accommodationService.getDatas(actions.apiName, actions.params),
+                (res, data) => {
+                    return {
+                        apiName: res.apiName,
+                        data
+                    };
+                }),
+            map((accommodations: any) => {
+                return accommodationActionTypes.accommodationsLoaded({
+                    apiName: accommodations.apiName,
+                    accommodations: accommodations.data.data
+                })
+            })
         )
     );
 
     createAccommodation$ = createEffect(() =>
         this.actions$.pipe(
             ofType(accommodationActionTypes.createAccommodation),
-            concatMap((action) => this.accommodationService.create('accommodations', action.accommodation)),
+            concatMap((action) => this.accommodationService.create(action.apiName, action.accommodation)),
             tap(() => this.router.navigateByUrl('/accommodations'))
         ),
         { dispatch: false }
@@ -29,7 +40,7 @@ export class AccommodationEffects {
     deleteAccommodation$ = createEffect(() =>
         this.actions$.pipe(
             ofType(accommodationActionTypes.deleteAccommodation),
-            concatMap((action) => this.accommodationService.delete('accommodations', action.accommodationId))
+            concatMap((action) => this.accommodationService.delete(action.apiName, action.accommodationId))
         ),
         { dispatch: false }
     );
@@ -37,7 +48,7 @@ export class AccommodationEffects {
     updateAccommodation$ = createEffect(() =>
         this.actions$.pipe(
             ofType(accommodationActionTypes.updateAccommodation),
-            concatMap((action) => this.accommodationService.update('accommodations', action.update.id, action.update.changes))
+            concatMap((action) => this.accommodationService.update(action.apiName, action.update.id, action.update.changes))
         ),
         { dispatch: false }
     );

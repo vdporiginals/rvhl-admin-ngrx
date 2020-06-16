@@ -1,1 +1,196 @@
-<p>accommodation-detail works!</p>
+<!-- <nz-drawer
+  [nzBodyStyle]="{
+    height: 'calc(100% - 55px)',
+    overflow: 'auto',
+    'padding-bottom': '53px'
+  }"
+  [nzWidth]="720"
+  (nzOnClose)="close()"
+> -->
+<form nz-form [formGroup]="detailForm" (ngSubmit)="createOrUpdate()">
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Tên</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="title" placeholder="Nhập tên" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Danh Mục</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            formControlName="category"
+            [nzPlaceHolder]="value !== undefined ? '' : 'Chọn danh mục'"
+          >
+            <nz-option
+              *ngFor="let category of categories"
+              nzValue="{{ category._id }}"
+              nzLabel="{{ category.name }}"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="8">
+      <nz-form-item>
+        <nz-form-label>Ảnh bìa</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixImage">
+            <input
+              type="text"
+              formControlName="image"
+              nz-input
+              placeholder="Thêm ảnh (bìa)"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <ng-template #suffixImage>
+        <button nz-button nzType="primary" nzSearch>
+          Chọn ảnh
+        </button>
+      </ng-template>
+    </div>
+    <div nz-col nzSpan="16">
+      <nz-form-item>
+        <nz-form-label>Danh sách ảnh</nz-form-label>
+        <nz-form-control>
+          <nz-tag
+            *ngFor="let image of images; let j = index"
+            [nzMode]="images.length === j + 1 ? 'closeable' : 'default'"
+            (nzOnClose)="handleClose(j)"
+          >
+            {{ image | Overflow: ["5", "..."] }}
+          </nz-tag>
+          <nz-tag
+            *ngIf="!inputVisible"
+            class="editable-tag"
+            nzNoAnimation
+            (click)="showInput()"
+            (click)="showImagePicker()"
+          >
+            <i nz-icon nzType="plus"></i> Ảnh mới
+          </nz-tag>
+
+          <nz-input-group nzSearch>
+            <!-- <input formControlName="images" /> -->
+            <input
+              #inputElement
+              nz-input
+              nzSize="small"
+              *ngIf="inputVisible"
+              type="text"
+              style="width: 78px;"
+              (blur)="handleInputConfirm()"
+              (keydown.enter)="handleInputConfirm()"
+              [(ngModel)]="inputValue"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <!-- <ng-template #suffixButton>
+                <button nz-button nzType="primary" nzSearch>
+                  Chọn ảnh
+                </button>
+              </ng-template> -->
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Mô tả</nz-form-label>
+        <nz-form-control>
+          <nz-input-group
+            [nzSuffix]="textAreaClearTpl"
+            class="ant-input-affix-wrapper-textarea-with-clear-btn"
+          >
+            <textarea
+              nz-input
+              formControlName="description"
+              placeholder="Thêm mô tả"
+            ></textarea>
+          </nz-input-group>
+          <ng-template #textAreaClearTpl>
+            <!-- <i
+                  nz-icon
+                  class="ant-input-textarea-clear-icon"
+                  nzTheme="fill"
+                  nzType="close-circle"
+                  *ngIf="textValue"
+                  (click)="textValue = null"
+                ></i
+              > -->
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="15">
+      <nz-form-item>
+        <nz-form-label>Từ khóa</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="keywords"
+            placeholder="Nhập từ khóa"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="9">
+      <nz-form-item>
+        <nz-form-label>Địa chỉ</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="address"
+            placeholder="Nhập địa chỉ"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <angular-editor formControlName="content" [config]="editorConfig">
+      </angular-editor>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8" [style.margin-top.px]="10">
+    <div nz-col nzSpan="8">
+      <nz-switch
+        formControlName="isPopular"
+        [nzCheckedChildren]="checkedTemplate"
+        [nzUnCheckedChildren]="unCheckedTemplate"
+      ></nz-switch
+      ><span [style.margin-left.px]="10">Nổi bật</span>
+      <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+      <ng-template #unCheckedTemplate
+        ><i nz-icon nzType="close"></i
+      ></ng-template>
+    </div>
+    <div nz-col nzSpan="8">
+      <p style="margin-bottom: 20px;">
+        <label nz-checkbox formControlName="status">
+          {{ isCheckedButton ? "Kích hoạt" : "Chưa kích hoạt" }}
+        </label>
+      </p>
+    </div>
+    <div nz-col nzSpan="8">
+      <button type="submit" nz-button nzType="primary" [style.float]="'right'">
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- </nz-drawer> -->

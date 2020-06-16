@@ -15,20 +15,42 @@ export class AccommodationResolver implements Resolve<Observable<any>> {
     constructor(private store: Store<AppState>) { }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+        const apiName = route.data.apiName;
         return this.store
             .pipe(
                 select(areAccommodationsLoaded),
                 tap((accommodationsLoaded) => {
-                    if (!accommodationsLoaded) {
+                    if (apiName !== accommodationsLoaded.apiName) {
                         this.store.dispatch(loadAccommodations({
+                            apiName,
+                            params: {
+                                limit: 10,
+                                page: 1
+                            }
+                        }));
+                    } else if (!accommodationsLoaded.accommodationsLoaded && accommodationsLoaded.apiName === '') {
+                        this.store.dispatch(loadAccommodations({
+                            apiName,
                             params: {
                                 limit: 10,
                                 page: 1
                             }
                         }));
                     }
+
+
+
+                    // if (!accommodationsLoaded.accommodationsLoaded && accommodationsLoaded.apiName === '') {
+                    //     this.store.dispatch(loadAccommodations({
+                    //         apiName,
+                    //         params: {
+                    //             limit: 10,
+                    //             page: 1
+                    //         }
+                    //     }));
+                    // }
                 }),
-                filter(accommodationsLoaded => accommodationsLoaded),
+                filter(accommodationsLoaded => accommodationsLoaded.accommodationsLoaded),
                 first()
             );
     }

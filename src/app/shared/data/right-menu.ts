@@ -61,19 +61,19 @@ export const SideBar = [
         subItems: [
             {
                 text: 'Danh mục',
-                link: 'accommodation/category',
+                link: 'accommodations/category',
             },
             {
                 text: 'Khách sạn',
-                link: 'accommodation/hotel',
+                link: 'accommodations/hotel',
             },
             {
                 text: 'Villa',
-                link: 'accommodation/villa',
+                link: 'accommodations/villa',
             },
             {
                 text: 'Homestay',
-                link: 'accommodation/homestay',
+                link: 'accommodations/homestay',
             }
         ]
     },
