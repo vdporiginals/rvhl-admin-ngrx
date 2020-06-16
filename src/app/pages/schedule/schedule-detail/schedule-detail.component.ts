@@ -7,12 +7,14 @@ import { Observable } from 'rxjs';
 import { ScheduleService } from '../schedule.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { NzDrawerRef } from 'ng-zorro-antd/drawer';
+import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { SanitizeHtmlPipe } from 'src/app/shared/pipe/html-sanitize.pipe';
+import { ImageDrawerComponent } from 'src/app/shared/image-drawer/image-drawer.component';
+import { getAllSchedules } from 'src/app/store/selectors/schedule.selectors';
 
 @Component({
   selector: 'app-schedule-detail',
@@ -67,10 +69,11 @@ export class ScheduleDetailComponent implements OnInit {
   };
 
   visible = false;
+  childrenVisible = false;
   @Input() value;
   @Input() category;
   categories: any;
-  images: any;
+  images: any = [];
   isCheckedButton = true;
 
   schedules$: Observable<ISchedule[]>;
@@ -87,18 +90,19 @@ export class ScheduleDetailComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
+    private drawerService: NzDrawerService,
     private sharedData: SharedDataService,
     private sanitize: SanitizeHtmlPipe,
     private scheduleService: ScheduleService,
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
-    this.images = new FormControl([]);
+    // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
       title: ['', Validators.required],
       category: [''],
       content: [''],
       description: [''],
-      images: this.images,
+      images: [''],
       address: [''],
       isPopular: [false],
       image: [''],
@@ -110,9 +114,12 @@ export class ScheduleDetailComponent implements OnInit {
   get getImages() { return this.detailForm.get('images') as FormArray; }
   ngOnInit(): void {
     if (this.value !== undefined) {
-
+      this.scheduleToBeUpdated = this.value;
       this.visible = true;
-      this.images.value = this.value.images;
+      if (this.value.images !== null) {
+        this.images = this.value.images;
+        this.detailForm.get('images').setValue(this.images);
+      }
       this.detailForm.get('title').setValue(this.value.title);
       this.detailForm.get('content').setValue(this.sanitize.transform(this.value.content));
       this.detailForm.get('image').setValue(this.value.image);
@@ -125,6 +132,7 @@ export class ScheduleDetailComponent implements OnInit {
     }
     this.http.get<any>(`${environment.apiUrl}/blogs/category`).subscribe(res => {
       this.categories = res.data;
+      console.log(this.categories);
     });
   }
 
@@ -132,12 +140,36 @@ export class ScheduleDetailComponent implements OnInit {
     this.drawerRef.close();
   }
 
+  showImagePicker() {
+    const drawerRef = this.drawerService.create<ImageDrawerComponent>({
+      nzTitle: 'Quản lý hình ảnh',
+      nzContent: ImageDrawerComponent,
+      nzBodyStyle: {
+        height: 'calc(100% - 55px)',
+        overflow: 'auto',
+        'padding-bottom': '53px'
+      },
+      nzMaskClosable: true,
+      nzWidth: 720,
+    });
+
+    drawerRef.afterOpen.subscribe(() => {
+      // console.log('Drawer(Component) open');
+    });
+
+    drawerRef.afterClose.subscribe(data => {
+      console.log(data);
+      this.inputValue = data;
+      this.handleInputConfirm();
+    });
+  }
+
   checkButton(): void {
     this.isCheckedButton = !this.isCheckedButton;
   }
 
   createOrUpdate() {
-    if (this.value === undefined) {
+    if (!this.value) {
       this.store.dispatch(scheduleActionTypes.createSchedule({ schedule: this.detailForm.value }));
       this.isUpdateActivated = false;
       this.drawerRef.close();
@@ -164,13 +196,9 @@ export class ScheduleDetailComponent implements OnInit {
   }
 
   handleClose(removedTag: any): void {
-    if (removedTag + 1 !== this.images.value.length) {
 
-    } else {
-
-      this.images.value.splice(removedTag, 1);
-    }
-    console.log(this.images.value.length, removedTag)
+    this.images.splice(removedTag, 1);
+    console.log(this.images.length, removedTag);
   }
 
   sliceTagName(tag: string): string {
@@ -186,8 +214,12 @@ export class ScheduleDetailComponent implements OnInit {
   }
 
   handleInputConfirm(): void {
-    if (this.inputValue && this.images.value.indexOf(this.inputValue) === -1) {
-      this.images.value = [...this.images.value, this.inputValue];
+    if (this.inputValue !== '' && this.images.length !== 0) {
+      this.images = [...this.images, this.inputValue];
+      this.detailForm.get('images').setValue(this.images);
+    } else if (this.inputValue !== '' && this.images.length === 0) {
+      this.images.push(this.inputValue);
+      this.detailForm.get('images').setValue(this.images);
     }
 
     this.inputValue = '';

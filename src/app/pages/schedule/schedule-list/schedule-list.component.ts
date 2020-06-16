@@ -60,7 +60,7 @@ export class ScheduleListComponent implements OnInit {
         overflow: 'auto',
         'padding-bottom': '53px'
       },
-      nzMaskClosable: false,
+      nzMaskClosable: true,
       nzWidth: 720
     });
 
@@ -86,7 +86,7 @@ export class ScheduleListComponent implements OnInit {
         overflow: 'auto',
         'padding-bottom': '53px'
       },
-      nzMaskClosable: false,
+      nzMaskClosable: true,
       nzWidth: 720,
       nzContentParams: {
         value: this.scheduleToBeUpdated

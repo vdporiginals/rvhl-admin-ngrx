@@ -1,0 +1,139 @@
+<ul nz-menu nzMode="inline">
+  <li nz-submenu nzTitle="Danh sách gallery" nzIcon="folder">
+    <ul *ngFor="let folder of listFolder">
+      <li nz-menu-item>{{ folder.title }}</li>
+      <!-- <li nz-menu-item>Option 6</li>
+        <li nz-submenu nzTitle="Submenu">
+          <ul>
+            <li nz-menu-item>Option 7</li>
+            <li nz-menu-item>Option 8</li>
+            <li nz-submenu nzTitle="Submenu">
+              <ul>
+                <li nz-menu-item>Option 9</li>
+                <li nz-menu-item>Option 10</li>
+              </ul>
+            </li>
+          </ul>
+        </li> -->
+    </ul>
+  </li>
+</ul>
+<cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+  <div
+    class="image_item"
+    fxLayout="row wrap"
+    fxLayoutAlign="center"
+    fxLayoutGap="10px"
+  >
+    <div
+      fxFlex="40"
+      class="image_item"
+      *cdkVirtualFor="let item of imageList$ | async"
+      [style.position]="'relative'"
+    >
+      <div nz-card-grid [ngStyle]="gridStyle">
+        <img
+          (dblclick)="chooseImage(item.link, 'b')"
+          [style.width.%]="100"
+          [src]="item.link"
+          [alt]=""
+        />
+      </div>
+
+      <!-- <a (dblclick)="chooseImage(item.link, 'o')" class="image_item_overlay">
+        <img [src]="item.link" [alt]="" />
+        <div
+          class="size_button"
+          fxLayout="row"
+          fxLayoutGap="5px"
+          fxLayoutAlign="center"
+        >
+          <button
+            [ngClass]="{ button_active: sizeImg === 'm' }"
+            (click)="chooseImage(item.link, 'm')"
+          >
+            Nhỏ
+          </button>
+          <button
+            [ngClass]="{ button_active: sizeImg === 'o' }"
+            (click)="chooseImage(item.link, 'o')"
+          >
+            Gốc
+          </button>
+          <button
+            [ngClass]="{ button_active: sizeImg === 'b' }"
+            (click)="chooseImage(item.link, 'b')"
+          >
+            Lớn
+          </button>
+        </div>
+      </a> -->
+    </div>
+  </div>
+  <!-- <pagination-template
+      class="blog-pagination justify-content-center"
+      #p="paginationApi"
+      (pageChange)="pageChange.emit($event)"
+    >
+      <ul class="pagination" fxLayout="row" fxLayoutAlign="center center">
+        <div>
+          <li class="page-item">
+            <a
+              class="page-link"
+              aria-label="Previous"
+              (click)="getPhotosDefault(currentPageImage - 1)"
+              *ngIf="!isFirstPageImage"
+            >
+              <fa-icon [icon]="faAngleLeft"></fa-icon>
+            </a>
+            <a
+              class="page-link disabled"
+              aria-label="Previous"
+              *ngIf="isFirstPageImage"
+            >
+              <fa-icon [icon]="faAngleLeft"></fa-icon>
+            </a>
+          </li>
+        </div>
+
+        <div
+          *ngFor="let page of p.pages"
+          [class.current]="p.getCurrent() === page.value"
+        >
+          <li class="page-item">
+            <a
+              class="page-link"
+              [class.disabled]="p.getCurrent() === page.value"
+              *ngIf="p.getCurrent() === page.value"
+              >{{ page.label }}</a
+            >
+            <a
+              class="page-link"
+              (click)="getPhotosDefault(page.value)"
+              *ngIf="p.getCurrent() !== page.value"
+              >{{ page.label }}</a
+            >
+          </li>
+        </div>
+        <div>
+          <li class="page-item">
+            <a
+              class="page-link"
+              aria-label="Next"
+              (click)="getPhotosDefault(currentPageImage + 1)"
+              *ngIf="!isLastPageImage"
+            >
+              <fa-icon [icon]="faAngleRight"></fa-icon>
+            </a>
+            <a
+              class="page-link disabled"
+              aria-label="Next"
+              *ngIf="isLastPageImage"
+            >
+              <fa-icon [icon]="faAngleRight"></fa-icon>
+            </a>
+          </li>
+        </div>
+      </ul>
+    </pagination-template> -->
+</cdk-virtual-scroll-viewport>

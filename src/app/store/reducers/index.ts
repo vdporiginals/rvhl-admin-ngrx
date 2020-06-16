@@ -3,17 +3,19 @@ import {
   ActionReducerMap,
   createFeatureSelector,
   createSelector,
-  MetaReducer
+  MetaReducer,
 } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
+import { ScheduleState } from './schedule.reducers';
 
 
 export interface AppState {
+  // schedule: ScheduleState;
 
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-
+  // schedule,
 };
 
 

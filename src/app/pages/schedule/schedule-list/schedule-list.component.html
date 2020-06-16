@@ -46,7 +46,7 @@
           nzType="primary"
           (click)="changeStatus(data.status, data._id)"
         >
-          {{ data.status }}
+          {{ data.status === true ? "Kích hoạt" : "Chưa kích hoạt" }}
         </button>
       </td>
       <td><img [src]="data.image" [style.max-height.px]="75" alt="" /></td>
