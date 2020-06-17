@@ -1,7 +1,7 @@
 # Review Hạ Long Admin
 
 Giao diện trang admin của [reviewhalong.vn](https://reviewhalong.vn "Travel websites"). sử dụng Ngrx
-![Tux, the Linux mascot](/Capture.png)
+![Ảnh demo](https://raw.githubusercontent.com/vdporiginals/rvhl-admin-ngrx/master/Capture.PNG)
 
 ## Chức năng
 
