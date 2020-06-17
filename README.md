@@ -1,6 +1,6 @@
 # Review Hạ Long Admin
 
-Giao diện trang admin của !reviewhalong.vn(<https://reviewhalong.vn)> sử dụng Ngrx
+Giao diện trang admin của ![reviewhalong.vn](<https://reviewhalong.vn)> sử dụng Ngrx
 
 ## Chức năng
 
@@ -8,8 +8,8 @@ Giao diện trang admin của !reviewhalong.vn(<https://reviewhalong.vn)> sử d
 - filter, sort, validations
 - Reactive form,...
 
-### Yêu cầu
+## Yêu cầu
 
 - Tài khoản admin
 
-==Copyright (c) 2020 !reviewhalong.vn(<https://reviewhalong.vn)>==
+`Copyright (c) 2020 ![reviewhalong.vn](<https://reviewhalong.vn)>`
