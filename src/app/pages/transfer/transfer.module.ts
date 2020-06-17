@@ -38,9 +38,9 @@ const routes: Routes = [
                 path: '',
                 component: TransferListComponent,
                 pathMatch: 'full',
-                // resolve: {
-                //     userCategory: UserResolve
-                // },
+                resolve: {
+                    transfers: TransferResolver
+                },
             },
             {
                 path: ':id',

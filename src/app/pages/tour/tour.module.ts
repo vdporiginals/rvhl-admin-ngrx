@@ -37,9 +37,9 @@ const routes: Routes = [
                 path: '',
                 component: TourListComponent,
                 pathMatch: 'full',
-                // resolve: {
-                //     userCategory: UserResolve
-                // },
+                resolve: {
+                    tours: TourResolver
+                },
             },
             {
                 path: ':id',
