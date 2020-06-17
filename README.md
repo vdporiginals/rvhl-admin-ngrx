@@ -1,6 +1,6 @@
 # Review Hạ Long Admin
 
-Giao diện trang admin của [ReviewHalong.vn](https://reviewhalong.vn "Travel websites"). sử dụng Ngrx
+Giao diện trang admin của [reviewhalong.vn](https://reviewhalong.vn "Travel websites"). sử dụng Ngrx
 
 ## Chức năng
 
