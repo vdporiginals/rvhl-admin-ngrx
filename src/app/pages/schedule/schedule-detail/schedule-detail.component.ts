@@ -115,7 +115,6 @@ export class ScheduleDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      console.log(data);
       if (type === 'images') {
         this.inputValue = data;
         this.handleInputConfirm();

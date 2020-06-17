@@ -3,6 +3,7 @@ export interface IAdvertise {
     title: string;
     description?: string;
     image?: string;
+    seo?: string;
     createdAt: Date;
     updatedAt: Date;
     status: boolean;

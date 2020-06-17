@@ -52,14 +52,17 @@ export class EntertainDetailComponent implements OnInit {
     private entertainService: EntertainService,
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
-    // this.images = new FormControl([]);
+    const phoneValid = /^[0]{1}[2]{1}[0-9]\d{8}$|^[0]{1}([3]|[5]|[9]|[7]|[8]){1}[0-9]\d{7}$/g;
     this.detailForm = this.fb.group({
-      title: ['', Validators.required],
+      name: ['', Validators.required],
       category: [''],
       content: [''],
       description: [''],
+      video: [''],
+      price: [''],
       images: [''],
       address: [''],
+      phone: ['', Validators.compose([Validators.pattern(phoneValid), Validators.required])],
       isPopular: [false],
       image: [''],
       keywords: [''],
@@ -76,19 +79,23 @@ export class EntertainDetailComponent implements OnInit {
         this.images = this.value.images;
         this.detailForm.get('images').setValue(this.images);
       }
-      this.detailForm.get('title').setValue(this.value.title);
+      if (this.value.category !== undefined) {
+        this.detailForm.get('category').setValue(this.value.category);
+      }
+      this.detailForm.get('name').setValue(this.value.name);
       this.detailForm.get('content').setValue(this.sanitize.transform(this.value.content));
       this.detailForm.get('image').setValue(this.value.image);
+      this.detailForm.get('video').setValue(this.value.video);
+      this.detailForm.get('price').setValue(this.value.price);
+      this.detailForm.get('phone').setValue(this.value.phone);
       this.detailForm.get('description').setValue(this.value.description);
       this.detailForm.get('address').setValue(this.value.address);
-      this.detailForm.get('category').setValue(this.value.category);
       this.detailForm.get('keywords').setValue(this.value.keywords);
       this.detailForm.get('isPopular').setValue(this.value.isPopular);
       this.detailForm.get('status').setValue(this.value.status);
     }
-    this.http.get<any>(`${environment.apiUrl}/blogs/category`).subscribe(res => {
+    this.http.get<any>(`${environment.apiUrl}/entertains/category`).subscribe(res => {
       this.categories = res.data;
-      console.log(this.categories);
     });
   }
 
@@ -96,7 +103,7 @@ export class EntertainDetailComponent implements OnInit {
     this.drawerRef.close();
   }
 
-  showImagePicker() {
+  showImagePicker(type?) {
     const drawerRef = this.drawerService.create<ImageDrawerComponent>({
       nzTitle: 'Quản lý hình ảnh',
       nzContent: ImageDrawerComponent,
@@ -114,9 +121,12 @@ export class EntertainDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      console.log(data);
-      this.inputValue = data;
-      this.handleInputConfirm();
+      if (type === 'images') {
+        this.inputValue = data;
+        this.handleInputConfirm();
+      } else {
+        this.detailForm.get('image').setValue(data);
+      }
     });
   }
 

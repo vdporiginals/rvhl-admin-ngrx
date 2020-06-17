@@ -85,10 +85,10 @@ export class ReviewsDetailComponent implements OnInit {
       this.detailForm.get('keywords').setValue(this.value.keywords);
       this.detailForm.get('isPopular').setValue(this.value.isPopular);
       this.detailForm.get('status').setValue(this.value.status);
+
     }
-    this.http.get<any>(`${environment.apiUrl}/blogs/category`).subscribe(res => {
+    this.http.get<any>(`${environment.apiUrl}/user-reviews/category`).subscribe(res => {
       this.categories = res.data;
-      console.log(this.categories);
     });
   }
 
@@ -96,7 +96,7 @@ export class ReviewsDetailComponent implements OnInit {
     this.drawerRef.close();
   }
 
-  showImagePicker() {
+  showImagePicker(type?) {
     const drawerRef = this.drawerService.create<ImageDrawerComponent>({
       nzTitle: 'Quản lý hình ảnh',
       nzContent: ImageDrawerComponent,
@@ -114,9 +114,12 @@ export class ReviewsDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      console.log(data);
-      this.inputValue = data;
-      this.handleInputConfirm();
+      if (type === 'images') {
+        this.inputValue = data;
+        this.handleInputConfirm();
+      } else {
+        this.detailForm.get('image').setValue(data);
+      }
     });
   }
 

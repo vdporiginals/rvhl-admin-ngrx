@@ -13,7 +13,7 @@
       <nz-form-item>
         <nz-form-label>Tên</nz-form-label>
         <nz-form-control>
-          <input nz-input formControlName="title" placeholder="Nhập tên" />
+          <input nz-input formControlName="name" placeholder="Nhập tên" />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -53,9 +53,14 @@
         </nz-form-control>
       </nz-form-item>
       <ng-template #suffixImage>
-        <button nz-button nzType="primary" nzSearch>
+        <a
+          nz-button
+          nzType="primary"
+          (click)="showImagePicker('image')"
+          nzSearch
+        >
           Chọn ảnh
-        </button>
+        </a>
       </ng-template>
     </div>
     <div nz-col nzSpan="16">
@@ -74,7 +79,7 @@
             class="editable-tag"
             nzNoAnimation
             (click)="showInput()"
-            (click)="showImagePicker()"
+            (click)="showImagePicker('images')"
           >
             <i nz-icon nzType="plus"></i> Ảnh mới
           </nz-tag>
@@ -154,6 +159,36 @@
             nz-input
             formControlName="address"
             placeholder="Nhập địa chỉ"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="8">
+      <nz-form-item>
+        <nz-form-label>Video</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="video" placeholder="Nhập Video" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-form-item>
+        <nz-form-label>Giá từ</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="price" placeholder="Nhập giá từ" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-form-item>
+        <nz-form-label>Số điện thoại</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="phone"
+            placeholder="Nhập số điện thoại"
           />
         </nz-form-control>
       </nz-form-item>

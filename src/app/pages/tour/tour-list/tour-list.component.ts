@@ -52,7 +52,7 @@ export class TourListComponent implements OnInit {
   }
   showCreateForm() {
     const drawerRef = this.drawerService.create<TourDetailComponent, { value: any }, any>({
-      nzTitle: 'Thêm Lịch Trình',
+      nzTitle: 'Thêm Tour',
       nzContent: TourDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -78,7 +78,7 @@ export class TourListComponent implements OnInit {
     this.isUpdateActivated = true;
 
     const drawerRef = this.drawerService.create<TourDetailComponent>({
-      nzTitle: 'Cập nhật Lịch Trình',
+      nzTitle: 'Cập nhật Tour',
       nzContent: TourDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -154,7 +154,7 @@ export class TourListComponent implements OnInit {
 
     if (this.filterName !== '') {
       // tslint:disable-next-line: no-string-literal
-      params['name'] = this.filterName;
+      params['title'] = this.filterName;
     }
 
     this.store.dispatch(tourActionTypes.loadTours({ params }));

@@ -31,6 +31,7 @@ export class TransferDetailComponent implements OnInit {
   categories: any;
   images: any = [];
   isCheckedButton = true;
+  scheduleData: any;
 
   transfers$: Observable<ITransfer[]>;
 
@@ -52,14 +53,29 @@ export class TransferDetailComponent implements OnInit {
     private transferService: TransferService,
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
+
+    this.scheduleData = [
+      {
+        locationStart: '',
+        locationEnd: '',
+        price: ''
+      }
+    ];
     // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
-      title: ['', Validators.required],
+      name: ['', Validators.required],
       category: [''],
       content: [''],
       description: [''],
       images: [''],
-      address: [''],
+      chairNum: [''],
+      locationStart: [''],
+      timeStart: [''],
+      schedule: this.fb.array([]),
+      timePerTrip: [''],
+      phone: [''],
+      price: [''],
+      locationEnd: [''],
       isPopular: [false],
       image: [''],
       keywords: [''],
@@ -68,6 +84,7 @@ export class TransferDetailComponent implements OnInit {
   }
 
   get getImages() { return this.detailForm.get('images') as FormArray; }
+  get formData() { return this.detailForm.get('schedule') as FormArray; }
   ngOnInit(): void {
     if (this.value !== undefined) {
       this.transferToBeUpdated = this.value;
@@ -76,19 +93,31 @@ export class TransferDetailComponent implements OnInit {
         this.images = this.value.images;
         this.detailForm.get('images').setValue(this.images);
       }
-      this.detailForm.get('title').setValue(this.value.title);
+      this.value.schedule.forEach(val => {
+        const control = this.detailForm.get('schedule') as FormArray;
+        control.push(this.getScheduleVal(val.locationStart, val.locationEnd, val.price));
+      });
+
+      this.detailForm.get('name').setValue(this.value.name);
       this.detailForm.get('content').setValue(this.sanitize.transform(this.value.content));
       this.detailForm.get('image').setValue(this.value.image);
       this.detailForm.get('description').setValue(this.value.description);
-      this.detailForm.get('address').setValue(this.value.address);
-      this.detailForm.get('category').setValue(this.value.category);
+      this.detailForm.get('locationStart').setValue(this.value.locationStart);
+      this.detailForm.get('locationEnd').setValue(this.value.locationEnd);
+      this.detailForm.get('timeStart').setValue(this.value.timeStart);
+      this.detailForm.get('timePerTrip').setValue(this.value.timePerTrip);
+      this.detailForm.get('chairNum').setValue(this.value.chairNum);
+      this.detailForm.get('price').setValue(this.value.price);
+      this.detailForm.get('phone').setValue(this.value.phone);
+      this.detailForm.get('category').setValue(this.value.category._id);
       this.detailForm.get('keywords').setValue(this.value.keywords);
       this.detailForm.get('isPopular').setValue(this.value.isPopular);
       this.detailForm.get('status').setValue(this.value.status);
+    } else {
+      this.getFormSchedule();
     }
-    this.http.get<any>(`${environment.apiUrl}/blogs/category`).subscribe(res => {
+    this.http.get<any>(`${environment.apiUrl}/transfers/category`).subscribe(res => {
       this.categories = res.data;
-      console.log(this.categories);
     });
   }
 
@@ -96,7 +125,23 @@ export class TransferDetailComponent implements OnInit {
     this.drawerRef.close();
   }
 
-  showImagePicker() {
+
+  getFormSchedule() {
+    const control = this.detailForm.get('schedule') as FormArray;
+    this.scheduleData.forEach(res => {
+      control.push(this.getScheduleVal(res.locationStart, res.locationEnd, res.price));
+    });
+  }
+
+  getScheduleVal(locationStart, locationEnd, price) {
+    return this.fb.group({
+      locationStart,
+      locationEnd,
+      price,
+    });
+  }
+
+  showImagePicker(type?) {
     const drawerRef = this.drawerService.create<ImageDrawerComponent>({
       nzTitle: 'Quản lý hình ảnh',
       nzContent: ImageDrawerComponent,
@@ -114,9 +159,12 @@ export class TransferDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      console.log(data);
-      this.inputValue = data;
-      this.handleInputConfirm();
+      if (type === 'images') {
+        this.inputValue = data;
+        this.handleInputConfirm();
+      } else {
+        this.detailForm.get('image').setValue(data);
+      }
     });
   }
 

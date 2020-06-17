@@ -1,4 +1,4 @@
-<nz-page-header class="site-page-header" nzTitle="Quản lý lịch trình">
+<nz-page-header class="site-page-header" nzTitle="Quản lý nhà hàng(ẩm thực)">
   <nz-page-header-extra>
     <!-- <button nz-button>Thêm</button>
       <button nz-button>Operation</button> -->
@@ -23,7 +23,7 @@
         Trạng thái
       </th>
       <th nzColumnKey="image">Hình ảnh</th>
-      <th nzColumnKey="title" [nzSortFn]="true" nzCustomFilter>
+      <th nzColumnKey="name" [nzSortFn]="true" nzCustomFilter>
         Tên
         <nz-filter-trigger
           [(nzVisible)]="visible"

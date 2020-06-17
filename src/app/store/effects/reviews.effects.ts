@@ -12,7 +12,7 @@ export class ReviewEffects {
     loadReviews$ = createEffect(() =>
         this.actions$.pipe(
             ofType(reviewActionTypes.loadReviews),
-            concatMap((actions) => this.reviewService.getDatas('reviews', actions.params)),
+            concatMap((actions) => this.reviewService.getDatas('user-reviews', actions.params)),
             map((reviews: any) => reviewActionTypes.reviewsLoaded({ reviews: reviews.data }))
         )
     );
@@ -20,8 +20,8 @@ export class ReviewEffects {
     createReview$ = createEffect(() =>
         this.actions$.pipe(
             ofType(reviewActionTypes.createReview),
-            concatMap((action) => this.reviewService.create('reviews', action.review)),
-            tap(() => this.router.navigateByUrl('/reviews'))
+            concatMap((action) => this.reviewService.create('user-reviews', action.review)),
+            // tap(() => this.router.navigateByUrl('/reviews'))
         ),
         { dispatch: false }
     );
@@ -29,7 +29,7 @@ export class ReviewEffects {
     deleteReview$ = createEffect(() =>
         this.actions$.pipe(
             ofType(reviewActionTypes.deleteReview),
-            concatMap((action) => this.reviewService.delete('reviews', action.reviewId))
+            concatMap((action) => this.reviewService.delete('user-reviews', action.reviewId))
         ),
         { dispatch: false }
     );
@@ -37,7 +37,7 @@ export class ReviewEffects {
     updateReview$ = createEffect(() =>
         this.actions$.pipe(
             ofType(reviewActionTypes.updateReview),
-            concatMap((action) => this.reviewService.update('reviews', action.update.id, action.update.changes))
+            concatMap((action) => this.reviewService.update('user-reviews', action.update.id, action.update.changes))
         ),
         { dispatch: false }
     );

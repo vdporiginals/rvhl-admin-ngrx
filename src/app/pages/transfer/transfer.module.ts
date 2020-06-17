@@ -20,6 +20,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { TransferService } from './transfer.service';
@@ -66,6 +67,7 @@ const routes: Routes = [
         SharedModule,
         NzCheckboxModule,
         NzSwitchModule,
+        NzTimePickerModule,
         NzFormModule,
         FormsModule,
         ReactiveFormsModule,

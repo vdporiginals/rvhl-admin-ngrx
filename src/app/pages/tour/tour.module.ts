@@ -8,6 +8,7 @@ import { TourListComponent } from './tour-list/tour-list.component';
 import { TourDetailComponent } from './tour-detail/tour-detail.component';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
@@ -64,6 +65,7 @@ const routes: Routes = [
         IconsProviderModule,
         SharedModule,
         NzCheckboxModule,
+        NzDatePickerModule,
         NzSwitchModule,
         NzFormModule,
         FormsModule,

@@ -52,7 +52,7 @@ export class TransferListComponent implements OnInit {
   }
   showCreateForm() {
     const drawerRef = this.drawerService.create<TransferDetailComponent, { value: any }, any>({
-      nzTitle: 'Thêm Lịch Trình',
+      nzTitle: 'Thêm Vận chuyển',
       nzContent: TransferDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -78,7 +78,7 @@ export class TransferListComponent implements OnInit {
     this.isUpdateActivated = true;
 
     const drawerRef = this.drawerService.create<TransferDetailComponent>({
-      nzTitle: 'Cập nhật Lịch Trình',
+      nzTitle: 'Cập nhật Vận chuyển',
       nzContent: TransferDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',

@@ -9,6 +9,7 @@ export interface ICuisine {
     content: string;
     address: string;
     views: string;
+    seo?: string;
     price: number;
     menu: [{
         name: string,

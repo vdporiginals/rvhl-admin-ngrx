@@ -154,7 +154,7 @@ export class AdvertiseListComponent implements OnInit {
 
     if (this.filterName !== '') {
       // tslint:disable-next-line: no-string-literal
-      params['name'] = this.filterName;
+      params['title'] = this.filterName;
     }
 
     this.store.dispatch(advertiseActionTypes.loadAdvertises({ params }));

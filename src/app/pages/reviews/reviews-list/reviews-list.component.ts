@@ -52,7 +52,7 @@ export class ReviewsListComponent implements OnInit {
   }
   showCreateForm() {
     const drawerRef = this.drawerService.create<ReviewsDetailComponent, { value: any }, any>({
-      nzTitle: 'Thêm Lịch Trình',
+      nzTitle: 'Thêm Reviews',
       nzContent: ReviewsDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -78,7 +78,7 @@ export class ReviewsListComponent implements OnInit {
     this.isUpdateActivated = true;
 
     const drawerRef = this.drawerService.create<ReviewsDetailComponent>({
-      nzTitle: 'Cập nhật Lịch Trình',
+      nzTitle: 'Cập nhật Reviews',
       nzContent: ReviewsDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -118,7 +118,6 @@ export class ReviewsListComponent implements OnInit {
     let order = '+';
     let newSelected = [];
     // let selectedVal;
-
     if (sortOrder === 'ascend') {
       order = '+';
     } else {
@@ -154,7 +153,7 @@ export class ReviewsListComponent implements OnInit {
 
     if (this.filterName !== '') {
       // tslint:disable-next-line: no-string-literal
-      params['name'] = this.filterName;
+      params['title'] = this.filterName;
     }
 
     this.store.dispatch(reviewActionTypes.loadReviews({ params }));

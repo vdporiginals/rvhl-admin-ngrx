@@ -155,7 +155,7 @@ export class ScheduleListComponent implements OnInit {
 
     if (this.filterName !== '') {
       // tslint:disable-next-line: no-string-literal
-      params['name'] = this.filterName;
+      params['title'] = this.filterName;
     }
 
     this.store.dispatch(scheduleActionTypes.loadSchedules({ params }));

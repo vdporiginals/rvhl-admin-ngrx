@@ -52,7 +52,7 @@ export class EntertainListComponent implements OnInit {
   }
   showCreateForm() {
     const drawerRef = this.drawerService.create<EntertainDetailComponent, { value: any }, any>({
-      nzTitle: 'Thêm Lịch Trình',
+      nzTitle: 'Thêm giải trí',
       nzContent: EntertainDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -78,7 +78,7 @@ export class EntertainListComponent implements OnInit {
     this.isUpdateActivated = true;
 
     const drawerRef = this.drawerService.create<EntertainDetailComponent>({
-      nzTitle: 'Cập nhật Lịch Trình',
+      nzTitle: 'Cập nhật giải trí',
       nzContent: EntertainDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -116,9 +116,8 @@ export class EntertainListComponent implements OnInit {
     this.loading = true;
     let newSort = '';
     let order = '+';
-    const newSelected = [];
+    let newSelected = [];
     // let selectedVal;
-
     if (sortOrder === 'ascend') {
       order = '+';
     } else {
@@ -135,7 +134,7 @@ export class EntertainListComponent implements OnInit {
       page: pageIndex,
       limit: pageSize,
       sort: newSort,
-    };
+    }
 
     selected.forEach(val => {
       newSelected.push({
@@ -176,7 +175,7 @@ export class EntertainListComponent implements OnInit {
     this.loading = true;
     const params = {
       status: !val,
-    };
+    }
 
     this.store.dispatch(entertainActionTypes.updateEntertain({
       update: {

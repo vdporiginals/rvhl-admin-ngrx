@@ -31,9 +31,17 @@ export class TourDetailComponent implements OnInit {
   categories: any;
   images: any = [];
   isCheckedButton = true;
+  positions = [
+    {
+      name: 'Tour Vịnh', value: 'TourCruise'
+    },
+    {
+      value: 'TourAll', name: 'Tour Trọn gói',
+    },
+    { name: 'Tour Hạ Long', value: 'TourHaLong' }];
 
   tours$: Observable<ITour[]>;
-
+  scheduleData: any;
   tourToBeUpdated: ITour;
   detailForm: FormGroup;
   isUpdateActivated = false;
@@ -52,21 +60,37 @@ export class TourDetailComponent implements OnInit {
     private tourService: TourService,
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
+    this.scheduleData = [
+      {
+        timeStart: '',
+        timeEnd: '',
+        location: '',
+        service: ''
+      }
+    ];
     // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
       title: ['', Validators.required],
-      category: [''],
-      content: [''],
+      phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(20)])],
+      customerNum: [''],
       description: [''],
       images: [''],
-      address: [''],
-      isPopular: [false],
+      schedule: this.fb.array([]),
+      time: [''],
       image: [''],
+      content: [''],
+      price: ['', Validators.compose([Validators.required])],
+      address: [''],
+      category: [''],
+      position: [''],
       keywords: [''],
-      status: [false]
+      video: [''],
+      isPopular: [false],
+      status: [false, Validators.required]
     });
   }
 
+  get formData() { return this.detailForm.get('schedule') as FormArray; }
   get getImages() { return this.detailForm.get('images') as FormArray; }
   ngOnInit(): void {
     if (this.value !== undefined) {
@@ -76,27 +100,66 @@ export class TourDetailComponent implements OnInit {
         this.images = this.value.images;
         this.detailForm.get('images').setValue(this.images);
       }
+      this.value.schedule.forEach(val => {
+        const control = this.detailForm.get('schedule') as FormArray;
+        control.push(this.getScheduleVal(val.timeStart, val.timeEnd, val.location, val.service));
+      });
       this.detailForm.get('title').setValue(this.value.title);
-      this.detailForm.get('content').setValue(this.sanitize.transform(this.value.content));
+      this.detailForm.get('price').setValue(this.value.price);
+      this.detailForm.get('phone').setValue(this.value.phone);
       this.detailForm.get('image').setValue(this.value.image);
+      this.detailForm.get('content').setValue(this.sanitize.transform(this.value.content));
+      this.detailForm.get('video').setValue(this.value.video);
       this.detailForm.get('description').setValue(this.value.description);
       this.detailForm.get('address').setValue(this.value.address);
-      this.detailForm.get('category').setValue(this.value.category);
+      this.detailForm.get('customerNum').setValue(this.value.customerNum);
+      this.detailForm.get('time').setValue(this.value.time);
+      this.detailForm.get('category').setValue(this.value.category._id);
+      this.detailForm.get('position').setValue(this.value.position);
       this.detailForm.get('keywords').setValue(this.value.keywords);
       this.detailForm.get('isPopular').setValue(this.value.isPopular);
       this.detailForm.get('status').setValue(this.value.status);
+    } else {
+
+      this.getFormSchedule();
     }
-    this.http.get<any>(`${environment.apiUrl}/blogs/category`).subscribe(res => {
+    this.http.get<any>(`${environment.apiUrl}/tours/category`).subscribe(res => {
       this.categories = res.data;
-      console.log(this.categories);
     });
   }
 
   close(): void {
     this.drawerRef.close();
   }
+  onOk(result: Date | Date[] | null, index): void {
+    console.log('onOk', result);
+    const control = this.detailForm.get('schedule') as FormArray;
+    control.at(index).patchValue({
+      timeStart: result[0],
+      timeEnd: result[1]
+    })
+    // control.push(this.getScheduleVal(val.timeStart, val.timeEnd, val.location, val.service));
+    // this.detailForm.get('servicetimeStart').patchValue();
+    // this.detailForm.get('timeEnd').patchValue();
+  }
 
-  showImagePicker() {
+  getFormSchedule() {
+    const control = this.detailForm.get('schedule') as FormArray;
+    this.scheduleData.forEach(res => {
+      control.push(this.getScheduleVal(res.timeStart, res.timeEnd, res.location, res.service));
+    });
+  }
+
+  getScheduleVal(tStart, tEnd, location, service) {
+    return this.fb.group({
+      timeStart: tStart,
+      timeEnd: tEnd,
+      location,
+      service
+    });
+  }
+
+  showImagePicker(type?) {
     const drawerRef = this.drawerService.create<ImageDrawerComponent>({
       nzTitle: 'Quản lý hình ảnh',
       nzContent: ImageDrawerComponent,
@@ -114,9 +177,12 @@ export class TourDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      console.log(data);
-      this.inputValue = data;
-      this.handleInputConfirm();
+      if (type === 'images') {
+        this.inputValue = data;
+        this.handleInputConfirm();
+      } else {
+        this.detailForm.get('image').setValue(data);
+      }
     });
   }
 
