@@ -7,7 +7,9 @@ export interface TourState extends EntityState<ITour> {
     toursLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<ITour> = createEntityAdapter<ITour>();
+export const adapter: EntityAdapter<ITour> = createEntityAdapter<ITour>({
+    selectId: tours => tours._id
+});
 
 export const initialState = adapter.getInitialState({
     toursLoaded: false

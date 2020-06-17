@@ -12,7 +12,7 @@ export class CuisineEffects {
     loadCuisines$ = createEffect(() =>
         this.actions$.pipe(
             ofType(cuisineActionTypes.loadCuisines),
-            concatMap((actions) => this.cuisineService.getDatas('cuisines', actions.params)),
+            concatMap((actions) => this.cuisineService.getDatas('restaurants', actions.params)),
             map((cuisines: any) => cuisineActionTypes.cuisinesLoaded({ cuisines: cuisines.data }))
         )
     );
@@ -20,8 +20,8 @@ export class CuisineEffects {
     createCuisine$ = createEffect(() =>
         this.actions$.pipe(
             ofType(cuisineActionTypes.createCuisine),
-            concatMap((action) => this.cuisineService.create('cuisines', action.cuisine)),
-            tap(() => this.router.navigateByUrl('/cuisines'))
+            concatMap((action) => this.cuisineService.create('restaurants', action.cuisine)),
+            // tap(() => this.router.navigateByUrl('/restaurants'))
         ),
         { dispatch: false }
     );
@@ -29,7 +29,7 @@ export class CuisineEffects {
     deleteCuisine$ = createEffect(() =>
         this.actions$.pipe(
             ofType(cuisineActionTypes.deleteCuisine),
-            concatMap((action) => this.cuisineService.delete('cuisines', action.cuisineId))
+            concatMap((action) => this.cuisineService.delete('restaurants', action.cuisineId))
         ),
         { dispatch: false }
     );
@@ -37,7 +37,7 @@ export class CuisineEffects {
     updateCuisine$ = createEffect(() =>
         this.actions$.pipe(
             ofType(cuisineActionTypes.updateCuisine),
-            concatMap((action) => this.cuisineService.update('cuisines', action.update.id, action.update.changes))
+            concatMap((action) => this.cuisineService.update('restaurants', action.update.id, action.update.changes))
         ),
         { dispatch: false }
     );

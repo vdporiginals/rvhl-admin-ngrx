@@ -13,7 +13,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -72,7 +71,7 @@ const routes: Routes = [
         NzFormModule,
         FormsModule,
         ReactiveFormsModule,
-        AngularEditorModule,
+
         NzTagModule,
         NzGridModule,
         NzInputModule,

@@ -1,4 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { ICuisine } from 'src/app/models/cuisine.interface';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { editConf } from 'src/app/shared/editorconfig';
+import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { NzDrawerService, NzDrawerRef } from 'ng-zorro-antd/drawer';
+import { SharedDataService } from 'src/app/shared/services/shared-data.service';
+import { SanitizeHtmlPipe } from 'src/app/shared/pipe/html-sanitize.pipe';
+import { CuisineService } from '../cuisine.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/reducers';
+import { environment } from 'src/environments/environment';
+import { ImageDrawerComponent } from 'src/app/shared/image-drawer/image-drawer.component';
+import { cuisineActionTypes } from 'src/app/store/actions/cuisine.actions';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-cuisine-detail',
@@ -13,12 +29,13 @@ export class CuisineDetailComponent implements OnInit {
   @Input() value;
   @Input() category;
   categories: any;
-  images: any = [];
+  menuData: any;
+  gallery: any = [];
   isCheckedButton = true;
 
-  schedules$: Observable<ISchedule[]>;
+  cuisines$: Observable<ICuisine[]>;
 
-  scheduleToBeUpdated: ISchedule;
+  cuisineToBeUpdated: ICuisine;
   detailForm: FormGroup;
   isUpdateActivated = false;
   inputValue = '';
@@ -33,17 +50,30 @@ export class CuisineDetailComponent implements OnInit {
     private drawerService: NzDrawerService,
     private sharedData: SharedDataService,
     private sanitize: SanitizeHtmlPipe,
-    private scheduleService: ScheduleService,
+    private cuisineService: CuisineService,
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
-    // this.images = new FormControl([]);
+    // this.gallery = new FormControl([]);
+    this.menuData = [
+      {
+        name: '',
+        price: '',
+        description: '',
+        image: ''
+      }
+    ];
+
     this.detailForm = this.fb.group({
-      title: ['', Validators.required],
+      name: ['', Validators.required],
       category: [''],
       content: [''],
-      description: [''],
-      images: [''],
       address: [''],
+      description: [''],
+      gallery: [''],
+      views: [''],
+      menu: this.fb.array([]),
+      phone: [''],
+      price: [''],
       isPopular: [false],
       image: [''],
       keywords: [''],
@@ -51,36 +81,47 @@ export class CuisineDetailComponent implements OnInit {
     });
   }
 
-  get getImages() { return this.detailForm.get('images') as FormArray; }
+  get getGallery() { return this.detailForm.get('gallery') as FormArray; }
+  get formData() { return this.detailForm.get('menu') as FormArray; }
   ngOnInit(): void {
     if (this.value !== undefined) {
-      this.scheduleToBeUpdated = this.value;
+      this.cuisineToBeUpdated = this.value;
       this.visible = true;
-      if (this.value.images !== null) {
-        this.images = this.value.images;
-        this.detailForm.get('images').setValue(this.images);
+      if (this.value.gallery !== null) {
+        this.gallery = this.value.gallery;
+        this.detailForm.get('gallery').setValue(this.gallery);
       }
-      this.detailForm.get('title').setValue(this.value.title);
+      this.value.menu.forEach(val => {
+        const control = this.detailForm.get('menu') as FormArray;
+        control.push(this.getMenuVal(val.name, val.description, val.price, val.image));
+      });
+      this.detailForm.get('name').setValue(this.value.name);
       this.detailForm.get('content').setValue(this.sanitize.transform(this.value.content));
       this.detailForm.get('image').setValue(this.value.image);
       this.detailForm.get('description').setValue(this.value.description);
+      this.detailForm.get('views').setValue(this.value.views);
       this.detailForm.get('address').setValue(this.value.address);
-      this.detailForm.get('category').setValue(this.value.category);
+      this.detailForm.get('price').setValue(this.value.price);
+      this.detailForm.get('phone').setValue(this.value.phone);
+      this.detailForm.get('category').setValue(this.value.category._id);
       this.detailForm.get('keywords').setValue(this.value.keywords);
       this.detailForm.get('isPopular').setValue(this.value.isPopular);
       this.detailForm.get('status').setValue(this.value.status);
+    } else {
+      this.getFormMenu();
     }
-    this.http.get<any>(`${environment.apiUrl}/blogs/category`).subscribe(res => {
+    this.http.get<any>(`${environment.apiUrl}/restaurants/category`).subscribe(res => {
       this.categories = res.data;
       console.log(this.categories);
     });
+
   }
 
   close(): void {
     this.drawerRef.close();
   }
 
-  showImagePicker() {
+  showImagePicker(type?, index?) {
     const drawerRef = this.drawerService.create<ImageDrawerComponent>({
       nzTitle: 'Quản lý hình ảnh',
       nzContent: ImageDrawerComponent,
@@ -98,9 +139,32 @@ export class CuisineDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      console.log(data);
-      this.inputValue = data;
-      this.handleInputConfirm();
+      if (type === 'menu') {
+        const control = this.detailForm.get('menu') as FormArray;
+        control.at(index).patchValue({ image: data });
+      }
+      if (type === 'images') {
+        this.inputValue = data;
+        this.handleInputConfirm();
+      } else {
+        this.detailForm.get('image').setValue(data);
+      }
+    });
+  }
+
+  getFormMenu() {
+    const control = this.detailForm.get('menu') as FormArray;
+    this.menuData.forEach(res => {
+      control.push(this.getMenuVal(res.name, res.description, res.price, res.image));
+    });
+  }
+
+  getMenuVal(name, description, price, image) {
+    return this.fb.group({
+      name,
+      description,
+      price,
+      image
     });
   }
 
@@ -110,35 +174,35 @@ export class CuisineDetailComponent implements OnInit {
 
   createOrUpdate() {
     if (!this.value) {
-      this.store.dispatch(scheduleActionTypes.createSchedule({ schedule: this.detailForm.value }));
+      this.store.dispatch(cuisineActionTypes.createCuisine({ cuisine: this.detailForm.value }));
       this.isUpdateActivated = false;
       this.drawerRef.close();
     } else {
-      this.updateSchedule(this.detailForm.value);
+      this.updateCuisine(this.detailForm.value);
     }
   }
 
-  updateSchedule(updateForm) {
-    const update: Update<ISchedule> = {
-      id: this.scheduleToBeUpdated._id,
+  updateCuisine(updateForm) {
+    const update: Update<ICuisine> = {
+      id: this.cuisineToBeUpdated._id,
       changes: {
-        ...this.scheduleToBeUpdated,
+        ...this.cuisineToBeUpdated,
         ...updateForm
       }
     };
 
-    this.store.dispatch(scheduleActionTypes.updateSchedule({ update }));
+    this.store.dispatch(cuisineActionTypes.updateCuisine({ update }));
 
     this.isUpdateActivated = false;
-    this.scheduleToBeUpdated = null;
+    this.cuisineToBeUpdated = null;
 
-    this.drawerRef.close(this.scheduleToBeUpdated);
+    this.drawerRef.close(this.cuisineToBeUpdated);
   }
 
   handleClose(removedTag: any): void {
 
-    this.images.splice(removedTag, 1);
-    console.log(this.images.length, removedTag);
+    this.gallery.splice(removedTag, 1);
+    console.log(this.gallery.length, removedTag);
   }
 
   sliceTagName(tag: string): string {
@@ -154,12 +218,12 @@ export class CuisineDetailComponent implements OnInit {
   }
 
   handleInputConfirm(): void {
-    if (this.inputValue !== '' && this.images.length !== 0) {
-      this.images = [...this.images, this.inputValue];
-      this.detailForm.get('images').setValue(this.images);
-    } else if (this.inputValue !== '' && this.images.length === 0) {
-      this.images.push(this.inputValue);
-      this.detailForm.get('images').setValue(this.images);
+    if (this.inputValue !== '' && this.gallery.length !== 0) {
+      this.gallery = [...this.gallery, this.inputValue];
+      this.detailForm.get('gallery').setValue(this.gallery);
+    } else if (this.inputValue !== '' && this.gallery.length === 0) {
+      this.gallery.push(this.inputValue);
+      this.detailForm.get('gallery').setValue(this.gallery);
     }
 
     this.inputValue = '';

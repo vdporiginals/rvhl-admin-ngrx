@@ -7,7 +7,11 @@ export interface CuisineState extends EntityState<ICuisine> {
     cuisinesLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<ICuisine> = createEntityAdapter<ICuisine>();
+export const adapter: EntityAdapter<ICuisine> = createEntityAdapter<ICuisine>(
+    {
+        selectId: cuisines => cuisines._id
+    }
+);
 
 export const initialState = adapter.getInitialState({
     cuisinesLoaded: false

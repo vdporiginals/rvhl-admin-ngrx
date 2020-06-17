@@ -2,6 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { ITour } from 'src/app/models/tour.interface';
+import { Observable, Subscription } from 'rxjs';
+import { TourService } from '../tour.service';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/store/reducers';
+import { getAllTours, areToursLoaded } from 'src/app/store/selectors/tour.selectors';
+import { tourActionTypes } from 'src/app/store/actions/tour.actions';
+import { TourDetailComponent } from '../tour-detail/tour-detail.component';
+import { filter, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tour-list',
@@ -10,7 +19,7 @@ import { ITour } from 'src/app/models/tour.interface';
 })
 export class TourListComponent implements OnInit {
   total = 1;
-  listSchedule: ISchedule[] = [];
+  listTour: ITour[] = [];
   loading = true;
   pageSize = 10;
   pageIndex = 1;
@@ -24,27 +33,27 @@ export class TourListComponent implements OnInit {
 
   visible = false;
 
-  schedules$: Observable<ISchedule[]>;
+  tours$: Observable<ITour[]>;
 
-  scheduleToBeUpdated: ISchedule;
+  tourToBeUpdated: ITour;
 
   isUpdateActivated = false;
   private subcription: Subscription;
 
-  constructor(private scheduleService: ScheduleService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
+  constructor(private tourService: TourService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
 
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.tours$ = this.store.select(getAllTours);
   }
 
-  deleteSchedule(id: string) {
-    this.store.dispatch(scheduleActionTypes.deleteSchedule({ scheduleId: id }));
+  deleteTour(id: string) {
+    this.store.dispatch(tourActionTypes.deleteTour({ tourId: id }));
   }
   showCreateForm() {
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent, { value: any }, any>({
+    const drawerRef = this.drawerService.create<TourDetailComponent, { value: any }, any>({
       nzTitle: 'Thêm Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: TourDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -60,17 +69,17 @@ export class TourListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.tours$ = this.store.select(getAllTours);
     });
   }
 
-  showUpdateForm(schedule: ISchedule) {
-    this.scheduleToBeUpdated = { ...schedule };
+  showUpdateForm(tour: ITour) {
+    this.tourToBeUpdated = { ...tour };
     this.isUpdateActivated = true;
 
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent>({
+    const drawerRef = this.drawerService.create<TourDetailComponent>({
       nzTitle: 'Cập nhật Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: TourDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -79,7 +88,7 @@ export class TourListComponent implements OnInit {
       nzMaskClosable: true,
       nzWidth: 720,
       nzContentParams: {
-        value: this.scheduleToBeUpdated
+        value: this.tourToBeUpdated
       }
     });
 
@@ -89,7 +98,7 @@ export class TourListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.tours$ = this.store.select(getAllTours);
     });
   }
 
@@ -148,19 +157,19 @@ export class TourListComponent implements OnInit {
       params['name'] = this.filterName;
     }
 
-    this.store.dispatch(scheduleActionTypes.loadSchedules({ params }));
+    this.store.dispatch(tourActionTypes.loadTours({ params }));
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areToursLoaded),
+        filter(toursLoaded => toursLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
     this.visible = false;
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.tours$ = this.store.select(getAllTours);
   }
 
   changeStatus(val: boolean, id) {
@@ -169,7 +178,7 @@ export class TourListComponent implements OnInit {
       status: !val,
     }
 
-    this.store.dispatch(scheduleActionTypes.updateSchedule({
+    this.store.dispatch(tourActionTypes.updateTour({
       update: {
         id,
         changes: params
@@ -178,14 +187,14 @@ export class TourListComponent implements OnInit {
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areToursLoaded),
+        filter(toursLoaded => toursLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.tours$ = this.store.select(getAllTours);
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {

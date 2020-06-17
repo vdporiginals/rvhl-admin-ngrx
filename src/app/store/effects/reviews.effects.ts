@@ -4,7 +4,7 @@ import { concatMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { reviewActionTypes } from '../actions/reviews.actions';
-import { ReviewsService } from 'src/app/pages/review/reviews.service';
+import { ReviewsService } from 'src/app/pages/reviews/reviews.service';
 
 @Injectable()
 export class ReviewEffects {

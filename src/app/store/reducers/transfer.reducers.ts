@@ -7,7 +7,11 @@ export interface TransferState extends EntityState<ITransfer> {
     transfersLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<ITransfer> = createEntityAdapter<ITransfer>();
+export const adapter: EntityAdapter<ITransfer> = createEntityAdapter<ITransfer>(
+    {
+        selectId: transfers => transfers._id
+    }
+);
 
 export const initialState = adapter.getInitialState({
     transfersLoaded: false

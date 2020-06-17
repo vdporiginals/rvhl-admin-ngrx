@@ -35,23 +35,11 @@ const routes: Routes = [
         data: {},
         children: [
             {
-                path: 'category',
-                component: AccommodationListComponent,
-                pathMatch: 'full',
-                data: {
-                    breadcrumb: '',
-                    apiName: 'category'
-                },
-                resolve: {
-                    accomodations: AccommodationResolver
-                },
-            },
-            {
                 path: 'hotel',
                 component: AccommodationListComponent,
                 pathMatch: 'full',
                 data: {
-                    breadcrumb: '',
+                    breadcrumb: 'Khách sạn',
                     apiName: 'hotel'
                 },
                 resolve: {
@@ -63,7 +51,7 @@ const routes: Routes = [
                 pathMatch: 'full',
                 component: AccommodationListComponent,
                 data: {
-                    breadcrumb: '',
+                    breadcrumb: 'Homestay',
                     apiName: 'homestay'
                 },
                 resolve: {
@@ -75,7 +63,7 @@ const routes: Routes = [
                 pathMatch: 'full',
                 component: AccommodationListComponent,
                 data: {
-                    breadcrumb: '',
+                    breadcrumb: 'Villa',
                     apiName: 'villa'
                 },
                 resolve: {

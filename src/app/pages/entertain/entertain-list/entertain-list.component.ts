@@ -2,6 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { IEntertain } from 'src/app/models/entertain.interface';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { Observable, Subscription } from 'rxjs';
+import { EntertainService } from '../entertain.service';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/store/reducers';
+import { getAllEntertains, areEntertainsLoaded } from 'src/app/store/selectors/entertain.selectors';
+import { EntertainDetailComponent } from '../entertain-detail/entertain-detail.component';
+import { entertainActionTypes } from 'src/app/store/actions/entertain.actions';
+import { filter, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-entertain-list',
@@ -10,7 +19,7 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 })
 export class EntertainListComponent implements OnInit {
   total = 1;
-  listSchedule: ISchedule[] = [];
+  listEntertain: IEntertain[] = [];
   loading = true;
   pageSize = 10;
   pageIndex = 1;
@@ -24,27 +33,27 @@ export class EntertainListComponent implements OnInit {
 
   visible = false;
 
-  schedules$: Observable<ISchedule[]>;
+  entertains$: Observable<IEntertain[]>;
 
-  scheduleToBeUpdated: ISchedule;
+  entertainToBeUpdated: IEntertain;
 
   isUpdateActivated = false;
   private subcription: Subscription;
 
-  constructor(private scheduleService: ScheduleService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
+  constructor(private entertainService: EntertainService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
 
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.entertains$ = this.store.select(getAllEntertains);
   }
 
-  deleteSchedule(id: string) {
-    this.store.dispatch(scheduleActionTypes.deleteSchedule({ scheduleId: id }));
+  deleteEntertain(id: string) {
+    this.store.dispatch(entertainActionTypes.deleteEntertain({ entertainId: id }));
   }
   showCreateForm() {
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent, { value: any }, any>({
+    const drawerRef = this.drawerService.create<EntertainDetailComponent, { value: any }, any>({
       nzTitle: 'Thêm Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: EntertainDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -60,17 +69,17 @@ export class EntertainListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.entertains$ = this.store.select(getAllEntertains);
     });
   }
 
-  showUpdateForm(schedule: ISchedule) {
-    this.scheduleToBeUpdated = { ...schedule };
+  showUpdateForm(entertain: IEntertain) {
+    this.entertainToBeUpdated = { ...entertain };
     this.isUpdateActivated = true;
 
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent>({
+    const drawerRef = this.drawerService.create<EntertainDetailComponent>({
       nzTitle: 'Cập nhật Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: EntertainDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -79,7 +88,7 @@ export class EntertainListComponent implements OnInit {
       nzMaskClosable: true,
       nzWidth: 720,
       nzContentParams: {
-        value: this.scheduleToBeUpdated
+        value: this.entertainToBeUpdated
       }
     });
 
@@ -89,7 +98,7 @@ export class EntertainListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.entertains$ = this.store.select(getAllEntertains);
     });
   }
 
@@ -107,7 +116,7 @@ export class EntertainListComponent implements OnInit {
     this.loading = true;
     let newSort = '';
     let order = '+';
-    let newSelected = [];
+    const newSelected = [];
     // let selectedVal;
 
     if (sortOrder === 'ascend') {
@@ -126,7 +135,7 @@ export class EntertainListComponent implements OnInit {
       page: pageIndex,
       limit: pageSize,
       sort: newSort,
-    }
+    };
 
     selected.forEach(val => {
       newSelected.push({
@@ -148,28 +157,28 @@ export class EntertainListComponent implements OnInit {
       params['name'] = this.filterName;
     }
 
-    this.store.dispatch(scheduleActionTypes.loadSchedules({ params }));
+    this.store.dispatch(entertainActionTypes.loadEntertains({ params }));
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areEntertainsLoaded),
+        filter(entertainsLoaded => entertainsLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
     this.visible = false;
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.entertains$ = this.store.select(getAllEntertains);
   }
 
   changeStatus(val: boolean, id) {
     this.loading = true;
     const params = {
       status: !val,
-    }
+    };
 
-    this.store.dispatch(scheduleActionTypes.updateSchedule({
+    this.store.dispatch(entertainActionTypes.updateEntertain({
       update: {
         id,
         changes: params
@@ -178,14 +187,14 @@ export class EntertainListComponent implements OnInit {
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areEntertainsLoaded),
+        filter(entertainsLoaded => entertainsLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.entertains$ = this.store.select(getAllEntertains);
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {

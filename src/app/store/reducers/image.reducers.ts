@@ -7,7 +7,9 @@ export interface ImageState extends EntityState<IImage> {
     imagesLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<IImage> = createEntityAdapter<IImage>();
+export const adapter: EntityAdapter<IImage> = createEntityAdapter<IImage>({
+    selectId: images => images.id
+});
 
 export const initialState = adapter.getInitialState({
     imagesLoaded: false

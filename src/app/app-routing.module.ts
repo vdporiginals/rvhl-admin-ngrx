@@ -10,35 +10,42 @@ const routes: Routes = [
     redirectTo: 'dashboard',
     pathMatch: 'full',
     canActivate: [AdminGuard]
-    // component: Dá,
   },
   {
     path: 'login',
     component: LoginComponent,
     canActivate: [LoginGuard]
-    // component: Dá,
   },
   {
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule),
-    canActivate: [AdminGuard]
-    // component: Dá,
+    canActivate: [AdminGuard],
+    data: {
+      breadcrumb: 'Dashboard'
+    }
+  },
+  {
+    path: 'categories',
+    loadChildren: () => import('./pages/category/category.module').then(m => m.CategoryModule),
+    canActivate: [AdminGuard],
+    data: {
+      breadcrumb: 'Danh mục'
+    }
   },
   {
     path: 'users',
     loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule),
     canActivate: [AdminGuard],
     data: {
-      breadcrumb: 'User'
+      breadcrumb: 'Người dùng'
     }
   },
   {
     path: 'schedules',
-
     loadChildren: () => import('./pages/schedule/schedule.module').then(m => m.ScheduleModule),
     canActivate: [AdminGuard],
     data: {
-      breadcrumb: 'Blogs',
+      breadcrumb: 'Lịch trình',
       count: ''
     }
   },
@@ -48,7 +55,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/transfer/transfer.module').then(m => m.TransferModule),
     canActivate: [AdminGuard],
     data: {
-      breadcrumb: 'Blogs',
+      breadcrumb: 'Vận chuyển',
       count: ''
     }
   },
@@ -57,7 +64,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/advertise/advertise.module').then(m => m.AdvertiseModule),
     canActivate: [AdminGuard],
     data: {
-      breadcrumb: 'Advertises',
+      breadcrumb: 'Quảng cáo',
       count: ''
     }
   },
@@ -93,7 +100,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/reviews/reviews.module').then(m => m.ReviewsModule),
     canActivate: [AdminGuard],
     data: {
-      breadcrumb: 'review',
+      breadcrumb: 'Reviews',
       count: ''
     }
   },
@@ -102,7 +109,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cuisine/cuisine.module').then(m => m.CuisineModule),
     canActivate: [AdminGuard],
     data: {
-      breadcrumb: 'Nhà hàng',
+      breadcrumb: 'Ẩm thực',
       count: ''
     }
   },
@@ -111,7 +118,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/image/image.module').then(m => m.ImageModule),
     canActivate: [AdminGuard],
     data: {
-      breadcrumb: 'Image',
+      breadcrumb: 'Hình ảnh',
       count: ''
     }
   },

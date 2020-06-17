@@ -8,7 +8,9 @@ export interface AccommodationState extends EntityState<IAccommodation> {
     accommodationsLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<IAccommodation> = createEntityAdapter<IAccommodation>();
+export const adapter: EntityAdapter<IAccommodation> = createEntityAdapter<IAccommodation>({
+    selectId: accommodations => accommodations._id
+});
 
 export const initialState = adapter.getInitialState({
     apiName: '',

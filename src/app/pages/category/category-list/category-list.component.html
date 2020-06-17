@@ -1,7 +1,7 @@
-<nz-page-header class="site-page-header" nzTitle="Quản lý lịch trình">
+<nz-page-header class="site-page-header" nzTitle="Quản lý danh mục">
   <nz-page-header-extra>
     <!-- <button nz-button>Thêm</button>
-      <button nz-button>Operation</button> -->
+        <button nz-button>Operation</button> -->
     <button nz-button nzType="primary" (click)="showCreateForm()">
       <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm
     </button>
@@ -9,7 +9,7 @@
 </nz-page-header>
 <nz-table
   nzShowSizeChanger
-  [nzData]="cuisines$ | async"
+  [nzData]="categories$ | async"
   [nzFrontPagination]="false"
   [nzTotal]="total"
   [nzPageSize]="pageSize"
@@ -19,11 +19,10 @@
 >
   <thead>
     <tr>
-      <th nzColumnKey="status" [nzFilters]="filterStatus" [nzFilterFn]="true">
-        Trạng thái
-      </th>
-      <th nzColumnKey="image">Hình ảnh</th>
-      <th nzColumnKey="title" [nzSortFn]="true" nzCustomFilter>
+      <!-- <th nzColumnKey="status" [nzFilters]="filterPosit" [nzFilterFn]="true">
+      Loại danh mục
+    </th> -->
+      <th nzColumnKey="name" [nzSortFn]="true" nzCustomFilter>
         Tên
         <nz-filter-trigger
           [(nzVisible)]="visible"
@@ -40,18 +39,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of cuisines$ | async">
-      <td>
-        <!-- {{ data.status }} -->
-        <button
-          nz-button
-          nzType="primary"
-          (click)="changeStatus(data.status, data._id)"
-        >
-          {{ data.status === true ? "Kích hoạt" : "Chưa kích hoạt" }}
-        </button>
-      </td>
-      <td><img [src]="data.image" [style.max-height.px]="75" alt="" /></td>
+    <tr *ngFor="let data of categories$ | async">
+      <!-- <td>{{ data.position }}</td> -->
       <td>{{ data.name }}</td>
       <td>{{ data.description | Overflow: ["80", "..."] }}</td>
       <td>{{ data.createdAt | date: "short" }}</td>
@@ -70,7 +59,7 @@
           nz-button
           nzType="primary"
           nzDanger
-          (click)="deleteCuisine(data._id)"
+          (click)="deleteCategory(data._id)"
         >
           <i nz-icon nzType="delete"></i>Xóa
         </button>

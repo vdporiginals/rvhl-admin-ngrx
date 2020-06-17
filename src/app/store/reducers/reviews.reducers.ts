@@ -7,7 +7,9 @@ export interface ReviewState extends EntityState<IReviews> {
     reviewsLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<IReviews> = createEntityAdapter<IReviews>();
+export const adapter: EntityAdapter<IReviews> = createEntityAdapter<IReviews>({
+    selectId: reviews => reviews._id
+});
 
 export const initialState = adapter.getInitialState({
     reviewsLoaded: false

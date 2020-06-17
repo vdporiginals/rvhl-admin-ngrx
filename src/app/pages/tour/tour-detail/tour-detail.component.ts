@@ -1,4 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { ITour } from 'src/app/models/tour.interface';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { editConf } from 'src/app/shared/editorconfig';
+import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { NzDrawerService, NzDrawerRef } from 'ng-zorro-antd/drawer';
+import { SharedDataService } from 'src/app/shared/services/shared-data.service';
+import { SanitizeHtmlPipe } from 'src/app/shared/pipe/html-sanitize.pipe';
+import { TourService } from '../tour.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/reducers';
+import { environment } from 'src/environments/environment';
+import { ImageDrawerComponent } from 'src/app/shared/image-drawer/image-drawer.component';
+import { tourActionTypes } from 'src/app/store/actions/tour.actions';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-tour-detail',
@@ -16,9 +32,9 @@ export class TourDetailComponent implements OnInit {
   images: any = [];
   isCheckedButton = true;
 
-  schedules$: Observable<ISchedule[]>;
+  tours$: Observable<ITour[]>;
 
-  scheduleToBeUpdated: ISchedule;
+  tourToBeUpdated: ITour;
   detailForm: FormGroup;
   isUpdateActivated = false;
   inputValue = '';
@@ -33,7 +49,7 @@ export class TourDetailComponent implements OnInit {
     private drawerService: NzDrawerService,
     private sharedData: SharedDataService,
     private sanitize: SanitizeHtmlPipe,
-    private scheduleService: ScheduleService,
+    private tourService: TourService,
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
     // this.images = new FormControl([]);
@@ -54,7 +70,7 @@ export class TourDetailComponent implements OnInit {
   get getImages() { return this.detailForm.get('images') as FormArray; }
   ngOnInit(): void {
     if (this.value !== undefined) {
-      this.scheduleToBeUpdated = this.value;
+      this.tourToBeUpdated = this.value;
       this.visible = true;
       if (this.value.images !== null) {
         this.images = this.value.images;
@@ -110,29 +126,29 @@ export class TourDetailComponent implements OnInit {
 
   createOrUpdate() {
     if (!this.value) {
-      this.store.dispatch(scheduleActionTypes.createSchedule({ schedule: this.detailForm.value }));
+      this.store.dispatch(tourActionTypes.createTour({ tour: this.detailForm.value }));
       this.isUpdateActivated = false;
       this.drawerRef.close();
     } else {
-      this.updateSchedule(this.detailForm.value);
+      this.updateTour(this.detailForm.value);
     }
   }
 
-  updateSchedule(updateForm) {
-    const update: Update<ISchedule> = {
-      id: this.scheduleToBeUpdated._id,
+  updateTour(updateForm) {
+    const update: Update<ITour> = {
+      id: this.tourToBeUpdated._id,
       changes: {
-        ...this.scheduleToBeUpdated,
+        ...this.tourToBeUpdated,
         ...updateForm
       }
     };
 
-    this.store.dispatch(scheduleActionTypes.updateSchedule({ update }));
+    this.store.dispatch(tourActionTypes.updateTour({ update }));
 
     this.isUpdateActivated = false;
-    this.scheduleToBeUpdated = null;
+    this.tourToBeUpdated = null;
 
-    this.drawerRef.close(this.scheduleToBeUpdated);
+    this.drawerRef.close(this.tourToBeUpdated);
   }
 
   handleClose(removedTag: any): void {

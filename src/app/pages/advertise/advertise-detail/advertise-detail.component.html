@@ -18,8 +18,8 @@
       </nz-form-item>
     </div>
   </div>
-  <div nz-row>
-    <div nz-col nzSpan="24">
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="12">
       <nz-form-item>
         <nz-form-label>Danh Mục</nz-form-label>
         <nz-form-control>
@@ -36,69 +36,85 @@
         </nz-form-control>
       </nz-form-item>
     </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label>Vị trí trang</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            formControlName="pagePosition"
+            [nzPlaceHolder]="value !== undefined ? '' : 'Chọn vị trí trang'"
+          >
+            <nz-option
+              *ngFor="let position of pagePositions"
+              nzValue="{{ position.value }}"
+              nzLabel="{{ position.name }}"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
   </div>
   <div nz-row [nzGutter]="8">
-    <div nz-col nzSpan="8">
+    <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label>Ảnh bìa</nz-form-label>
+        <nz-form-label>Link</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="link"
+            placeholder="Nhập đường dẫn qc"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label>Video</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="video"
+            placeholder="Nhập đường video qc"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label>Ảnh </nz-form-label>
         <nz-form-control>
           <nz-input-group nzSearch [nzAddOnAfter]="suffixImage">
             <input
               type="text"
               formControlName="image"
               nz-input
-              placeholder="Thêm ảnh (bìa)"
+              placeholder="Thêm ảnh"
             />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <ng-template #suffixImage>
-        <button nz-button nzType="primary" nzSearch>
+        <a nz-button nzType="primary" (click)="showImagePicker()" nzSearch>
           Chọn ảnh
-        </button>
+        </a>
       </ng-template>
     </div>
-    <div nz-col nzSpan="16">
+    <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label>Danh sách ảnh</nz-form-label>
+        <nz-form-label>Loại quảng cáo</nz-form-label>
         <nz-form-control>
-          <nz-tag
-            *ngFor="let image of images; let j = index"
-            [nzMode]="images.length === j + 1 ? 'closeable' : 'default'"
-            (nzOnClose)="handleClose(j)"
+          <nz-select
+            formControlName="typeAdvertise"
+            [nzPlaceHolder]="value !== undefined ? '' : 'Chọn loại quảng cáo'"
           >
-            {{ image | Overflow: ["5", "..."] }}
-          </nz-tag>
-          <nz-tag
-            *ngIf="!inputVisible"
-            class="editable-tag"
-            nzNoAnimation
-            (click)="showInput()"
-            (click)="showImagePicker()"
-          >
-            <i nz-icon nzType="plus"></i> Ảnh mới
-          </nz-tag>
-
-          <nz-input-group nzSearch>
-            <!-- <input formControlName="images" /> -->
-            <input
-              #inputElement
-              nz-input
-              nzSize="small"
-              *ngIf="inputVisible"
-              type="text"
-              style="width: 78px;"
-              (blur)="handleInputConfirm()"
-              (keydown.enter)="handleInputConfirm()"
-              [(ngModel)]="inputValue"
-              [ngModelOptions]="{ standalone: true }"
-            />
-            <!-- <ng-template #suffixButton>
-                <button nz-button nzType="primary" nzSearch>
-                  Chọn ảnh
-                </button>
-              </ng-template> -->
-          </nz-input-group>
+            <nz-option
+              *ngFor="let type of typeAdvertises"
+              nzValue="{{ type.value }}"
+              nzLabel="{{ type.name }}"
+            ></nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -134,19 +150,7 @@
     </div>
   </div>
   <div nz-row [nzGutter]="8">
-    <div nz-col nzSpan="15">
-      <nz-form-item>
-        <nz-form-label>Từ khóa</nz-form-label>
-        <nz-form-control>
-          <input
-            nz-input
-            formControlName="keywords"
-            placeholder="Nhập từ khóa"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div nz-col nzSpan="9">
+    <div nz-col nzSpan="24">
       <nz-form-item>
         <nz-form-label>Địa chỉ</nz-form-label>
         <nz-form-control>
@@ -157,12 +161,6 @@
           />
         </nz-form-control>
       </nz-form-item>
-    </div>
-  </div>
-  <div nz-row [nzGutter]="8">
-    <div nz-col nzSpan="24">
-      <angular-editor formControlName="content" [config]="editorConfig">
-      </angular-editor>
     </div>
   </div>
   <div nz-row [nzGutter]="8" [style.margin-top.px]="10">

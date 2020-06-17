@@ -109,7 +109,8 @@ export class AccommodationListComponent implements OnInit {
       nzMaskClosable: true,
       nzWidth: 720,
       nzContentParams: {
-        value: this.accommodationToBeUpdated
+        value: this.accommodationToBeUpdated,
+
       }
     });
 
@@ -194,6 +195,7 @@ export class AccommodationListComponent implements OnInit {
   }
 
   changeStatus(val: boolean, id) {
+    console.log(val)
     this.loading = true;
     const params = {
       status: !val,

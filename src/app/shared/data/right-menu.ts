@@ -10,7 +10,7 @@ export const SideBar = [
             },
             {
                 text: 'Danh mục quảng cáo',
-                link: 'advertises/category',
+                link: 'categories/advertise',
             },
         ]
     },
@@ -24,7 +24,7 @@ export const SideBar = [
             },
             {
                 text: 'Danh mục tour',
-                link: 'tours/category',
+                link: 'categories/tour',
             },
         ]
     },
@@ -38,7 +38,7 @@ export const SideBar = [
             },
             {
                 text: 'Danh mục transfer',
-                link: 'transfers/category',
+                link: 'categories/transfer',
             },
         ]
     },
@@ -51,7 +51,7 @@ export const SideBar = [
                 link: 'schedules',
             }, {
                 text: 'Danh mục lịch trình',
-                link: 'schedules/category',
+                link: 'categories/schedule',
             },
         ]
     },
@@ -61,7 +61,7 @@ export const SideBar = [
         subItems: [
             {
                 text: 'Danh mục',
-                link: 'accommodations/category',
+                link: 'categories/accommodation',
             },
             {
                 text: 'Khách sạn',
@@ -102,7 +102,7 @@ export const SideBar = [
             },
             {
                 text: 'Danh mục entertains',
-                link: 'entertains/category',
+                link: 'categories/entertain',
             },
         ]
     },
@@ -115,7 +115,7 @@ export const SideBar = [
                 link: 'cuisine',
             }, {
                 text: 'Danh mục nhà hàng',
-                link: 'cuisine/category',
+                link: 'categories/cuisine',
             },
         ]
     },
@@ -130,7 +130,7 @@ export const SideBar = [
             },
             {
                 text: 'Danh mục reviews',
-                link: 'reviews/category',
+                link: 'categories/review',
             }
         ],
         queryParams: { category: 'bannerTour' },

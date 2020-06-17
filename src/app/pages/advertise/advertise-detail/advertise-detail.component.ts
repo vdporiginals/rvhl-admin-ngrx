@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { editConf } from 'src/app/shared/editorconfig';
 import { Observable } from 'rxjs';
 import { IAdvertise } from 'src/app/models/advertise.interface';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -15,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { ImageDrawerComponent } from 'src/app/shared/image-drawer/image-drawer.component';
 import { advertiseActionTypes } from 'src/app/store/actions/advertise.actions';
 import { Update } from '@ngrx/entity';
+import { pagePosition } from './page-position';
 
 @Component({
   selector: 'app-advertise-detail',
@@ -22,7 +21,6 @@ import { Update } from '@ngrx/entity';
   styleUrls: ['./advertise-detail.component.scss']
 })
 export class AdvertiseDetailComponent implements OnInit {
-  editorConfig: AngularEditorConfig = editConf;
 
   visible = false;
   childrenVisible = false;
@@ -31,7 +29,8 @@ export class AdvertiseDetailComponent implements OnInit {
   categories: any;
   images: any = [];
   isCheckedButton = true;
-
+  pagePositions = pagePosition;
+  typeAdvertises = [{ value: 'BannerPage', name: 'Banner Trang' }, { value: 'Advertise', name: 'Quảng cáo trang' }];
   advertises$: Observable<IAdvertise[]>;
 
   advertiseToBeUpdated: IAdvertise;
@@ -55,6 +54,10 @@ export class AdvertiseDetailComponent implements OnInit {
     // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
       title: ['', Validators.required],
+      link: [''],
+      pagePosition: [''],
+      video: [''],
+      typeAdvertise: [''],
       category: [''],
       content: [''],
       description: [''],
@@ -82,11 +85,15 @@ export class AdvertiseDetailComponent implements OnInit {
       this.detailForm.get('description').setValue(this.value.description);
       this.detailForm.get('address').setValue(this.value.address);
       this.detailForm.get('category').setValue(this.value.category);
+      this.detailForm.get('link').setValue(this.value.link);
+      this.detailForm.get('video').setValue(this.value.video);
+      this.detailForm.get('typeAdvertise').setValue(this.value.typeAdvertise);
+      this.detailForm.get('pagePosition').setValue(this.value.pagePosition);
       this.detailForm.get('keywords').setValue(this.value.keywords);
       this.detailForm.get('isPopular').setValue(this.value.isPopular);
       this.detailForm.get('status').setValue(this.value.status);
     }
-    this.http.get<any>(`${environment.apiUrl}/blogs/category`).subscribe(res => {
+    this.http.get<any>(`${environment.apiUrl}/advertises/category`).subscribe(res => {
       this.categories = res.data;
       console.log(this.categories);
     });
@@ -114,9 +121,7 @@ export class AdvertiseDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      console.log(data);
-      this.inputValue = data;
-      this.handleInputConfirm();
+      this.detailForm.get('image').setValue(data);
     });
   }
 
@@ -151,37 +156,4 @@ export class AdvertiseDetailComponent implements OnInit {
     this.drawerRef.close(this.advertiseToBeUpdated);
   }
 
-  handleClose(removedTag: any): void {
-
-    this.images.splice(removedTag, 1);
-    console.log(this.images.length, removedTag);
-  }
-
-  sliceTagName(tag: string): string {
-    const isLongTag = tag.length > 10;
-    return isLongTag ? `${tag.slice(0, 10)}...` : tag;
-  }
-
-  showInput(): void {
-    this.inputVisible = true;
-    setTimeout(() => {
-      this.inputElement?.nativeElement.focus();
-    }, 10);
-  }
-
-  handleInputConfirm(): void {
-    if (this.inputValue !== '' && this.images.length !== 0) {
-      this.images = [...this.images, this.inputValue];
-      this.detailForm.get('images').setValue(this.images);
-    } else if (this.inputValue !== '' && this.images.length === 0) {
-      this.images.push(this.inputValue);
-      this.detailForm.get('images').setValue(this.images);
-    }
-
-    this.inputValue = '';
-    this.inputVisible = false;
-  }
-
-  chooseImageArray() {
-  }
 }

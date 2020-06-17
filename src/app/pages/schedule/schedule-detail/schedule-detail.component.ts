@@ -97,7 +97,7 @@ export class ScheduleDetailComponent implements OnInit {
     this.drawerRef.close();
   }
 
-  showImagePicker() {
+  showImagePicker(type?) {
     const drawerRef = this.drawerService.create<ImageDrawerComponent>({
       nzTitle: 'Quản lý hình ảnh',
       nzContent: ImageDrawerComponent,
@@ -116,8 +116,12 @@ export class ScheduleDetailComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       console.log(data);
-      this.inputValue = data;
-      this.handleInputConfirm();
+      if (type === 'images') {
+        this.inputValue = data;
+        this.handleInputConfirm();
+      } else {
+        this.detailForm.get('image').setValue(data);
+      }
     });
   }
 

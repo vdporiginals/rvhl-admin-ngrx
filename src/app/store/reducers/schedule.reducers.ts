@@ -7,7 +7,11 @@ export interface ScheduleState extends EntityState<ISchedule> {
     schedulesLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<ISchedule> = createEntityAdapter<ISchedule>();
+export const adapter: EntityAdapter<ISchedule> = createEntityAdapter<ISchedule>(
+    {
+        selectId: schedules => schedules._id
+    }
+);
 
 export const initialState = adapter.getInitialState({
     schedulesLoaded: false

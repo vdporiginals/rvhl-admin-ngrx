@@ -2,6 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { IReviews } from 'src/app/models/reviews.interface';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { Observable, Subscription } from 'rxjs';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/store/reducers';
+import { getAllReviews, areReviewsLoaded } from 'src/app/store/selectors/reviews.selectors';
+import { reviewActionTypes } from 'src/app/store/actions/reviews.actions';
+import { filter, first } from 'rxjs/operators';
+import { ReviewsDetailComponent } from '../reviews-detail/reviews-detail.component';
+import { ReviewsService } from '../reviews.service';
 
 @Component({
   selector: 'app-reviews-list',
@@ -10,7 +19,7 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 })
 export class ReviewsListComponent implements OnInit {
   total = 1;
-  listSchedule: ISchedule[] = [];
+  listReview: IReviews[] = [];
   loading = true;
   pageSize = 10;
   pageIndex = 1;
@@ -24,27 +33,27 @@ export class ReviewsListComponent implements OnInit {
 
   visible = false;
 
-  schedules$: Observable<ISchedule[]>;
+  reviews$: Observable<IReviews[]>;
 
-  scheduleToBeUpdated: ISchedule;
+  reviewToBeUpdated: IReviews;
 
   isUpdateActivated = false;
   private subcription: Subscription;
 
-  constructor(private scheduleService: ScheduleService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
+  constructor(private reviewService: ReviewsService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
 
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.reviews$ = this.store.select(getAllReviews);
   }
 
-  deleteSchedule(id: string) {
-    this.store.dispatch(scheduleActionTypes.deleteSchedule({ scheduleId: id }));
+  deleteReview(id: string) {
+    this.store.dispatch(reviewActionTypes.deleteReview({ reviewId: id }));
   }
   showCreateForm() {
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent, { value: any }, any>({
+    const drawerRef = this.drawerService.create<ReviewsDetailComponent, { value: any }, any>({
       nzTitle: 'Thêm Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: ReviewsDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -60,17 +69,17 @@ export class ReviewsListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.reviews$ = this.store.select(getAllReviews);
     });
   }
 
-  showUpdateForm(schedule: ISchedule) {
-    this.scheduleToBeUpdated = { ...schedule };
+  showUpdateForm(review: IReviews) {
+    this.reviewToBeUpdated = { ...review };
     this.isUpdateActivated = true;
 
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent>({
+    const drawerRef = this.drawerService.create<ReviewsDetailComponent>({
       nzTitle: 'Cập nhật Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: ReviewsDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -79,7 +88,7 @@ export class ReviewsListComponent implements OnInit {
       nzMaskClosable: true,
       nzWidth: 720,
       nzContentParams: {
-        value: this.scheduleToBeUpdated
+        value: this.reviewToBeUpdated
       }
     });
 
@@ -89,7 +98,7 @@ export class ReviewsListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.reviews$ = this.store.select(getAllReviews);
     });
   }
 
@@ -148,19 +157,19 @@ export class ReviewsListComponent implements OnInit {
       params['name'] = this.filterName;
     }
 
-    this.store.dispatch(scheduleActionTypes.loadSchedules({ params }));
+    this.store.dispatch(reviewActionTypes.loadReviews({ params }));
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areReviewsLoaded),
+        filter(reviewsLoaded => reviewsLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
     this.visible = false;
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.reviews$ = this.store.select(getAllReviews);
   }
 
   changeStatus(val: boolean, id) {
@@ -169,7 +178,7 @@ export class ReviewsListComponent implements OnInit {
       status: !val,
     }
 
-    this.store.dispatch(scheduleActionTypes.updateSchedule({
+    this.store.dispatch(reviewActionTypes.updateReview({
       update: {
         id,
         changes: params
@@ -178,14 +187,14 @@ export class ReviewsListComponent implements OnInit {
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areReviewsLoaded),
+        filter(reviewsLoaded => reviewsLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.reviews$ = this.store.select(getAllReviews);
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {

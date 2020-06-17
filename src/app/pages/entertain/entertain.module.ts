@@ -8,6 +8,24 @@ import { EntertainListComponent } from './entertain-list/entertain-list.componen
 import { EntertainDetailComponent } from './entertain-detail/entertain-detail.component';
 import { EntertainService } from './entertain.service';
 import { EntertainResolver } from './entertain.resolver';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconsProviderModule } from 'src/app/icons-provider.module';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { StoreModule } from '@ngrx/store';
+import { entertainReducer } from 'src/app/store/reducers/entertain.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { EntertainEffects } from 'src/app/store/effects/entertain.effects';
 
 const routes: Routes = [
     {

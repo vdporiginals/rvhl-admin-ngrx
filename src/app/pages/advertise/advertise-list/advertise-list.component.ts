@@ -52,7 +52,7 @@ export class AdvertiseListComponent implements OnInit {
   }
   showCreateForm() {
     const drawerRef = this.drawerService.create<AdvertiseDetailComponent, { value: any }, any>({
-      nzTitle: 'Thêm Lịch Trình',
+      nzTitle: 'Thêm quảng cáo',
       nzContent: AdvertiseDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
@@ -78,7 +78,7 @@ export class AdvertiseListComponent implements OnInit {
     this.isUpdateActivated = true;
 
     const drawerRef = this.drawerService.create<AdvertiseDetailComponent>({
-      nzTitle: 'Cập nhật Lịch Trình',
+      nzTitle: 'Cập nhật quảng cáo',
       nzContent: AdvertiseDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',

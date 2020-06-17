@@ -1,59 +1,66 @@
 import { Component, OnInit } from '@angular/core';
-import { ICuisine } from 'src/app/models/cuisine.interface';
+import { ICategory } from 'src/app/models/category.interface';
 import { NzButtonSize } from 'ng-zorro-antd/button';
-import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable, Subscription } from 'rxjs';
-import { CuisineService } from '../cuisine.service';
+import { CategoryService } from '../category.service';
+import { Event, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllCuisines, areCuisinesLoaded } from 'src/app/store/selectors/cuisine.selectors';
-import { cuisineActionTypes } from 'src/app/store/actions/cuisine.actions';
-import { CuisineDetailComponent } from '../cuisine-detail/cuisine-detail.component';
+import { categoryActionTypes } from 'src/app/store/actions/category.actions';
+import { CategoryDetailComponent } from '../category-detail/category-detail.component';
+import { areCategoriesLoaded, getAllCategories } from 'src/app/store/selectors/category.selectors';
 import { filter, first } from 'rxjs/operators';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 @Component({
-  selector: 'app-cuisine-list',
-  templateUrl: './cuisine-list.component.html',
-  styleUrls: ['./cuisine-list.component.scss']
+  selector: 'app-category-list',
+  templateUrl: './category-list.component.html',
+  styleUrls: ['./category-list.component.scss']
 })
-export class CuisineListComponent implements OnInit {
+export class CategoryListComponent implements OnInit {
   total = 1;
-  listCuisine: ICuisine[] = [];
+  listCategory: ICategory[] = [];
   loading = true;
   pageSize = 10;
   pageIndex = 1;
+  // filterPosition = [
+  //   { text: 'Kích hoạt', value: 'true' },
+  //   { text: 'Chưa kích hoạt', value: 'false' }
+  // ];
   filterName = '';
-  filterStatus = [
-    { text: 'Kích hoạt', value: 'true' },
-    { text: 'Chưa kích hoạt', value: 'false' }
-  ];
   size: NzButtonSize = 'default';
   isFilter: boolean;
 
   visible = false;
 
-  cuisines$: Observable<ICuisine[]>;
+  categories$: Observable<ICategory[]>;
 
-  cuisineToBeUpdated: ICuisine;
-
+  categoryToBeUpdated: ICategory;
+  routePathName: string;
   isUpdateActivated = false;
   private subcription: Subscription;
 
-  constructor(private cuisineService: CuisineService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
+  constructor(
+    private categorieservice: CategoryService,
+    private route: ActivatedRoute, private router: Router,
+    private drawerService: NzDrawerService, private store: Store<AppState>) {
+    this.routePathName = this.route.snapshot.data.routeName;
+  }
 
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
-    this.cuisines$ = this.store.select(getAllCuisines);
+    this.categories$ = this.store.select(getAllCategories);
   }
 
-  deleteCuisine(id: string) {
-    this.store.dispatch(cuisineActionTypes.deleteCuisine({ cuisineId: id }));
+  deleteCategory(id: string) {
+    this.store.dispatch(categoryActionTypes.deleteCategory({ routeName: this.routePathName, categoryId: id }));
   }
+
   showCreateForm() {
-    const drawerRef = this.drawerService.create<CuisineDetailComponent, { value: any }, any>({
-      nzTitle: 'Thêm Nhà hàng(Ẩm thực)',
-      nzContent: CuisineDetailComponent,
+    const drawerRef = this.drawerService.create<CategoryDetailComponent, { value: any }, any>({
+      nzTitle: 'Thêm Lịch Trình',
+      nzContent: CategoryDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -69,17 +76,17 @@ export class CuisineListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.cuisines$ = this.store.select(getAllCuisines);
+      this.categories$ = this.store.select(getAllCategories);
     });
   }
 
-  showUpdateForm(cuisine: ICuisine) {
-    this.cuisineToBeUpdated = { ...cuisine };
+  showUpdateForm(category: ICategory) {
+    this.categoryToBeUpdated = { ...category };
     this.isUpdateActivated = true;
 
-    const drawerRef = this.drawerService.create<CuisineDetailComponent>({
-      nzTitle: 'Cập nhật Nhà hàng(Ẩm thực)',
-      nzContent: CuisineDetailComponent,
+    const drawerRef = this.drawerService.create<CategoryDetailComponent>({
+      nzTitle: 'Cập nhật Lịch Trình',
+      nzContent: CategoryDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -88,7 +95,7 @@ export class CuisineListComponent implements OnInit {
       nzMaskClosable: true,
       nzWidth: 720,
       nzContentParams: {
-        value: this.cuisineToBeUpdated
+        value: this.categoryToBeUpdated,
       }
     });
 
@@ -98,7 +105,7 @@ export class CuisineListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.cuisines$ = this.store.select(getAllCuisines);
+      this.categories$ = this.store.select(getAllCategories);
     });
   }
 
@@ -157,45 +164,21 @@ export class CuisineListComponent implements OnInit {
       params['name'] = this.filterName;
     }
 
-    this.store.dispatch(cuisineActionTypes.loadCuisines({ params }));
+    this.store.dispatch(categoryActionTypes.loadCategories({ routeName: this.routePathName, params }));
 
     this.store
       .pipe(
-        select(areCuisinesLoaded),
-        filter(cuisinesLoaded => cuisinesLoaded),
+        select(areCategoriesLoaded),
+        filter(categoriesLoaded => categoriesLoaded.categoriesLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
     this.visible = false;
-    this.cuisines$ = this.store.select(getAllCuisines);
+    this.categories$ = this.store.select(getAllCategories);
   }
 
-  changeStatus(val: boolean, id) {
-    this.loading = true;
-    const params = {
-      status: !val,
-    }
-
-    this.store.dispatch(cuisineActionTypes.updateCuisine({
-      update: {
-        id,
-        changes: params
-      }
-    }));
-
-    this.store
-      .pipe(
-        select(areCuisinesLoaded),
-        filter(cuisinesLoaded => cuisinesLoaded),
-        first()
-      ).subscribe(res => {
-        this.loading = false;
-      });
-
-    this.cuisines$ = this.store.select(getAllCuisines);
-  }
 
   onQueryParamsChange(params: NzTableQueryParams): void {
     const { pageSize, pageIndex, sort, filter } = params;

@@ -7,7 +7,11 @@ export interface UserState extends EntityState<IUser> {
     usersLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<IUser> = createEntityAdapter<IUser>();
+export const adapter: EntityAdapter<IUser> = createEntityAdapter<IUser>(
+    {
+        selectId: users => users._id
+    }
+);
 
 export const initialState = adapter.getInitialState({
     usersLoaded: false

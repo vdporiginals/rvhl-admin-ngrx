@@ -2,6 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ITransfer } from 'src/app/models/transfer.interface';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { Observable, Subscription } from 'rxjs';
+import { TransferService } from '../transfer.service';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/store/reducers';
+import { getAllTransfers, areTransfersLoaded } from 'src/app/store/selectors/transfer.selectors';
+import { transferActionTypes } from 'src/app/store/actions/transfer.actions';
+import { TransferDetailComponent } from '../transfer-detail/transfer-detail.component';
+import { filter, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transfer-list',
@@ -10,7 +19,7 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 })
 export class TransferListComponent implements OnInit {
   total = 1;
-  listSchedule: ISchedule[] = [];
+  listTransfer: ITransfer[] = [];
   loading = true;
   pageSize = 10;
   pageIndex = 1;
@@ -24,27 +33,27 @@ export class TransferListComponent implements OnInit {
 
   visible = false;
 
-  schedules$: Observable<ISchedule[]>;
+  transfers$: Observable<ITransfer[]>;
 
-  scheduleToBeUpdated: ISchedule;
+  transferToBeUpdated: ITransfer;
 
   isUpdateActivated = false;
   private subcription: Subscription;
 
-  constructor(private scheduleService: ScheduleService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
+  constructor(private transferService: TransferService, private drawerService: NzDrawerService, private store: Store<AppState>) { }
 
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.transfers$ = this.store.select(getAllTransfers);
   }
 
-  deleteSchedule(id: string) {
-    this.store.dispatch(scheduleActionTypes.deleteSchedule({ scheduleId: id }));
+  deleteTransfer(id: string) {
+    this.store.dispatch(transferActionTypes.deleteTransfer({ transferId: id }));
   }
   showCreateForm() {
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent, { value: any }, any>({
+    const drawerRef = this.drawerService.create<TransferDetailComponent, { value: any }, any>({
       nzTitle: 'Thêm Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: TransferDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -60,17 +69,17 @@ export class TransferListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.transfers$ = this.store.select(getAllTransfers);
     });
   }
 
-  showUpdateForm(schedule: ISchedule) {
-    this.scheduleToBeUpdated = { ...schedule };
+  showUpdateForm(transfer: ITransfer) {
+    this.transferToBeUpdated = { ...transfer };
     this.isUpdateActivated = true;
 
-    const drawerRef = this.drawerService.create<ScheduleDetailComponent>({
+    const drawerRef = this.drawerService.create<TransferDetailComponent>({
       nzTitle: 'Cập nhật Lịch Trình',
-      nzContent: ScheduleDetailComponent,
+      nzContent: TransferDetailComponent,
       nzBodyStyle: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -79,7 +88,7 @@ export class TransferListComponent implements OnInit {
       nzMaskClosable: true,
       nzWidth: 720,
       nzContentParams: {
-        value: this.scheduleToBeUpdated
+        value: this.transferToBeUpdated
       }
     });
 
@@ -89,7 +98,7 @@ export class TransferListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
-      this.schedules$ = this.store.select(getAllSchedules);
+      this.transfers$ = this.store.select(getAllTransfers);
     });
   }
 
@@ -107,7 +116,7 @@ export class TransferListComponent implements OnInit {
     this.loading = true;
     let newSort = '';
     let order = '+';
-    let newSelected = [];
+    const newSelected = [];
     // let selectedVal;
 
     if (sortOrder === 'ascend') {
@@ -126,7 +135,7 @@ export class TransferListComponent implements OnInit {
       page: pageIndex,
       limit: pageSize,
       sort: newSort,
-    }
+    };
 
     selected.forEach(val => {
       newSelected.push({
@@ -148,28 +157,28 @@ export class TransferListComponent implements OnInit {
       params['name'] = this.filterName;
     }
 
-    this.store.dispatch(scheduleActionTypes.loadSchedules({ params }));
+    this.store.dispatch(transferActionTypes.loadTransfers({ params }));
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areTransfersLoaded),
+        filter(transfersLoaded => transfersLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
     this.visible = false;
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.transfers$ = this.store.select(getAllTransfers);
   }
 
   changeStatus(val: boolean, id) {
     this.loading = true;
     const params = {
       status: !val,
-    }
+    };
 
-    this.store.dispatch(scheduleActionTypes.updateSchedule({
+    this.store.dispatch(transferActionTypes.updateTransfer({
       update: {
         id,
         changes: params
@@ -178,14 +187,14 @@ export class TransferListComponent implements OnInit {
 
     this.store
       .pipe(
-        select(areSchedulesLoaded),
-        filter(schedulesLoaded => schedulesLoaded),
+        select(areTransfersLoaded),
+        filter(transfersLoaded => transfersLoaded),
         first()
       ).subscribe(res => {
         this.loading = false;
       });
 
-    this.schedules$ = this.store.select(getAllSchedules);
+    this.transfers$ = this.store.select(getAllTransfers);
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {

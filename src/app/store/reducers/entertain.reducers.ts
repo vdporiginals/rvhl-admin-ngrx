@@ -7,7 +7,9 @@ export interface EntertainState extends EntityState<IEntertain> {
     entertainsLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<IEntertain> = createEntityAdapter<IEntertain>();
+export const adapter: EntityAdapter<IEntertain> = createEntityAdapter<IEntertain>({
+    selectId: entertains => entertains._id
+});
 
 export const initialState = adapter.getInitialState({
     entertainsLoaded: false

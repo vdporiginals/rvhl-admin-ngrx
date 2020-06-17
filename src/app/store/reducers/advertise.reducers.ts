@@ -7,7 +7,9 @@ export interface AdvertiseState extends EntityState<IAdvertise> {
     advertisesLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<IAdvertise> = createEntityAdapter<IAdvertise>();
+export const adapter: EntityAdapter<IAdvertise> = createEntityAdapter<IAdvertise>({
+    selectId: advertises => advertises._id
+});
 
 export const initialState = adapter.getInitialState({
     advertisesLoaded: false

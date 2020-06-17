@@ -12,18 +12,17 @@ export class AccommodationEffects {
     loadAccommodations$ = createEffect(() =>
         this.actions$.pipe(
             ofType(accommodationActionTypes.loadAccommodations),
-            concatMap((actions) => this.accommodationService.getDatas(actions.apiName, actions.params),
-                (res, data) => {
-                    return {
-                        apiName: res.apiName,
-                        data
-                    };
-                }),
+            concatMap((actions) => this.accommodationService.getDatas(actions.apiName, actions.params).pipe(map((res) => {
+                return {
+                    apiName: actions.apiName,
+                    data: res
+                };
+            }))),
             map((accommodations: any) => {
                 return accommodationActionTypes.accommodationsLoaded({
                     apiName: accommodations.apiName,
                     accommodations: accommodations.data.data
-                })
+                });
             })
         )
     );
@@ -32,7 +31,6 @@ export class AccommodationEffects {
         this.actions$.pipe(
             ofType(accommodationActionTypes.createAccommodation),
             concatMap((action) => this.accommodationService.create(action.apiName, action.accommodation)),
-            tap(() => this.router.navigateByUrl('/accommodations'))
         ),
         { dispatch: false }
     );

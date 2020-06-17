@@ -1,0 +1,101 @@
+<form nz-form [formGroup]="detailForm" (ngSubmit)="createOrUpdate()">
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Tên</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="name" placeholder="Nhập tên" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Mô tả</nz-form-label>
+        <nz-form-control>
+          <nz-input-group
+            [nzSuffix]="textAreaClearTpl"
+            class="ant-input-affix-wrapper-textarea-with-clear-btn"
+          >
+            <textarea
+              nz-input
+              formControlName="description"
+              placeholder="Thêm mô tả"
+            ></textarea>
+          </nz-input-group>
+          <ng-template #textAreaClearTpl>
+            <!-- <i
+                  nz-icon
+                  class="ant-input-textarea-clear-icon"
+                  nzTheme="fill"
+                  nzType="close-circle"
+                  *ngIf="textValue"
+                  (click)="textValue = null"
+                ></i
+              > -->
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Từ khóa</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="keywords"
+            placeholder="Nhập từ khóa"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div
+    nz-row
+    [nzGutter]="8"
+    *ngIf="
+      routePathName === 'accommodations/category' ||
+      routePathName === 'advertises/category'
+    "
+  >
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Vị trí</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            *ngIf="routePathName === 'advertises/category'"
+            formControlName="position"
+            [nzPlaceHolder]="value !== undefined ? '' : 'Chọn Vị trí'"
+          >
+            <nz-option
+              *ngFor="let position of positionAdvertise"
+              nzValue="{{ position.value }}"
+              nzLabel="{{ position.name }}"
+            ></nz-option>
+          </nz-select>
+          <nz-select
+            *ngIf="routePathName === 'accommodations/category'"
+            formControlName="position"
+            [nzPlaceHolder]="value !== undefined ? '' : 'Chọn Vị trí'"
+          >
+            <nz-option
+              *ngFor="let position of positionAccommodation"
+              nzValue="{{ position }}"
+              nzLabel="{{ position }}"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8" [style.margin-top.px]="10">
+    <button type="submit" nz-button nzType="primary" [style.float]="'right'">
+      Submit
+    </button>
+  </div>
+</form>
+
+<!-- </nz-drawer> -->

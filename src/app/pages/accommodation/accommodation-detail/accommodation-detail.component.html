@@ -13,7 +13,7 @@
       <nz-form-item>
         <nz-form-label>Tên</nz-form-label>
         <nz-form-control>
-          <input nz-input formControlName="title" placeholder="Nhập tên" />
+          <input nz-input formControlName="name" placeholder="Nhập tên" />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -38,6 +38,40 @@
     </div>
   </div>
   <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="10">
+      <nz-form-item>
+        <nz-form-label>Số điện thoại</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="phone"
+            placeholder="Nhập số điện thoại"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="10">
+      <nz-form-item>
+        <nz-form-label>Giá từ</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="price" placeholder="Nhập giá" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="4">
+      <nz-form-item>
+        <nz-form-label>Số phòng</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="roomNum"
+            placeholder="Nhập số phòng"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="8">
       <nz-form-item>
         <nz-form-label>Ảnh bìa</nz-form-label>
@@ -53,9 +87,14 @@
         </nz-form-control>
       </nz-form-item>
       <ng-template #suffixImage>
-        <button nz-button nzType="primary" nzSearch>
+        <a
+          nz-button
+          nzType="primary"
+          (click)="showImagePicker('image')"
+          nzSearch
+        >
           Chọn ảnh
-        </button>
+        </a>
       </ng-template>
     </div>
     <div nz-col nzSpan="16">
@@ -74,7 +113,7 @@
             class="editable-tag"
             nzNoAnimation
             (click)="showInput()"
-            (click)="showImagePicker()"
+            (click)="showImagePicker('images')"
           >
             <i nz-icon nzType="plus"></i> Ảnh mới
           </nz-tag>
@@ -165,8 +204,123 @@
       </angular-editor>
     </div>
   </div>
+  <div nz-row [nzGutter]="8" formGroupName="facilities">
+    <div nz-col [style.margin-top.px]="5">
+      <p style="margin-bottom: 20px;">
+        <label nz-checkbox formControlName="pool">
+          Bể bơi
+        </label>
+      </p>
+    </div>
+    <div nz-col *ngIf="routePathName === 'hotel'" [style.margin-top.px]="5">
+      <p style="margin-bottom: 20px;">
+        <label nz-checkbox formControlName="meetingRoom">
+          Phòng họp
+        </label>
+      </p>
+    </div>
+    <div nz-col [style.margin-top.px]="5">
+      <p style="margin-bottom: 20px;">
+        <label nz-checkbox formControlName="oceanViews">
+          Views Biển
+        </label>
+      </p>
+    </div>
+    <div
+      nz-col
+      *ngIf="routePathName === 'hotel' || routePathName === 'villa'"
+      [style.margin-top.px]="5"
+    >
+      <p style="margin-bottom: 20px;">
+        <label nz-checkbox formControlName="restaurant">
+          Nhà hàng
+        </label>
+      </p>
+    </div>
+    <div
+      [style.margin-top.px]="5"
+      nz-col
+      *ngIf="routePathName === 'homestay' || routePathName === 'villa'"
+    >
+      <p style="margin-bottom: 20px;">
+        <label nz-checkbox formControlName="kitchen">
+          Bếp nấu ăn
+        </label>
+      </p>
+    </div>
+    <div nz-col *ngIf="routePathName === 'villa'" [style.margin-top.px]="5">
+      <p style="margin-bottom: 20px;">
+        <label nz-checkbox formControlName="bbqArea">
+          Khu bbq
+        </label>
+      </p>
+    </div>
+    <div nz-col>
+      <nz-form-item>
+        <nz-form-label>Diện tích</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="square"
+            placeholder="Nhập diện tích"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item>
+        <nz-form-label>Khác</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="other" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter] *ngIf="routePathName === 'villa'">
+    <nz-form-item>
+      <nz-form-label>Danh sách dịch vụ</nz-form-label>
+      <nz-form-control>
+        <nz-tag
+          *ngFor="let service of services; let j = index"
+          [nzMode]="services.length === j + 1 ? 'closeable' : 'default'"
+          (nzOnClose)="handleServiceClose(j)"
+        >
+          {{ service | Overflow: ["5", "..."] }}
+        </nz-tag>
+        <nz-tag
+          *ngIf="!serviceVisible"
+          class="editable-tag"
+          nzNoAnimation
+          (click)="showService()"
+        >
+          <i nz-icon nzType="plus"></i> Dịch vụ mới
+        </nz-tag>
+
+        <nz-input-group nzSearch>
+          <!-- <input formControlName="images" /> -->
+          <input
+            #inputElement
+            nz-input
+            nzSize="small"
+            *ngIf="serviceVisible"
+            type="text"
+            style="width: 78px;"
+            (blur)="handleServiceConfirm()"
+            (keydown.enter)="handleServiceConfirm()"
+            [(ngModel)]="serviceValue"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <!-- <ng-template #suffixButton>
+              <button nz-button nzType="primary" nzSearch>
+                Chọn ảnh
+              </button>
+            </ng-template> -->
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
   <div nz-row [nzGutter]="8" [style.margin-top.px]="10">
-    <div nz-col nzSpan="8">
+    <div nz-col nzSpan="4">
       <nz-switch
         formControlName="isPopular"
         [nzCheckedChildren]="checkedTemplate"
@@ -178,12 +332,28 @@
         ><i nz-icon nzType="close"></i
       ></ng-template>
     </div>
-    <div nz-col nzSpan="8">
-      <p style="margin-bottom: 20px;">
-        <label nz-checkbox formControlName="status">
-          {{ isCheckedButton ? "Kích hoạt" : "Chưa kích hoạt" }}
-        </label>
-      </p>
+    <div nz-col nzSpan="12">
+      <div nz-row>
+        <p [style.margin-right.px]="4">
+          <label nz-checkbox formControlName="status">
+            {{ isCheckedButton ? "Kích hoạt" : "Chưa kích hoạt" }}
+          </label>
+        </p>
+        <div>
+          <nz-switch
+            formControlName="showHomepage"
+            [nzCheckedChildren]="checkedShowHomepage"
+            [nzUnCheckedChildren]="unCheckedShowHomepage"
+          ></nz-switch
+          ><span [style.margin-left.px]="10">Hiển thị trang chủ</span>
+          <ng-template #checkedShowHomepage
+            ><i nz-icon nzType="check"></i
+          ></ng-template>
+          <ng-template #unCheckedShowHomepage
+            ><i nz-icon nzType="close"></i
+          ></ng-template>
+        </div>
+      </div>
     </div>
     <div nz-col nzSpan="8">
       <button type="submit" nz-button nzType="primary" [style.float]="'right'">
