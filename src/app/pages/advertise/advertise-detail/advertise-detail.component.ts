@@ -55,10 +55,10 @@ export class AdvertiseDetailComponent implements OnInit {
     this.detailForm = this.fb.group({
       title: ['', Validators.required],
       link: [''],
-      pagePosition: [''],
+      pagePosition: ['', Validators.required],
       video: [''],
       typeAdvertise: [''],
-      category: [''],
+      category: ['', Validators.required],
       content: [''],
       description: [''],
       images: [''],

@@ -57,7 +57,7 @@ export class ScheduleDetailComponent implements OnInit {
     this.detailForm = this.fb.group({
       title: ['', Validators.required],
       category: [''],
-      content: [''],
+      content: ['', Validators.required],
       description: [''],
       images: [''],
       address: [''],

@@ -21,7 +21,7 @@ export class AdvertiseEffects {
         this.actions$.pipe(
             ofType(advertiseActionTypes.createAdvertise),
             concatMap((action) => this.advertiseService.create('advertises', action.advertise)),
-            tap(() => this.router.navigateByUrl('/Advertises'))
+            tap(() => this.router.navigateByUrl('/advertises'))
         ),
         { dispatch: false }
     );

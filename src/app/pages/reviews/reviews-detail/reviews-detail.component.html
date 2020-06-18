@@ -7,13 +7,23 @@
   [nzWidth]="720"
   (nzOnClose)="close()"
 > -->
-<form nz-form [formGroup]="detailForm" (ngSubmit)="createOrUpdate()">
+<form
+  nz-form
+  [formGroup]="detailForm"
+  [nzLayout]="'vertical'"
+  (ngSubmit)="createOrUpdate()"
+>
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Tên</nz-form-label>
+        <nz-form-label nzRequired nzFor="title">Tên</nz-form-label>
         <nz-form-control>
-          <input nz-input formControlName="title" placeholder="Nhập tên" />
+          <input
+            nz-input
+            id="title"
+            formControlName="title"
+            placeholder="Nhập tên"
+          />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -21,9 +31,10 @@
   <div nz-row>
     <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Danh Mục</nz-form-label>
+        <nz-form-label nzRequired nzFor="category">Danh Mục</nz-form-label>
         <nz-form-control>
           <nz-select
+            id="category"
             formControlName="category"
             [nzPlaceHolder]="value !== undefined ? '' : 'Chọn danh mục'"
           >
@@ -166,8 +177,19 @@
   </div>
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="24">
-      <angular-editor formControlName="content" [config]="editorConfig">
-      </angular-editor>
+      <nz-form-item>
+        <nz-form-label nzRequired nzFor="content" [nzSpan]="null">
+          Thêm nội dung
+        </nz-form-label>
+        <nz-form-control [nzSpan]="null">
+          <angular-editor
+            id="content"
+            formControlName="content"
+            [config]="editorConfig"
+          >
+          </angular-editor>
+        </nz-form-control>
+      </nz-form-item>
     </div>
   </div>
   <div nz-row [nzGutter]="8" [style.margin-top.px]="10">
@@ -191,7 +213,13 @@
       </p>
     </div>
     <div nz-col nzSpan="8">
-      <button type="submit" nz-button nzType="primary" [style.float]="'right'">
+      <button
+        type="submit"
+        [disabled]="detailForm.invalid"
+        nz-button
+        nzType="primary"
+        [style.float]="'right'"
+      >
         Submit
       </button>
     </div>

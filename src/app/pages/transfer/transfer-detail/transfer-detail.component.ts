@@ -61,10 +61,12 @@ export class TransferDetailComponent implements OnInit {
         price: ''
       }
     ];
+
+    const phoneValid = /^[0]{1}[2]{1}[0-9]\d{8}$|^[0]{1}([3]|[5]|[9]|[7]|[8]){1}[0-9]\d{7}$/g;
     // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
       name: ['', Validators.required],
-      category: [''],
+      category: ['', Validators.required],
       content: [''],
       description: [''],
       images: [''],
@@ -73,7 +75,7 @@ export class TransferDetailComponent implements OnInit {
       timeStart: [''],
       schedule: this.fb.array([]),
       timePerTrip: [''],
-      phone: [''],
+      phone: ['', Validators.compose([Validators.pattern(phoneValid), Validators.required])],
       price: [''],
       locationEnd: [''],
       isPopular: [false],

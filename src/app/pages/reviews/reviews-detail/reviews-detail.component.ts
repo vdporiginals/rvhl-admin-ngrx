@@ -55,8 +55,8 @@ export class ReviewsDetailComponent implements OnInit {
     // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
       title: ['', Validators.required],
-      category: [''],
-      content: [''],
+      category: ['', Validators.required],
+      content: ['', Validators.required],
       description: [''],
       images: [''],
       address: [''],

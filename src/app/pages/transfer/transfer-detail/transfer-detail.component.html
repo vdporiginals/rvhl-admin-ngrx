@@ -11,9 +11,15 @@
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Tên</nz-form-label>
+        <nz-form-label nzFor="website" nzRequired>Tên</nz-form-label>
         <nz-form-control>
-          <input nz-input formControlName="title" placeholder="Nhập tên" />
+          <input
+            nz-input
+            id="name"
+            nzErrorTip="Hãy nhập tên"
+            formControlName="name"
+            placeholder="Nhập tên"
+          />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -21,9 +27,11 @@
   <div nz-row>
     <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Danh Mục</nz-form-label>
+        <nz-form-label nzFor="category" nzRequired>Danh Mục</nz-form-label>
         <nz-form-control>
           <nz-select
+            id="category"
+            nzErrorTip="Hãy chọn danh mục"
             formControlName="category"
             [nzPlaceHolder]="value !== undefined ? '' : 'Chọn danh mục'"
           >
@@ -136,6 +144,20 @@
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="10">
       <nz-form-item>
+        <nz-form-label nzRequired nzFor="phone">Số điện thoại</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            id="phone"
+            nzErrorTip="Hãy nhập đúng số điện thoại"
+            formControlName="phone"
+            placeholder="Nhập số điện thoại"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="10">
+      <nz-form-item>
         <nz-form-label>Từ khóa</nz-form-label>
         <nz-form-control>
           <input
@@ -146,19 +168,7 @@
         </nz-form-control>
       </nz-form-item>
     </div>
-    <div nz-col nzSpan="10">
-      <nz-form-item>
-        <nz-form-label>Số điện thoại</nz-form-label>
-        <nz-form-control>
-          <input
-            nz-input
-            formControlName="phone"
-            placeholder="Nhập số điện thoại"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div nz-col nzSpan="9">
+    <div nz-col nzSpan="4">
       <nz-form-item>
         <nz-form-label>Số chỗ</nz-form-label>
         <nz-form-control>
@@ -202,10 +212,7 @@
       <nz-form-item>
         <nz-form-label>Giờ khởi hành</nz-form-label>
         <nz-form-control>
-          <nz-time-picker
-            formControlName="timeStart"
-            nzFormat="HH:mm"
-          ></nz-time-picker>
+          <input nz-input formControlName="timeStart" />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -230,7 +237,7 @@
     >
       <h3>
         Lịch trình chuyến {{ i + 1 }}
-        <a type="button" color="primary" nz-button (click)="getFormSchedule()">
+        <a type="button" nzType="primary" nz-button (click)="getFormSchedule()">
           Thêm lịch trình chuyến mới
         </a>
       </h3>
@@ -304,7 +311,13 @@
       </p>
     </div>
     <div nz-col nzSpan="8">
-      <button type="submit" nz-button nzType="primary" [style.float]="'right'">
+      <button
+        type="submit"
+        [disabled]="detailForm.invalid"
+        nz-button
+        nzType="primary"
+        [style.float]="'right'"
+      >
         Submit
       </button>
     </div>

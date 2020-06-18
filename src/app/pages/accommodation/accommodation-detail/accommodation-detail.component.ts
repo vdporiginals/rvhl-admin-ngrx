@@ -76,9 +76,10 @@ export class AccommodationDetailComponent implements OnInit, OnDestroy {
           }
         })).subscribe();
 
+    const phoneValid = /^[0]{1}[2]{1}[0-9]\d{8}$|^[0]{1}([3]|[5]|[9]|[7]|[8]){1}[0-9]\d{7}$/g;
     this.detailForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(20)])],
+      phone: ['', Validators.compose([Validators.pattern(phoneValid), Validators.required])],
       roomNum: [''],
       description: [''],
       showHomepage: [false],

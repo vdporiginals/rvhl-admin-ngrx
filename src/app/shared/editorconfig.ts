@@ -11,7 +11,7 @@ export const editConf: AngularEditorConfig = {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter text here...',
+    placeholder: 'Thêm nội dung bài viết',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',

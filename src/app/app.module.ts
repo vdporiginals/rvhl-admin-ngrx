@@ -26,6 +26,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './shared/interceptors/error-handling.interceptor';
 
 registerLocaleData(vi);
 
@@ -67,6 +68,7 @@ registerLocaleData(vi);
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

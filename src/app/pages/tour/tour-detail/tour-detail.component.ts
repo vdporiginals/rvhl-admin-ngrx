@@ -9,7 +9,7 @@ import { NzDrawerService, NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { SharedDataService } from 'src/app/shared/services/shared-data.service';
 import { SanitizeHtmlPipe } from 'src/app/shared/pipe/html-sanitize.pipe';
 import { TourService } from '../tour.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { environment } from 'src/environments/environment';
 import { ImageDrawerComponent } from 'src/app/shared/image-drawer/image-drawer.component';
@@ -46,6 +46,7 @@ export class TourDetailComponent implements OnInit {
   detailForm: FormGroup;
   isUpdateActivated = false;
   inputValue = '';
+  error$: Observable<any>;
 
   inputVisible = false;
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
@@ -60,6 +61,8 @@ export class TourDetailComponent implements OnInit {
     private tourService: TourService,
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
+    // this.error$ = store.pipe(select('error'));
+    console.log(this.error$)
     this.scheduleData = [
       {
         timeStart: '',
@@ -68,10 +71,12 @@ export class TourDetailComponent implements OnInit {
         service: ''
       }
     ];
+
+    const phoneValid = /^[0]{1}[2]{1}[0-9]\d{8}$|^[0]{1}([3]|[5]|[9]|[7]|[8]){1}[0-9]\d{7}$/g;
     // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
       title: ['', Validators.required],
-      phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(20)])],
+      phone: ['', Validators.compose([Validators.pattern(phoneValid), Validators.required])],
       customerNum: [''],
       description: [''],
       images: [''],
@@ -79,14 +84,14 @@ export class TourDetailComponent implements OnInit {
       time: [''],
       image: [''],
       content: [''],
-      price: ['', Validators.compose([Validators.required])],
+      price: [''],
       address: [''],
-      category: [''],
-      position: [''],
+      category: ['', Validators.required],
+      position: ['', Validators.required],
       keywords: [''],
       video: [''],
       isPopular: [false],
-      status: [false, Validators.required]
+      status: [false]
     });
   }
 

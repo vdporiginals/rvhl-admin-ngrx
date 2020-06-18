@@ -11,9 +11,14 @@
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Tên</nz-form-label>
+        <nz-form-label nzRequired nzFor="name">Tên</nz-form-label>
         <nz-form-control>
-          <input nz-input formControlName="name" placeholder="Nhập tên" />
+          <input
+            nz-input
+            id="name"
+            formControlName="name"
+            placeholder="Nhập tên"
+          />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -21,9 +26,10 @@
   <div nz-row>
     <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Danh Mục</nz-form-label>
+        <nz-form-label nzRequired nzFor="category">Danh Mục</nz-form-label>
         <nz-form-control>
           <nz-select
+            id="category"
             formControlName="category"
             [nzPlaceHolder]="value !== undefined ? '' : 'Chọn danh mục'"
           >
@@ -167,6 +173,19 @@
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="8">
       <nz-form-item>
+        <nz-form-label nzRequired nzFor="phone">Số điện thoại</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            id="phone"
+            formControlName="phone"
+            placeholder="Nhập số điện thoại"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-form-item>
         <nz-form-label>Video</nz-form-label>
         <nz-form-control>
           <input nz-input formControlName="video" placeholder="Nhập Video" />
@@ -178,18 +197,6 @@
         <nz-form-label>Giá từ</nz-form-label>
         <nz-form-control>
           <input nz-input formControlName="price" placeholder="Nhập giá từ" />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div nz-col nzSpan="8">
-      <nz-form-item>
-        <nz-form-label>Số điện thoại</nz-form-label>
-        <nz-form-control>
-          <input
-            nz-input
-            formControlName="phone"
-            placeholder="Nhập số điện thoại"
-          />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -221,7 +228,13 @@
       </p>
     </div>
     <div nz-col nzSpan="8">
-      <button type="submit" nz-button nzType="primary" [style.float]="'right'">
+      <button
+        type="submit"
+        [disabled]="detailForm.invalid"
+        nz-button
+        nzType="primary"
+        [style.float]="'right'"
+      >
         Submit
       </button>
     </div>

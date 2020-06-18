@@ -11,11 +11,13 @@ import { ScheduleState } from './schedule.reducers';
 
 export interface AppState {
   // schedule: ScheduleState;
+  error: any;
 
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   // schedule,
+  error: null
 };
 
 

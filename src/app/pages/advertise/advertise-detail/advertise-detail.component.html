@@ -11,9 +11,14 @@
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Tên</nz-form-label>
+        <nz-form-label nzRequired nzFor="title">Tên</nz-form-label>
         <nz-form-control>
-          <input nz-input formControlName="title" placeholder="Nhập tên" />
+          <input
+            nz-input
+            id="title"
+            formControlName="title"
+            placeholder="Nhập tên"
+          />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -21,9 +26,10 @@
   <div nz-row [nzGutter]="8">
     <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label>Danh Mục</nz-form-label>
+        <nz-form-label nzRequired nzFor="category">Danh Mục</nz-form-label>
         <nz-form-control>
           <nz-select
+            id="category"
             formControlName="category"
             [nzPlaceHolder]="value !== undefined ? '' : 'Chọn danh mục'"
           >
@@ -38,9 +44,12 @@
     </div>
     <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label>Vị trí trang</nz-form-label>
+        <nz-form-label nzRequired nzFor="pagePosition"
+          >Vị trí trang</nz-form-label
+        >
         <nz-form-control>
           <nz-select
+            id="pagePosition"
             formControlName="pagePosition"
             [nzPlaceHolder]="value !== undefined ? '' : 'Chọn vị trí trang'"
           >
@@ -184,7 +193,13 @@
       </p>
     </div>
     <div nz-col nzSpan="8">
-      <button type="submit" nz-button nzType="primary" [style.float]="'right'">
+      <button
+        type="submit"
+        [disabled]="detailForm.invalid"
+        nz-button
+        nzType="primary"
+        [style.float]="'right'"
+      >
         Submit
       </button>
     </div>

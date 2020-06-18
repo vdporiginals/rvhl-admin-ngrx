@@ -31,6 +31,7 @@ export class AccommodationEffects {
         this.actions$.pipe(
             ofType(accommodationActionTypes.createAccommodation),
             concatMap((action) => this.accommodationService.create(action.apiName, action.accommodation)),
+            tap(() => this.router.navigate(['accommodations']))
         ),
         { dispatch: false }
     );
