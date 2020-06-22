@@ -187,8 +187,10 @@ export class AccommodationDetailComponent implements OnInit, OnDestroy {
 
     drawerRef.afterClose.subscribe(data => {
       if (type === 'images') {
-        this.inputValue = data;
-        this.handleInputConfirm();
+        if (data !== null && data !== undefined) {
+          this.inputValue = data;
+          this.handleInputConfirm();
+        }
       } else {
         this.detailForm.get('image').setValue(data);
       }

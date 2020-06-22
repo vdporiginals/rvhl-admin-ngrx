@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedDataService } from '../services/shared-data.service';
 import { ImageService } from './image.service';
 import { Store, select } from '@ngrx/store';
-import { areImagesLoaded, getAllImages } from 'src/app/store/selectors/image.selectors';
+import { areImagesLoaded, getAllImages, getPagination } from 'src/app/store/selectors/image.selectors';
 import { tap, filter, first } from 'rxjs/operators';
-import { loadImages } from 'src/app/store/actions/image.actions';
+import { loadImages, imagesLoaded } from 'src/app/store/actions/image.actions';
 import { Observable } from 'rxjs';
 import { IImage } from 'src/app/models/image.interface';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
@@ -16,6 +16,10 @@ import { NzDrawerRef } from 'ng-zorro-antd/drawer';
   styleUrls: ['./image-drawer.component.scss']
 })
 export class ImageDrawerComponent implements OnInit {
+  @Input() id: string;
+  @Input() maxSize: number;
+  @Output() pageChange: EventEmitter<number>;
+  @Output() pageBoundsCorrection: EventEmitter<number>;
   uploadForm: FormGroup;
   gridStyle = {
     width: '25%',
@@ -24,6 +28,7 @@ export class ImageDrawerComponent implements OnInit {
   listFolder: any;
   imageList$: Observable<IImage[]>;
   sizeImg: string;
+  pagination$: Observable<IImage>;
   childrenVisible = false;
 
   currentPageImage: number;
@@ -32,7 +37,7 @@ export class ImageDrawerComponent implements OnInit {
   isFirstPageImage = false;
   currentPage: number;
   count: number;
-  limit = 12;
+  limit = 16;
   isLastPage = false;
   isFirstPage = false;
   constructor(private fb: FormBuilder, private store: Store, private drawerRef: NzDrawerRef<string>,
@@ -44,7 +49,7 @@ export class ImageDrawerComponent implements OnInit {
   ngOnInit(): void {
     this.getGalleries(1);
     this.getPhotosDefault(1);
-    this.imageList$ = this.store.select(getAllImages);
+    // this.imageList$ = this.store.select(getAllImages);
   }
 
   closeChildren(): void {
@@ -54,21 +59,25 @@ export class ImageDrawerComponent implements OnInit {
   getPhotosDefault(page) {
     this.store.dispatch(loadImages({
       params: {
-        limit: 12,
+        limit: 16,
         page,
         size: 'm'
       }
     }));
-
     this.imageList$ = this.store.select(getAllImages);
-
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.currentPageImage = res.pageNum;
+      this.limit = res.pageSize;
+      this.count = res.count;
+    });
   }
 
   getGalleries(page) {
-    let params = {
+    const params = {
       page,
       limit: 8
-    }
+    };
     this.api.getDatas('image/gallery', params).subscribe((res: any) => {
       this.listFolder = res.data.galleryList;
       this.count = res.data.count;

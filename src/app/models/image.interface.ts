@@ -1,4 +1,10 @@
 export interface IImage {
-    id: string;
-    link?: string;
+    data?: {
+        id: string,
+        link: string
+    },
+    count: number;
+    pageNum: number;
+    pageSize: number;
+    totalPages: number;
 }

@@ -7,6 +7,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SanitizeHtmlPipe } from './pipe/html-sanitize.pipe';
 import { ImageDrawerComponent } from './image-drawer/image-drawer.component';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,13 +15,16 @@ import { StoreModule } from '@ngrx/store';
 import { imageReducer } from '../store/reducers/image.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { ImageEffects } from '../store/effects/image.effects';
+import { IconsProviderModule } from '../icons-provider.module';
 
 @NgModule({
     imports: [
         CommonModule,
         NzDrawerModule,
+        IconsProviderModule,
         NzMenuModule,
         NzCardModule,
+        NgxPaginationModule,
         ScrollingModule,
         FormsModule,
         StoreModule.forFeature('images', imageReducer),

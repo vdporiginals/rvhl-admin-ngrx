@@ -13,7 +13,13 @@ export class ImageEffects {
         this.actions$.pipe(
             ofType(imageActionTypes.loadImages),
             concatMap((actions) => this.imageService.getDatas('image/photos', actions.params)),
-            map((images: any) => imageActionTypes.imagesLoaded({ images: images.data.imageList }))
+            map((images: any) => imageActionTypes.imagesLoaded({
+                images: images.data.imageList,
+                count: images.data.count,
+                pageNum: images.data.pageNum,
+                pageSize: images.data.pageSize,
+                totalPages: images.data.totalPages
+            }))
         )
     );
 

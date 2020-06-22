@@ -7,7 +7,7 @@
 .viewport {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 86%;
   overflow-x: hidden;
   // overflow: hidden;
   //   border: 1px solid black;
@@ -88,17 +88,11 @@
 }
 
 .blog-pagination {
+  // position: absolute;
   justify-content: center !important;
-  margin-top: 80px;
+  margin-bottom: 80px;
   @media (min-width: 1700px) {
-    margin-right: 225px;
-  }
-  a {
-    cursor: pointer;
-    &.disabled {
-      color: gray;
-      cursor: not-allowed;
-    }
+    // margin-right: 225px;
   }
 }
 
@@ -113,8 +107,8 @@
   width: 45px;
   height: 45px;
   border-radius: 0 !important;
-  color: #8a8a8a;
-  border: 1px solid #f0e9ff;
+  color: black;
+  border: 1px solid #1890ff;
   margin-right: 10px;
 
   fa-icon,
@@ -126,8 +120,8 @@
 .blog-pagination .page-item.active {
   .page-link {
     background-color: #fbf9ff;
-    border-color: #f0e9ff;
-    color: #888888;
+    border-color: #1890ff;
+    color: black;
   }
 }
 
@@ -135,6 +129,22 @@
   margin-right: 0;
 }
 
-// .current {
-//   background: -webkit-linear-gradient(131deg, $btn_bg 0%, $btn_bg 99%);
-// }
+.current {
+  background: -webkit-linear-gradient(131deg, #1387f5 0%, #1387f5 99%);
+}
+
+.pagination {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+}
+
+.justify-content-center {
+  display: flex;
+  -webkit-box-pack: center !important;
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}

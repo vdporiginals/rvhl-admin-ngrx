@@ -4,11 +4,15 @@ import { imageActionTypes, imagesLoaded } from '../actions/image.actions';
 import { IImage } from 'src/app/models/image.interface';
 
 export interface ImageState extends EntityState<IImage> {
+    count: number;
+    pageNum: number;
+    pageSize: number;
+    totalPages: number;
     imagesLoaded: boolean;
 }
 
 export const adapter: EntityAdapter<IImage> = createEntityAdapter<IImage>({
-    selectId: images => images.id
+    // selectId: images => images.data.id
 });
 
 export const initialState = adapter.getInitialState({
@@ -19,9 +23,17 @@ export const imageReducer = createReducer(
     initialState,
 
     on(imageActionTypes.imagesLoaded, (state, action) => {
+        console.log(action)
         return adapter.setAll(
             action.images,
-            { ...state, imagesLoaded: true }
+            {
+                ...state,
+                count: action.count,
+                pageNum: action.pageNum,
+                pageSize: action.pageSize,
+                totalPages: action.totalPages,
+                imagesLoaded: true
+            }
         );
     }),
 

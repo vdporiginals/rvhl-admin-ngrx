@@ -28,7 +28,16 @@
     <div
       fxFlex="40"
       class="image_item"
-      *cdkVirtualFor="let item of imageList$ | async"
+      *cdkVirtualFor="
+        let item of imageList$
+          | async
+          | paginate
+            : {
+                itemsPerPage: limit,
+                currentPage: currentPageImage,
+                totalItems: count
+              }
+      "
       [style.position]="'relative'"
     >
       <div nz-card-grid [ngStyle]="gridStyle">
@@ -70,70 +79,67 @@
       </a> -->
     </div>
   </div>
-  <!-- <pagination-template
-      class="blog-pagination justify-content-center"
-      #p="paginationApi"
-      (pageChange)="pageChange.emit($event)"
-    >
-      <ul class="pagination" fxLayout="row" fxLayoutAlign="center center">
-        <div>
-          <li class="page-item">
-            <a
-              class="page-link"
-              aria-label="Previous"
-              (click)="getPhotosDefault(currentPageImage - 1)"
-              *ngIf="!isFirstPageImage"
-            >
-              <fa-icon [icon]="faAngleLeft"></fa-icon>
-            </a>
-            <a
-              class="page-link disabled"
-              aria-label="Previous"
-              *ngIf="isFirstPageImage"
-            >
-              <fa-icon [icon]="faAngleLeft"></fa-icon>
-            </a>
-          </li>
-        </div>
-
-        <div
-          *ngFor="let page of p.pages"
-          [class.current]="p.getCurrent() === page.value"
-        >
-          <li class="page-item">
-            <a
-              class="page-link"
-              [class.disabled]="p.getCurrent() === page.value"
-              *ngIf="p.getCurrent() === page.value"
-              >{{ page.label }}</a
-            >
-            <a
-              class="page-link"
-              (click)="getPhotosDefault(page.value)"
-              *ngIf="p.getCurrent() !== page.value"
-              >{{ page.label }}</a
-            >
-          </li>
-        </div>
-        <div>
-          <li class="page-item">
-            <a
-              class="page-link"
-              aria-label="Next"
-              (click)="getPhotosDefault(currentPageImage + 1)"
-              *ngIf="!isLastPageImage"
-            >
-              <fa-icon [icon]="faAngleRight"></fa-icon>
-            </a>
-            <a
-              class="page-link disabled"
-              aria-label="Next"
-              *ngIf="isLastPageImage"
-            >
-              <fa-icon [icon]="faAngleRight"></fa-icon>
-            </a>
-          </li>
-        </div>
-      </ul>
-    </pagination-template> -->
 </cdk-virtual-scroll-viewport>
+
+<pagination-template
+  class="blog-pagination justify-content-center"
+  #p="paginationApi"
+  (pageChange)="pageChange.emit($event)"
+>
+  <ul class="pagination" fxLayout="row" fxLayoutAlign="center center">
+    <div>
+      <li class="page-item">
+        <a
+          class="page-link"
+          aria-label="Previous"
+          (click)="getPhotosDefault(currentPageImage)"
+          *ngIf="!isFirstPageImage"
+        >
+          <i nz-icon nzType="left" nzTheme="outline"></i>
+        </a>
+        <a
+          class="page-link disabled"
+          aria-label="Previous"
+          *ngIf="isFirstPageImage"
+        >
+          <i nz-icon nzType="left" nzTheme="outline"></i>
+        </a>
+      </li>
+    </div>
+
+    <div
+      *ngFor="let page of p.pages"
+      [class.current]="p.getCurrent() === page.value"
+    >
+      <li class="page-item">
+        <a
+          class="page-link"
+          [class.disabled]="p.getCurrent() === page.value"
+          *ngIf="p.getCurrent() === page.value"
+          >{{ page.label }}</a
+        >
+        <a
+          class="page-link"
+          (click)="getPhotosDefault(page.value)"
+          *ngIf="p.getCurrent() !== page.value"
+          >{{ page.label }}</a
+        >
+      </li>
+    </div>
+    <div>
+      <li class="page-item">
+        <a
+          class="page-link"
+          aria-label="Next"
+          (click)="getPhotosDefault(currentPageImage)"
+          *ngIf="!isLastPageImage"
+        >
+          <i nz-icon nzType="right" nzTheme="outline"></i>
+        </a>
+        <a class="page-link disabled" aria-label="Next" *ngIf="isLastPageImage">
+          <i nz-icon nzType="right" nzTheme="outline"></i>
+        </a>
+      </li>
+    </div>
+  </ul>
+</pagination-template>

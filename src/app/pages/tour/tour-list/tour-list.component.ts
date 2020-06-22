@@ -116,7 +116,7 @@ export class TourListComponent implements OnInit {
     this.loading = true;
     let newSort = '';
     let order = '+';
-    let newSelected = [];
+    const newSelected = [];
     // let selectedVal;
 
     if (sortOrder === 'ascend') {
@@ -135,7 +135,7 @@ export class TourListComponent implements OnInit {
       page: pageIndex,
       limit: pageSize,
       sort: newSort,
-    }
+    };
 
     selected.forEach(val => {
       newSelected.push({
@@ -176,7 +176,7 @@ export class TourListComponent implements OnInit {
     this.loading = true;
     const params = {
       status: !val,
-    }
+    };
 
     this.store.dispatch(tourActionTypes.updateTour({
       update: {

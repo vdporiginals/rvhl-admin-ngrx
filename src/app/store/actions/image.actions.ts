@@ -20,7 +20,13 @@ export const loadImages = createAction(
 
 export const imagesLoaded = createAction(
     '[Images Effect] Images Loaded Successfully',
-    props<{ images: IImage[] }>()
+    props<{
+        images: IImage[],
+        count: number,
+        pageNum: number,
+        pageSize: number,
+        totalPages: number
+    }>()
 );
 
 // export const galleriesLoaded = createAction('[Gallery Effect] Gallery loaded Successfully',)

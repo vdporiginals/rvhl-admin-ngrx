@@ -141,12 +141,17 @@ export class CuisineDetailComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       if (type === 'menu') {
-        const control = this.detailForm.get('menu') as FormArray;
-        control.at(index).patchValue({ image: data });
+        if (data !== null && data !== undefined) {
+
+          const control = this.detailForm.get('menu') as FormArray;
+          control.at(index).patchValue({ image: data });
+        }
       }
       if (type === 'images') {
-        this.inputValue = data;
-        this.handleInputConfirm();
+        if (data !== null && data !== undefined) {
+          this.inputValue = data;
+          this.handleInputConfirm();
+        }
       } else {
         this.detailForm.get('image').setValue(data);
       }

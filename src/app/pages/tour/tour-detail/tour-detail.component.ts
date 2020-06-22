@@ -183,8 +183,10 @@ export class TourDetailComponent implements OnInit {
 
     drawerRef.afterClose.subscribe(data => {
       if (type === 'images') {
-        this.inputValue = data;
-        this.handleInputConfirm();
+        if (data !== null && data !== undefined) {
+          this.inputValue = data;
+          this.handleInputConfirm();
+        }
       } else {
         this.detailForm.get('image').setValue(data);
       }
