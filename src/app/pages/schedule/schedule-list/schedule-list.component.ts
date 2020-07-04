@@ -71,6 +71,12 @@ export class ScheduleListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.schedules$ = this.store.select(getAllSchedules);
+      this.store.dispatch(loadSchedules({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -100,6 +106,12 @@ export class ScheduleListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.schedules$ = this.store.select(getAllSchedules);
+      this.store.dispatch(loadSchedules({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 

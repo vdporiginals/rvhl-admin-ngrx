@@ -7,7 +7,7 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { getAllReviews, areReviewsLoaded } from 'src/app/store/selectors/reviews.selectors';
-import { reviewActionTypes } from 'src/app/store/actions/reviews.actions';
+import { reviewActionTypes, loadReviews } from 'src/app/store/actions/reviews.actions';
 import { filter, first } from 'rxjs/operators';
 import { ReviewsDetailComponent } from '../reviews-detail/reviews-detail.component';
 import { ReviewsService } from '../reviews.service';
@@ -70,6 +70,12 @@ export class ReviewsListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.reviews$ = this.store.select(getAllReviews);
+      this.store.dispatch(loadReviews({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -99,6 +105,12 @@ export class ReviewsListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.reviews$ = this.store.select(getAllReviews);
+      this.store.dispatch(loadReviews({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 

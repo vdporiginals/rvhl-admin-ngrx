@@ -8,7 +8,7 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { getAllCuisines, areCuisinesLoaded } from 'src/app/store/selectors/cuisine.selectors';
-import { cuisineActionTypes } from 'src/app/store/actions/cuisine.actions';
+import { cuisineActionTypes, loadCuisines } from 'src/app/store/actions/cuisine.actions';
 import { CuisineDetailComponent } from '../cuisine-detail/cuisine-detail.component';
 import { filter, first } from 'rxjs/operators';
 
@@ -70,6 +70,12 @@ export class CuisineListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.cuisines$ = this.store.select(getAllCuisines);
+      this.store.dispatch(loadCuisines({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -99,6 +105,12 @@ export class CuisineListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.cuisines$ = this.store.select(getAllCuisines);
+      this.store.dispatch(loadCuisines({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 

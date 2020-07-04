@@ -26,7 +26,7 @@ export class ImageDrawerComponent implements OnInit {
     textAlign: 'center'
   };
   listFolder: any;
-  imageList$: Observable<IImage[]>;
+  imageList$: Observable<any[]>;
   sizeImg: string;
   pagination$: Observable<IImage>;
   childrenVisible = false;

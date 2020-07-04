@@ -7,7 +7,7 @@ import { Event, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { categoryActionTypes } from 'src/app/store/actions/category.actions';
+import { categoryActionTypes, loadCategories } from 'src/app/store/actions/category.actions';
 import { CategoryDetailComponent } from '../category-detail/category-detail.component';
 import { areCategoriesLoaded, getAllCategories } from 'src/app/store/selectors/category.selectors';
 import { filter, first } from 'rxjs/operators';
@@ -77,6 +77,13 @@ export class CategoryListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.categories$ = this.store.select(getAllCategories);
+      this.store.dispatch(loadCategories({
+        routeName: this.routePathName,
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -106,6 +113,13 @@ export class CategoryListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.categories$ = this.store.select(getAllCategories);
+      this.store.dispatch(loadCategories({
+        routeName: this.routePathName,
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 

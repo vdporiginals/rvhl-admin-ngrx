@@ -8,7 +8,7 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { getAllAdvertises, areAdvertisesLoaded } from 'src/app/store/selectors/advertise.selectors';
-import { advertiseActionTypes } from 'src/app/store/actions/advertise.actions';
+import { advertiseActionTypes, loadAdvertises } from 'src/app/store/actions/advertise.actions';
 import { AdvertiseDetailComponent } from '../advertise-detail/advertise-detail.component';
 import { filter, first } from 'rxjs/operators';
 
@@ -70,6 +70,12 @@ export class AdvertiseListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.advertises$ = this.store.select(getAllAdvertises);
+      this.store.dispatch(loadAdvertises({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -99,6 +105,12 @@ export class AdvertiseListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.advertises$ = this.store.select(getAllAdvertises);
+      this.store.dispatch(loadAdvertises({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 

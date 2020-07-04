@@ -8,7 +8,7 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { getAllTours, areToursLoaded } from 'src/app/store/selectors/tour.selectors';
-import { tourActionTypes } from 'src/app/store/actions/tour.actions';
+import { tourActionTypes, loadTours } from 'src/app/store/actions/tour.actions';
 import { TourDetailComponent } from '../tour-detail/tour-detail.component';
 import { filter, first } from 'rxjs/operators';
 
@@ -70,6 +70,12 @@ export class TourListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.tours$ = this.store.select(getAllTours);
+      this.store.dispatch(loadTours({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -99,6 +105,12 @@ export class TourListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.tours$ = this.store.select(getAllTours);
+      this.store.dispatch(loadTours({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 

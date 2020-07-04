@@ -92,7 +92,7 @@
         <a
           class="page-link"
           aria-label="Previous"
-          (click)="getPhotosDefault(currentPageImage)"
+          (click)="getPhotosDefault(currentPageImage - 1)"
           *ngIf="!isFirstPageImage"
         >
           <i nz-icon nzType="left" nzTheme="outline"></i>
@@ -131,7 +131,7 @@
         <a
           class="page-link"
           aria-label="Next"
-          (click)="getPhotosDefault(currentPageImage)"
+          (click)="getPhotosDefault(currentPageImage + 1)"
           *ngIf="!isLastPageImage"
         >
           <i nz-icon nzType="right" nzTheme="outline"></i>

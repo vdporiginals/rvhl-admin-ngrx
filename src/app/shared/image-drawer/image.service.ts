@@ -11,7 +11,7 @@ export class ImageService {
     constructor(private http: HttpClient) { }
 
     getDatas(apiName, params?): Observable<any[]> {
-        return this.http.get(`${this.apiurl}/${apiName}`, {
+        return this.http.get<any>(`${this.apiurl}/${apiName}`, {
             params
         }).pipe(
             map((res: any) => res)

@@ -9,7 +9,7 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { getAllEntertains, areEntertainsLoaded } from 'src/app/store/selectors/entertain.selectors';
 import { EntertainDetailComponent } from '../entertain-detail/entertain-detail.component';
-import { entertainActionTypes } from 'src/app/store/actions/entertain.actions';
+import { entertainActionTypes, loadEntertains } from 'src/app/store/actions/entertain.actions';
 import { filter, first } from 'rxjs/operators';
 
 @Component({
@@ -70,6 +70,12 @@ export class EntertainListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.entertains$ = this.store.select(getAllEntertains);
+      this.store.dispatch(loadEntertains({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -99,6 +105,12 @@ export class EntertainListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.entertains$ = this.store.select(getAllEntertains);
+      this.store.dispatch(loadEntertains({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 

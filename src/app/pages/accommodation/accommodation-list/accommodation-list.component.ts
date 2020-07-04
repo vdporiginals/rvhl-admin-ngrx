@@ -8,7 +8,7 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { getAllAccommodations, areAccommodationsLoaded } from 'src/app/store/selectors/accommodation.selectors';
-import { accommodationActionTypes } from 'src/app/store/actions/accommodation.actions';
+import { accommodationActionTypes, loadAccommodations } from 'src/app/store/actions/accommodation.actions';
 import { AccommodationDetailComponent } from '../accommodation-detail/accommodation-detail.component';
 import { filter, first } from 'rxjs/operators';
 import { Event, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
@@ -91,6 +91,13 @@ export class AccommodationListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.accommodations$ = this.store.select(getAllAccommodations);
+      this.store.dispatch(loadAccommodations({
+        apiName: this.routePathName,
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -121,6 +128,13 @@ export class AccommodationListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.accommodations$ = this.store.select(getAllAccommodations);
+      this.store.dispatch(loadAccommodations({
+        apiName: this.routePathName,
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -138,7 +152,7 @@ export class AccommodationListComponent implements OnInit {
     this.loading = true;
     let newSort = '';
     let order = '+';
-    let newSelected = [];
+    const newSelected = [];
     // let selectedVal;
 
     if (sortOrder === 'ascend') {
@@ -157,7 +171,7 @@ export class AccommodationListComponent implements OnInit {
       page: pageIndex,
       limit: pageSize,
       sort: newSort,
-    }
+    };
 
     selected.forEach(val => {
       newSelected.push({
@@ -195,11 +209,11 @@ export class AccommodationListComponent implements OnInit {
   }
 
   changeStatus(val: boolean, id) {
-    console.log(val)
+    console.log(val);
     this.loading = true;
     const params = {
       status: !val,
-    }
+    };
 
     this.store.dispatch(accommodationActionTypes.updateAccommodation({
       apiName: this.routePathName,

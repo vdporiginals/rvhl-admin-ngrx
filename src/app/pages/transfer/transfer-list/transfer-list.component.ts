@@ -8,7 +8,7 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { getAllTransfers, areTransfersLoaded } from 'src/app/store/selectors/transfer.selectors';
-import { transferActionTypes } from 'src/app/store/actions/transfer.actions';
+import { transferActionTypes, loadTransfers } from 'src/app/store/actions/transfer.actions';
 import { TransferDetailComponent } from '../transfer-detail/transfer-detail.component';
 import { filter, first } from 'rxjs/operators';
 
@@ -70,6 +70,12 @@ export class TransferListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.transfers$ = this.store.select(getAllTransfers);
+      this.store.dispatch(loadTransfers({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
@@ -99,6 +105,12 @@ export class TransferListComponent implements OnInit {
     drawerRef.afterClose.subscribe(data => {
       // console.log(data);
       this.transfers$ = this.store.select(getAllTransfers);
+      this.store.dispatch(loadTransfers({
+        params: {
+          limit: 10,
+          page: 1
+        }
+      }));
     });
   }
 
