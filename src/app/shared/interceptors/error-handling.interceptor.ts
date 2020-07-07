@@ -6,11 +6,13 @@ import { catchError } from 'rxjs/operators';
 import { AddGlobalError } from 'src/app/store/global.actions';
 import { AppState } from 'src/app/store/reducers';
 import { NotificationService } from '../services/notification.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
     constructor(
+        private router: Router,
         private noti: NotificationService,
         private store: Store<AppState>
     ) { }
@@ -22,6 +24,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                 catchError((error: HttpErrorResponse) => {
                     this.noti.showError(error.error.error, 'Lỗi !!!')
                     this.store.dispatch(new AddGlobalError(error));
+                    console.log(error);
+                    if (error.status === 403) {
+                        localStorage.removeItem('rvhl_token');
+                    }
+                    this.router.navigateByUrl('/login');
                     return throwError(error);
                 })
             );

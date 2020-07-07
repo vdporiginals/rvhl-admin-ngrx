@@ -13,7 +13,11 @@ export class TransferEffects {
         this.actions$.pipe(
             ofType(transferActionTypes.loadTransfers),
             concatMap((actions) => this.transferService.getDatas('transfers', actions.params)),
-            map((transfers: any) => transferActionTypes.transfersLoaded({ transfers: transfers.data }))
+            map((transfers: any) => transferActionTypes.transfersLoaded({
+                transfers: transfers.data,
+                count: transfers.count,
+                pageNum: transfers.pageNum || 1,
+            }))
         )
     );
 

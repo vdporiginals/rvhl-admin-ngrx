@@ -7,30 +7,15 @@
   [nzWidth]="720"
   (nzOnClose)="close()"
 > -->
-<form nz-form [formGroup]="detailForm" (ngSubmit)="createOrUpdate()">
+<form nz-form [formGroup]="detailForm" (ngSubmit)="updateProfile()">
   <div nz-row [nzGutter]="8">
-    <div nz-col nzSpan="12">
+    <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label nzFor="name" nzRequired>Tên</nz-form-label>
-        <nz-form-control>
-          <input
-            nz-input
-            id="name"
-            nzErrorTip="Hãy nhập tên"
-            formControlName="name"
-            placeholder="Nhập tên"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div nz-col nzSpan="12">
-      <nz-form-item>
-        <nz-form-label nzFor="email" nzRequired>Email</nz-form-label>
+        <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
         <nz-form-control>
           <input
             nz-input
             id="email"
-            nzErrorTip="Hãy nhập email"
             formControlName="email"
             placeholder="Nhập email"
           />
@@ -38,41 +23,46 @@
       </nz-form-item>
     </div>
   </div>
-
   <div nz-row [nzGutter]="8">
-    <div nz-col nzSpan="12">
+    <div nz-col nzSpan="24">
       <nz-form-item>
-        <nz-form-label>Avatar</nz-form-label>
+        <nz-form-label>Tên</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="name" placeholder="Nhập tên" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Số điện thoại</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="phone" placeholder="Nhập sđt" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label>Ảnh đại diện</nz-form-label>
         <nz-form-control>
           <nz-input-group nzSearch [nzAddOnAfter]="suffixImage">
             <input
               type="text"
               formControlName="avatar"
               nz-input
-              placeholder="Thêm avatar"
+              placeholder="Thêm ảnh (bìa)"
             />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <ng-template #suffixImage>
-        <button nz-button nzType="primary" nzSearch>
+        <a nz-button nzType="primary" (click)="showImagePicker()" nzSearch>
           Chọn ảnh
-        </button>
+        </a>
       </ng-template>
-    </div>
-    <div nz-col nzSpan="12">
-      <nz-form-item>
-        <nz-form-label>Thay đổi role</nz-form-label>
-        <nz-form-control>
-          <nz-select formControlName="role">
-            <nz-option
-              *ngFor="let item of roles"
-              nzValue="{{ item }}"
-              nzLabel="{{ item }}"
-            ></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
     </div>
   </div>
   <div nz-row [nzGutter]="8">
@@ -105,23 +95,9 @@
       </nz-form-item>
     </div>
   </div>
-  <div nz-row [nzGutter]="8">
-    <div nz-col nzSpan="24">
-      <nz-form-item>
-        <nz-form-label>Số điện thoại</nz-form-label>
-        <nz-form-control>
-          <input
-            nz-input
-            nzErrorTip="Hãy nhập đúng số điện thoại"
-            formControlName="phone"
-            placeholder="Nhập số điện thoại"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-  </div>
+
   <div nz-row [nzGutter]="8" [style.margin-top.px]="10">
-    <div nz-col nzSpan="24">
+    <div nz-col nzSpan="8">
       <button
         type="submit"
         [disabled]="detailForm.invalid"

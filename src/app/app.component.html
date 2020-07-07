@@ -33,8 +33,12 @@
         </ul>
       </li>
       <li nz-submenu nzOpen nzTitle="Quản lý" nzIcon="form">
-        <ul *ngFor="let item of rightMenu">
-          <li nz-submenu nzTitle="{{ item.text }}">
+        <ul *ngFor="let item of newRightMenu$ | async; let i = index">
+          <li
+            nz-submenu
+            nzTitle="{{ item.text }}"
+            *ngIf="routeId.includes(item.routeId) || isAdmin === 'admin'"
+          >
             <ul *ngFor="let sub of item.subItems">
               <li nz-menu-item>
                 <a
@@ -61,28 +65,7 @@
         </span>
       </div>
       <div class="user" nz-col nzSpan="12">
-        <a
-          [style.float]="'right'"
-          nz-dropdown
-          nzTrigger="click"
-          [nzDropdownMenu]="menu"
-          [style.margin-right.px]="10"
-        >
-          <nz-avatar
-            nz-page-header-avatar
-            nzSrc="https://avatars0.githubusercontent.com/u/22736418?s=88&v=4"
-          >
-          </nz-avatar>
-        </a>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-          <ul nz-menu>
-            <li nz-menu-item>Sửa Profile</li>
-            <li nz-menu-item>Đổi mật khẩu</li>
-            <li nz-menu-divider></li>
-
-            <li nz-menu-item>Đăng xuất</li>
-          </ul>
-        </nz-dropdown-menu>
+        <app-user></app-user>
       </div>
       <!-- <div class="breadcrumb">Login</div> -->
     </nz-header>

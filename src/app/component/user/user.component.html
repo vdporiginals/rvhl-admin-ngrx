@@ -1,0 +1,65 @@
+<a
+  [style.float]="'right'"
+  nz-dropdown
+  nzTrigger="click"
+  [nzDropdownMenu]="menu"
+  [style.margin-right.px]="10"
+>
+  <nz-avatar nz-page-header-avatar nzSrc="{{ userDetails?.avatar }}">
+  </nz-avatar>
+</a>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item (click)="updateProfile()">Sửa Profile</li>
+    <li nz-menu-item (click)="updatePassword()">Đổi mật khẩu</li>
+    <li nz-menu-divider></li>
+
+    <li nz-menu-item (click)="logOut()">Đăng xuất</li>
+  </ul>
+</nz-dropdown-menu>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="The first Modal"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <form nz-form [formGroup]="changePasswordForm" (ngSubmit)="handleOk()">
+    <div nz-row [nzGutter]="8">
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="currentPassword"
+            >Mật khẩu cữ</nz-form-label
+          >
+          <nz-form-control>
+            <input
+              nz-input
+              type="password"
+              id="currentPassword"
+              formControlName="currentPassword"
+              placeholder="Nhập mật khẩu cũ"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="8">
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="newPassword"
+            >Mật khẩu mới</nz-form-label
+          >
+          <nz-form-control>
+            <input
+              nz-input
+              type="password"
+              id="newPassword"
+              formControlName="newPassword"
+              placeholder="Nhập mật khẩu mới"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</nz-modal>

@@ -2,6 +2,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { IUser } from 'src/app/models/user.interface';
+import { IAuthorize } from 'src/app/models/user-authorize.interface';
 
 
 export const loadUsers = createAction(

@@ -4,6 +4,8 @@ import { transferActionTypes, transfersLoaded } from '../actions/transfer.action
 import { ITransfer } from 'src/app/models/transfer.interface';
 
 export interface TransferState extends EntityState<ITransfer> {
+    count: number;
+    pageNum: number;
     transfersLoaded: boolean;
 }
 
@@ -23,7 +25,11 @@ export const transferReducer = createReducer(
     on(transferActionTypes.transfersLoaded, (state, action) => {
         return adapter.setAll(
             action.transfers,
-            { ...state, transfersLoaded: true }
+            {
+                ...state,
+                pageNum: action.pageNum,
+                count: action.count, transfersLoaded: true
+            }
         );
     }),
 

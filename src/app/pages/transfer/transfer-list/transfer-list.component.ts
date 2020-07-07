@@ -7,7 +7,7 @@ import { TransferService } from '../transfer.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllTransfers, areTransfersLoaded } from 'src/app/store/selectors/transfer.selectors';
+import { getAllTransfers, areTransfersLoaded, getPagination } from 'src/app/store/selectors/transfer.selectors';
 import { transferActionTypes, loadTransfers } from 'src/app/store/actions/transfer.actions';
 import { TransferDetailComponent } from '../transfer-detail/transfer-detail.component';
 import { filter, first } from 'rxjs/operators';
@@ -23,6 +23,8 @@ export class TransferListComponent implements OnInit {
   loading = true;
   pageSize = 10;
   pageIndex = 1;
+
+  pagination$: Observable<any>;
   filterName = '';
   filterStatus = [
     { text: 'Kích hoạt', value: 'true' },
@@ -45,6 +47,11 @@ export class TransferListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.transfers$ = this.store.select(getAllTransfers);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteTransfer(id: string) {
@@ -142,7 +149,6 @@ export class TransferListComponent implements OnInit {
     } else {
       newSort = '';
     }
-
     let params = {
       page: pageIndex,
       limit: pageSize,
@@ -224,9 +230,12 @@ export class TransferListComponent implements OnInit {
         this.isFilter = false;
       }
     });
+    console.log(pageIndex)
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, [])
     }
   }
 }

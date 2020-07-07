@@ -13,3 +13,13 @@ export const areTransfersLoaded = createSelector(
     transferFeatureSelector,
     state => state.transfersLoaded
 );
+
+export const getPagination = createSelector(
+    transferFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

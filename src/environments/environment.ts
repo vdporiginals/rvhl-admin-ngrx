@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://api.reviewhalong.vn/api'
+  // apiUrl: 'https://api.reviewhalong.vn/api',
+  apiUrl: 'http://localhost:5001/api'
 };
 
 /*

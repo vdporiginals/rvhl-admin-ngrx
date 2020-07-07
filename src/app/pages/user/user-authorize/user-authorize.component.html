@@ -1,0 +1,62 @@
+<div>
+  <form nz-form [formGroup]="authorizeForm" [nzLayout]="'vertical'">
+    <div nz-row [nzGutter]="8">
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label nzFor="permission" nzRequired
+            >Thay đổi route được quyền truy cập</nz-form-label
+          >
+          <nz-form-control>
+            <nz-select
+              [nzMaxTagCount]="3"
+              [nzMaxTagPlaceholder]="tagPlaceHolder"
+              nzMode="multiple"
+              nzPlaceHolder="Chọn các route được quyền truy cập"
+              [(ngModel)]="routeAccept"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <nz-option
+                *ngFor="let item of routeAcceptData"
+                [nzLabel]="item?.path"
+                [nzValue]="item?._id"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-template #tagPlaceHolder let-selectedList>
+          and {{ selectedList.length }} more selected
+        </ng-template>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label nzFor="permission" nzRequired
+            >Thay đổi quyền truy cập</nz-form-label
+          >
+          <nz-form-control>
+            <nz-select
+              id="permission"
+              nzErrorTip="Hãy chọn quyền"
+              formControlName="permission"
+            >
+              <nz-option
+                *ngFor="let item of permission"
+                nzValue="{{ item.val }}"
+                nzLabel="{{ item.name }}"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</div>
+<div *nzModalFooter>
+  <button nz-button nzType="primary" (click)="destroyModal()">
+    Hủy
+  </button>
+  <button nz-button nzType="default" (click)="updateAuthorize()">
+    Cập nhật phân quyền
+  </button>
+</div>

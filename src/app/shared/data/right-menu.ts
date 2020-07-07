@@ -1,7 +1,8 @@
 export const SideBar = [
     {
         text: 'Quản lý quảng cáo',
-        link: 'advertises',
+        apiPath: '/advertises',
+        routeId: '',
         subItems: [
 
             {
@@ -16,7 +17,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý Tour',
-        link: 'tours',
+        apiPath: '/tours',
+        routeId: '',
         subItems: [
             {
                 text: 'Quản lý Tour',
@@ -30,7 +32,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý Transfer',
-        link: 'transfers',
+        apiPath: '/transfers',
+        routeId: '',
         subItems: [
             {
                 text: 'Quản lý Transfer',
@@ -44,7 +47,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý lịch trình',
-        link: 'schedules',
+        apiPath: '/blogs',
+        routeId: '',
         subItems: [
             {
                 text: 'Quản lý lịch trình',
@@ -57,7 +61,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý Chỗ ở',
-        link: 'accommodation',
+        apiPath: '/estates',
+        routeId: '',
         subItems: [
             {
                 text: 'Danh mục',
@@ -79,7 +84,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý yêu cầu khách hàng',
-        link: 'customer-request',
+        apiPath: '/customer-request',
+        routeId: '',
         subItems: [
             {
                 text: 'Quản lý bình luận',
@@ -93,7 +99,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý Entertain',
-        link: 'entertains',
+        apiPath: '/entertains',
+        routeId: '',
         subItems: [
 
             {
@@ -108,7 +115,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý Nhà hàng',
-        link: 'cuisine',
+        apiPath: '/restaurants',
+        routeId: '',
         subItems: [
             {
                 text: 'Quản lý Nhà hàng',
@@ -121,7 +129,8 @@ export const SideBar = [
     },
     {
         text: 'Quản lý reviews',
-        link: 'reviews',
+        apiPath: '/user-reviews',
+        routeId: '',
         subItems: [
 
             {
@@ -137,12 +146,19 @@ export const SideBar = [
     },
     {
         text: 'Quản lý hình ảnh',
-        link: 'images',
+        apiPath: '/images',
+        routeId: '',
         queryParams: { category: 'image' },
     },
     {
         text: 'Quản lý user',
-        link: 'users',
-        queryParams: { category: 'bannerTour' },
+        apiPath: '/users',
+        routeId: '',
+        subItems: [
+            {
+                text: 'Quản lý users',
+                link: 'users',
+            }
+        ],
     }
 ];

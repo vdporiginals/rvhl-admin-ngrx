@@ -5,6 +5,8 @@ import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { IUser } from 'src/app/models/user.interface';
+import { IAuthorize } from 'src/app/models/user-authorize.interface';
+import { IRouteAccept } from 'src/app/models/route-accept.interface';
 
 @Injectable()
 export class UserService {
@@ -32,7 +34,7 @@ export class UserService {
     }
 
     update(apiName, id, data: Partial<IUser>): Observable<any> {
-        return this.http.put(`${this.apiurl}/${apiName}/${id}`, data);
+        return this.http.put<any>(`${this.apiurl}/${apiName}/${id}`, data);
         // .pipe(
         //     catchError(this.handleError)
         // );
@@ -43,6 +45,30 @@ export class UserService {
             .pipe(
                 catchError(this.handleError)
             );
+    }
+
+    setAuthorize(authorizeId, data: Partial<IAuthorize>): Observable<any> {
+        return this.http.put<any>(`${this.apiurl}/web-config/authorize`, data,
+            { params: { authorizeId } })
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    getAuthorize(id?): Observable<IAuthorize> {
+        return this.http.get<IAuthorize>(`${this.apiurl}/web-config/authorize`, {
+            params: {
+                authorizeId: id
+            }
+        }).pipe(
+            map((res: IAuthorize) => res)
+        );
+    }
+
+    getRouteAccept(): Observable<IRouteAccept> {
+        return this.http.get<IRouteAccept>(`${this.apiurl}/web-config/routes`).pipe(
+            map((res: IRouteAccept) => res)
+        );
     }
 
     handleError(error: HttpErrorResponse) {

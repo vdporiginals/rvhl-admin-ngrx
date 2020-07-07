@@ -18,7 +18,11 @@ export const loadTransfers = createAction(
 
 export const transfersLoaded = createAction(
     '[Transfers Effect] Transfers Loaded Successfully',
-    props<{ transfers: ITransfer[] }>()
+    props<{
+        transfers: ITransfer[],
+        pageNum: number,
+        count: number
+    }>()
 );
 
 // export const TransferLoaded = createAction(
