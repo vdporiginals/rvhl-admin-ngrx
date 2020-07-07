@@ -13,7 +13,10 @@ export class ReviewEffects {
         this.actions$.pipe(
             ofType(reviewActionTypes.loadReviews),
             concatMap((actions) => this.reviewService.getDatas('user-reviews', actions.params)),
-            map((reviews: any) => reviewActionTypes.reviewsLoaded({ reviews: reviews.data }))
+            map((reviews: any) => reviewActionTypes.reviewsLoaded({
+                reviews: reviews.data, count: reviews.count,
+                pageNum: reviews.pageNum || 1,
+            }))
         )
     );
 

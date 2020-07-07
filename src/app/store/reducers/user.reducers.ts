@@ -4,6 +4,8 @@ import { userActionTypes, usersLoaded } from '../actions/user.actions';
 import { IUser } from 'src/app/models/user.interface';
 
 export interface UserState extends EntityState<IUser> {
+    count: number;
+    pageNum: number;
     usersLoaded: boolean;
 }
 
@@ -23,7 +25,10 @@ export const userReducer = createReducer(
     on(userActionTypes.usersLoaded, (state, action) => {
         return adapter.setAll(
             action.users,
-            { ...state, usersLoaded: true }
+            {
+                ...state, pageNum: action.pageNum,
+                count: action.count, usersLoaded: true
+            }
         );
     }),
 

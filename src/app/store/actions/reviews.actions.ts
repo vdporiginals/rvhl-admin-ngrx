@@ -18,7 +18,10 @@ export const loadReviews = createAction(
 
 export const reviewsLoaded = createAction(
     '[Reviews Effect] Reviews Loaded Successfully',
-    props<{ reviews: IReviews[] }>()
+    props<{
+        reviews: IReviews[], pageNum: number,
+        count: number
+    }>()
 );
 
 // export const ReviewLoaded = createAction(

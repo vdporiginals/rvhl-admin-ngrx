@@ -13,7 +13,10 @@ export class UserEffects {
         this.actions$.pipe(
             ofType(userActionTypes.loadUsers),
             concatMap((actions) => this.userService.getDatas('users', actions.params)),
-            map((users: any) => userActionTypes.usersLoaded({ users: users.data }))
+            map((users: any) => userActionTypes.usersLoaded({
+                users: users.data, count: users.count,
+                pageNum: users.pageNum || 1,
+            }))
         )
     );
 

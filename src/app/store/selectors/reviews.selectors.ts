@@ -13,3 +13,13 @@ export const areReviewsLoaded = createSelector(
     reviewFeatureSelector,
     state => state.reviewsLoaded
 );
+
+export const getPagination = createSelector(
+    reviewFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

@@ -4,6 +4,8 @@ import { reviewActionTypes, reviewsLoaded } from '../actions/reviews.actions';
 import { IReviews } from 'src/app/models/reviews.interface';
 
 export interface ReviewState extends EntityState<IReviews> {
+    count: number;
+    pageNum: number;
     reviewsLoaded: boolean;
 }
 
@@ -21,7 +23,10 @@ export const reviewReducer = createReducer(
     on(reviewActionTypes.reviewsLoaded, (state, action) => {
         return adapter.setAll(
             action.reviews,
-            { ...state, reviewsLoaded: true }
+            {
+                ...state, pageNum: action.pageNum,
+                count: action.count, reviewsLoaded: true
+            }
         );
     }),
 

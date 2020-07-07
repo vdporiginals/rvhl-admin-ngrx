@@ -13,3 +13,12 @@ export const areUsersLoaded = createSelector(
     userFeatureSelector,
     state => state.usersLoaded
 );
+export const getPagination = createSelector(
+    userFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

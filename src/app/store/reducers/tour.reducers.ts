@@ -4,6 +4,8 @@ import { tourActionTypes, toursLoaded } from '../actions/tour.actions';
 import { ITour } from 'src/app/models/tour.interface';
 
 export interface TourState extends EntityState<ITour> {
+    count: number;
+    pageNum: number;
     toursLoaded: boolean;
 }
 
@@ -21,7 +23,11 @@ export const tourReducer = createReducer(
     on(tourActionTypes.toursLoaded, (state, action) => {
         return adapter.setAll(
             action.tours,
-            { ...state, toursLoaded: true }
+            {
+                ...state,
+                pageNum: action.pageNum,
+                count: action.count, toursLoaded: true
+            }
         );
     }),
 

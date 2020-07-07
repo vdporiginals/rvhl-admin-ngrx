@@ -13,3 +13,13 @@ export const areToursLoaded = createSelector(
     tourFeatureSelector,
     state => state.toursLoaded
 );
+
+export const getPagination = createSelector(
+    tourFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

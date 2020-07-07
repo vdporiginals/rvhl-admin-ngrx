@@ -13,7 +13,10 @@ export class TourEffects {
         this.actions$.pipe(
             ofType(tourActionTypes.loadTours),
             concatMap((actions) => this.tourService.getDatas('tours', actions.params)),
-            map((tours: any) => tourActionTypes.toursLoaded({ tours: tours.data }))
+            map((tours: any) => tourActionTypes.toursLoaded({
+                tours: tours.data, count: tours.count,
+                pageNum: tours.pageNum || 1,
+            }))
         )
     );
 

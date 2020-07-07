@@ -18,7 +18,10 @@ export const loadTours = createAction(
 
 export const toursLoaded = createAction(
     '[Tours Effect] Tours Loaded Successfully',
-    props<{ tours: ITour[] }>()
+    props<{
+        tours: ITour[], pageNum: number,
+        count: number
+    }>()
 );
 
 // export const TourLoaded = createAction(
