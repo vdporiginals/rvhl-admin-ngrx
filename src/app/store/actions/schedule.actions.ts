@@ -18,7 +18,10 @@ export const loadSchedules = createAction(
 
 export const schedulesLoaded = createAction(
     '[Schedules Effect] Schedules Loaded Successfully',
-    props<{ schedules: ISchedule[] }>()
+    props<{
+        schedules: ISchedule[], pageNum: number,
+        count: number
+    }>()
 );
 
 // export const scheduleLoaded = createAction(

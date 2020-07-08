@@ -7,7 +7,7 @@ import { AccommodationService } from '../accommodation.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllAccommodations, areAccommodationsLoaded } from 'src/app/store/selectors/accommodation.selectors';
+import { getAllAccommodations, areAccommodationsLoaded, getPagination } from 'src/app/store/selectors/accommodation.selectors';
 import { accommodationActionTypes, loadAccommodations } from 'src/app/store/actions/accommodation.actions';
 import { AccommodationDetailComponent } from '../accommodation-detail/accommodation-detail.component';
 import { filter, first } from 'rxjs/operators';
@@ -35,6 +35,8 @@ export class AccommodationListComponent implements OnInit {
   visible = false;
 
   accommodations$: Observable<IAccommodation[]>;
+  pagination$: Observable<any>;
+
 
   accommodationToBeUpdated: IAccommodation;
   routePathName: string;
@@ -65,6 +67,11 @@ export class AccommodationListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.accommodations$ = this.store.select(getAllAccommodations);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteAccommodation(id: string) {
@@ -253,6 +260,8 @@ export class AccommodationListComponent implements OnInit {
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, [])
     }
   }
 

@@ -4,6 +4,8 @@ import { entertainActionTypes, entertainsLoaded } from '../actions/entertain.act
 import { IEntertain } from 'src/app/models/entertain.interface';
 
 export interface EntertainState extends EntityState<IEntertain> {
+    pageNum: number;
+    count: number;
     entertainsLoaded: boolean;
 }
 
@@ -21,7 +23,10 @@ export const entertainReducer = createReducer(
     on(entertainActionTypes.entertainsLoaded, (state, action) => {
         return adapter.setAll(
             action.entertains,
-            { ...state, entertainsLoaded: true }
+            {
+                ...state, pageNum: action.pageNum,
+                count: action.count, entertainsLoaded: true
+            }
         );
     }),
 

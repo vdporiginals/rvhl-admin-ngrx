@@ -19,3 +19,13 @@ export const areCategoriesLoaded = createSelector(
         };
     },
 );
+
+export const getPagination = createSelector(
+    categoryFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

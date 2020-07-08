@@ -13,7 +13,11 @@ export class CuisineEffects {
         this.actions$.pipe(
             ofType(cuisineActionTypes.loadCuisines),
             concatMap((actions) => this.cuisineService.getDatas('restaurants', actions.params)),
-            map((cuisines: any) => cuisineActionTypes.cuisinesLoaded({ cuisines: cuisines.data }))
+            map((cuisines: any) => cuisineActionTypes.cuisinesLoaded({
+                cuisines: cuisines.data,
+                count: cuisines.count,
+                pageNum: cuisines.pageNum || 1,
+            }))
         )
     );
 

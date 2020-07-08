@@ -7,7 +7,7 @@ import { CuisineService } from '../cuisine.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllCuisines, areCuisinesLoaded } from 'src/app/store/selectors/cuisine.selectors';
+import { getAllCuisines, areCuisinesLoaded, getPagination } from 'src/app/store/selectors/cuisine.selectors';
 import { cuisineActionTypes, loadCuisines } from 'src/app/store/actions/cuisine.actions';
 import { CuisineDetailComponent } from '../cuisine-detail/cuisine-detail.component';
 import { filter, first } from 'rxjs/operators';
@@ -34,6 +34,7 @@ export class CuisineListComponent implements OnInit {
   visible = false;
 
   cuisines$: Observable<ICuisine[]>;
+  pagination$: Observable<any>;
 
   cuisineToBeUpdated: ICuisine;
 
@@ -45,6 +46,11 @@ export class CuisineListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.cuisines$ = this.store.select(getAllCuisines);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteCuisine(id: string) {
@@ -227,6 +233,8 @@ export class CuisineListComponent implements OnInit {
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, [])
     }
   }
 

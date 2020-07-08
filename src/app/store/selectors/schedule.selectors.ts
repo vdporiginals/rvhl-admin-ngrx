@@ -13,3 +13,12 @@ export const areSchedulesLoaded = createSelector(
     scheduleFeatureSelector,
     state => state.schedulesLoaded
 );
+export const getPagination = createSelector(
+    scheduleFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

@@ -4,6 +4,8 @@ import { scheduleActionTypes, schedulesLoaded } from '../actions/schedule.action
 import { ISchedule } from 'src/app/models/schedule.interface';
 
 export interface ScheduleState extends EntityState<ISchedule> {
+    count: number;
+    pageNum: number;
     schedulesLoaded: boolean;
 }
 
@@ -23,7 +25,10 @@ export const scheduleReducer = createReducer(
     on(scheduleActionTypes.schedulesLoaded, (state, action) => {
         return adapter.setAll(
             action.schedules,
-            { ...state, schedulesLoaded: true }
+            {
+                ...state, pageNum: action.pageNum,
+                count: action.count, schedulesLoaded: true
+            }
         );
     }),
 

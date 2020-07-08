@@ -13,7 +13,11 @@ export class AdvertiseEffects {
         this.actions$.pipe(
             ofType(advertiseActionTypes.loadAdvertises),
             concatMap((actions) => this.advertiseService.getDatas('advertises', actions.params)),
-            map((advertises: any) => advertiseActionTypes.advertisesLoaded({ advertises: advertises.data }))
+            map((advertises: any) => advertiseActionTypes.advertisesLoaded({
+                advertises: advertises.data,
+                count: advertises.count,
+                pageNum: advertises.pageNum || 1,
+            }))
         )
     );
 

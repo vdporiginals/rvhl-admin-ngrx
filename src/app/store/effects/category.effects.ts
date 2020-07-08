@@ -21,7 +21,9 @@ export class CategoryEffects {
             map((categories: any) => {
                 return categoryActionTypes.categoriesLoaded({
                     routeName: categories.routeName,
-                    categories: categories.data.data
+                    categories: categories.data.data,
+                    count: categories.count,
+                    pageNum: categories.pageNum || 1,
                 });
             })
         )

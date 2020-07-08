@@ -4,6 +4,8 @@ import { cuisineActionTypes, cuisinesLoaded } from '../actions/cuisine.actions';
 import { ICuisine } from 'src/app/models/cuisine.interface';
 
 export interface CuisineState extends EntityState<ICuisine> {
+    count: number;
+    pageNum: number;
     cuisinesLoaded: boolean;
 }
 
@@ -23,7 +25,10 @@ export const cuisineReducer = createReducer(
     on(cuisineActionTypes.cuisinesLoaded, (state, action) => {
         return adapter.setAll(
             action.cuisines,
-            { ...state, cuisinesLoaded: true }
+            {
+                ...state, pageNum: action.pageNum,
+                count: action.count, cuisinesLoaded: true
+            }
         );
     }),
 

@@ -7,7 +7,7 @@ import { EntertainService } from '../entertain.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllEntertains, areEntertainsLoaded } from 'src/app/store/selectors/entertain.selectors';
+import { getAllEntertains, areEntertainsLoaded, getPagination } from 'src/app/store/selectors/entertain.selectors';
 import { EntertainDetailComponent } from '../entertain-detail/entertain-detail.component';
 import { entertainActionTypes, loadEntertains } from 'src/app/store/actions/entertain.actions';
 import { filter, first } from 'rxjs/operators';
@@ -34,6 +34,7 @@ export class EntertainListComponent implements OnInit {
   visible = false;
 
   entertains$: Observable<IEntertain[]>;
+  pagination$: Observable<any>;
 
   entertainToBeUpdated: IEntertain;
 
@@ -45,6 +46,11 @@ export class EntertainListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.entertains$ = this.store.select(getAllEntertains);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteEntertain(id: string) {
@@ -226,6 +232,8 @@ export class EntertainListComponent implements OnInit {
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, []);
     }
   }
 }

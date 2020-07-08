@@ -18,7 +18,11 @@ export const loadAdvertises = createAction(
 
 export const advertisesLoaded = createAction(
     '[Advertises Effect] Advertises Loaded Successfully',
-    props<{ advertises: IAdvertise[] }>()
+    props<{
+        advertises: IAdvertise[],
+        pageNum: number,
+        count: number
+    }>()
 );
 
 // export const AdvertiseLoaded = createAction(

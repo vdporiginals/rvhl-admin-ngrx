@@ -19,7 +19,11 @@ export const loadCategories = createAction(
 
 export const categoriesLoaded = createAction(
     '[Categories Effect] Categories Loaded Successfully',
-    props<{ routeName: string, categories: ICategory[] }>()
+    props<{
+        routeName: string, categories: ICategory[],
+        pageNum: number,
+        count: number
+    }>()
 );
 
 // export const CategoryLoaded = createAction(

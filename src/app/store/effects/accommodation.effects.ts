@@ -21,7 +21,9 @@ export class AccommodationEffects {
             map((accommodations: any) => {
                 return accommodationActionTypes.accommodationsLoaded({
                     apiName: accommodations.apiName,
-                    accommodations: accommodations.data.data
+                    accommodations: accommodations.data.data,
+                    count: accommodations.count,
+                    pageNum: accommodations.pageNum || 1,
                 });
             })
         )

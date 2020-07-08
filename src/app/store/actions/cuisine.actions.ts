@@ -18,7 +18,11 @@ export const loadCuisines = createAction(
 
 export const cuisinesLoaded = createAction(
     '[Cuisines Effect] Cuisines Loaded Successfully',
-    props<{ cuisines: ICuisine[] }>()
+    props<{
+        cuisines: ICuisine[],
+        pageNum: number,
+        count: number
+    }>()
 );
 
 // export const CuisineLoaded = createAction(

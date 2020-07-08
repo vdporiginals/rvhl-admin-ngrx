@@ -13,3 +13,13 @@ export const areAdvertisesLoaded = createSelector(
     advertiseFeatureSelector,
     state => state.advertisesLoaded
 );
+
+export const getPagination = createSelector(
+    advertiseFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

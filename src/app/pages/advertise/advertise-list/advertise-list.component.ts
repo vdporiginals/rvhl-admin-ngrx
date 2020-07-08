@@ -7,7 +7,7 @@ import { AdvertiseService } from '../advertise.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllAdvertises, areAdvertisesLoaded } from 'src/app/store/selectors/advertise.selectors';
+import { getAllAdvertises, areAdvertisesLoaded, getPagination } from 'src/app/store/selectors/advertise.selectors';
 import { advertiseActionTypes, loadAdvertises } from 'src/app/store/actions/advertise.actions';
 import { AdvertiseDetailComponent } from '../advertise-detail/advertise-detail.component';
 import { filter, first } from 'rxjs/operators';
@@ -34,6 +34,7 @@ export class AdvertiseListComponent implements OnInit {
   visible = false;
 
   advertises$: Observable<IAdvertise[]>;
+  pagination$: Observable<any>;
 
   advertiseToBeUpdated: IAdvertise;
 
@@ -45,6 +46,11 @@ export class AdvertiseListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.advertises$ = this.store.select(getAllAdvertises);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteAdvertise(id: string) {
@@ -227,6 +233,8 @@ export class AdvertiseListComponent implements OnInit {
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, [])
     }
   }
 

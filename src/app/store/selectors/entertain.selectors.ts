@@ -13,3 +13,13 @@ export const areEntertainsLoaded = createSelector(
     entertainFeatureSelector,
     state => state.entertainsLoaded
 );
+
+export const getPagination = createSelector(
+    entertainFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

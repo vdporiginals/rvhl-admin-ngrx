@@ -9,7 +9,7 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { categoryActionTypes, loadCategories } from 'src/app/store/actions/category.actions';
 import { CategoryDetailComponent } from '../category-detail/category-detail.component';
-import { areCategoriesLoaded, getAllCategories } from 'src/app/store/selectors/category.selectors';
+import { areCategoriesLoaded, getAllCategories, getPagination } from 'src/app/store/selectors/category.selectors';
 import { filter, first } from 'rxjs/operators';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
@@ -35,6 +35,7 @@ export class CategoryListComponent implements OnInit {
   visible = false;
 
   categories$: Observable<ICategory[]>;
+  pagination$: Observable<any>;
 
   categoryToBeUpdated: ICategory;
   routePathName: string;
@@ -51,6 +52,11 @@ export class CategoryListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.categories$ = this.store.select(getAllCategories);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteCategory(id: string) {
@@ -212,7 +218,8 @@ export class CategoryListComponent implements OnInit {
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, [])
     }
   }
-
 }

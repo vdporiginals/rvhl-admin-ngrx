@@ -13,7 +13,10 @@ export class ScheduleEffects {
         this.actions$.pipe(
             ofType(scheduleActionTypes.loadSchedules),
             concatMap((actions) => this.scheduleService.getDatas('blogs', actions.params)),
-            map((schedules: any) => scheduleActionTypes.schedulesLoaded({ schedules: schedules.data }))
+            map((schedules: any) => scheduleActionTypes.schedulesLoaded({
+                schedules: schedules.data, count: schedules.count,
+                pageNum: schedules.pageNum || 1,
+            }))
         )
     );
 

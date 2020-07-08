@@ -5,6 +5,8 @@ import { categoryActionTypes } from '../actions/category.actions';
 
 export interface CategoryState extends EntityState<ICategory> {
     routeName: string;
+    count: number;
+    pageNum: number;
     categoriesLoaded: boolean;
 }
 
@@ -23,7 +25,11 @@ export const categoryReducer = createReducer(
     on(categoryActionTypes.categoriesLoaded, (state, action) => {
         return adapter.setAll(
             action.categories,
-            { ...state, routeName: action.routeName, categoriesLoaded: true }
+            {
+                ...state, routeName: action.routeName,
+                pageNum: action.pageNum,
+                count: action.count, categoriesLoaded: true
+            }
         );
     }),
 

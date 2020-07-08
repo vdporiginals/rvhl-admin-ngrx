@@ -19,7 +19,11 @@ export const loadAccommodations = createAction(
 
 export const accommodationsLoaded = createAction(
     '[Accommodations Effect] Accommodations Loaded Successfully',
-    props<{ apiName: string, accommodations: IAccommodation[] }>()
+    props<{
+        apiName: string, accommodations: IAccommodation[],
+        pageNum: number,
+        count: number
+    }>()
 );
 
 // export const AccommodationLoaded = createAction(

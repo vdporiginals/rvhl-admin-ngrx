@@ -19,3 +19,13 @@ export const areAccommodationsLoaded = createSelector(
         }
     },
 );
+
+export const getPagination = createSelector(
+    accommodationFeatureSelector,
+    state => {
+        return {
+            count: state.count,
+            pageNum: state.pageNum
+        };
+    }
+);

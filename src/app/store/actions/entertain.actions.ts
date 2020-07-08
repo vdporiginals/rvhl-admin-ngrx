@@ -18,7 +18,10 @@ export const loadEntertains = createAction(
 
 export const entertainsLoaded = createAction(
     '[Entertains Effect] Entertains Loaded Successfully',
-    props<{ entertains: IEntertain[] }>()
+    props<{
+        entertains: IEntertain[], pageNum: number,
+        count: number
+    }>()
 );
 
 // export const EntertainLoaded = createAction(

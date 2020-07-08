@@ -13,7 +13,10 @@ export class EntertainEffects {
         this.actions$.pipe(
             ofType(entertainActionTypes.loadEntertains),
             concatMap((actions) => this.entertainService.getDatas('entertains', actions.params)),
-            map((entertains: any) => entertainActionTypes.entertainsLoaded({ entertains: entertains.data }))
+            map((entertains: any) => entertainActionTypes.entertainsLoaded({
+                entertains: entertains.data, count: entertains.count,
+                pageNum: entertains.pageNum || 1,
+            }))
         )
     );
 

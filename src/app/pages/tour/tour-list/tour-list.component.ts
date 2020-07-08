@@ -7,7 +7,7 @@ import { TourService } from '../tour.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllTours, areToursLoaded } from 'src/app/store/selectors/tour.selectors';
+import { getAllTours, areToursLoaded, getPagination } from 'src/app/store/selectors/tour.selectors';
 import { tourActionTypes, loadTours } from 'src/app/store/actions/tour.actions';
 import { TourDetailComponent } from '../tour-detail/tour-detail.component';
 import { filter, first } from 'rxjs/operators';
@@ -34,6 +34,7 @@ export class TourListComponent implements OnInit {
   visible = false;
 
   tours$: Observable<ITour[]>;
+  pagination$: Observable<any>;
 
   tourToBeUpdated: ITour;
 
@@ -45,6 +46,11 @@ export class TourListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.tours$ = this.store.select(getAllTours);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteTour(id: string) {
@@ -225,8 +231,11 @@ export class TourListComponent implements OnInit {
       }
     });
 
+
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, [])
     }
   }
 

@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ScheduleService } from '../schedule.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllSchedules, areSchedulesLoaded } from 'src/app/store/selectors/schedule.selectors';
+import { getAllSchedules, areSchedulesLoaded, getPagination } from 'src/app/store/selectors/schedule.selectors';
 import { Update } from '@ngrx/entity';
 import { scheduleActionTypes, loadSchedules } from 'src/app/store/actions/schedule.actions';
 import { ScheduleDetailComponent } from '../schedule-detail/schedule-detail.component';
@@ -35,6 +35,7 @@ export class ScheduleListComponent implements OnInit {
   visible = false;
 
   schedules$: Observable<ISchedule[]>;
+  pagination$: Observable<any>;
 
   scheduleToBeUpdated: ISchedule;
 
@@ -46,6 +47,11 @@ export class ScheduleListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.schedules$ = this.store.select(getAllSchedules);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteSchedule(id: string) {
@@ -228,6 +234,8 @@ export class ScheduleListComponent implements OnInit {
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, []);
     }
   }
 

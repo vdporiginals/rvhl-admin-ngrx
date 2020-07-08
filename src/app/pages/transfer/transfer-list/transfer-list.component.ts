@@ -230,8 +230,6 @@ export class TransferListComponent implements OnInit {
         this.isFilter = false;
       }
     });
-    console.log(pageIndex)
-
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
     } else {

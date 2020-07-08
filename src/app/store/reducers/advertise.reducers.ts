@@ -4,6 +4,8 @@ import { advertiseActionTypes, advertisesLoaded } from '../actions/advertise.act
 import { IAdvertise } from 'src/app/models/advertise.interface';
 
 export interface AdvertiseState extends EntityState<IAdvertise> {
+    pageNum: number;
+    count: number;
     advertisesLoaded: boolean;
 }
 
@@ -21,7 +23,10 @@ export const advertiseReducer = createReducer(
     on(advertiseActionTypes.advertisesLoaded, (state, action) => {
         return adapter.setAll(
             action.advertises,
-            { ...state, advertisesLoaded: true }
+            {
+                ...state, pageNum: action.pageNum,
+                count: action.count, advertisesLoaded: true
+            }
         );
     }),
 

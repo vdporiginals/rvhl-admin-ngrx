@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
-import { getAllReviews, areReviewsLoaded } from 'src/app/store/selectors/reviews.selectors';
+import { getAllReviews, areReviewsLoaded, getPagination } from 'src/app/store/selectors/reviews.selectors';
 import { reviewActionTypes, loadReviews } from 'src/app/store/actions/reviews.actions';
 import { filter, first } from 'rxjs/operators';
 import { ReviewsDetailComponent } from '../reviews-detail/reviews-detail.component';
@@ -34,6 +34,7 @@ export class ReviewsListComponent implements OnInit {
   visible = false;
 
   reviews$: Observable<IReviews[]>;
+  pagination$: Observable<any>;
 
   reviewToBeUpdated: IReviews;
 
@@ -45,6 +46,11 @@ export class ReviewsListComponent implements OnInit {
   ngOnInit(): void {
     // this.loadDataFromServer(1, 10, null, null, []);
     this.reviews$ = this.store.select(getAllReviews);
+    this.pagination$ = this.store.select(getPagination);
+    this.pagination$.subscribe(res => {
+      this.pageIndex = res.pageNum;
+      this.total = res.count;
+    });
   }
 
   deleteReview(id: string) {
@@ -226,6 +232,8 @@ export class ReviewsListComponent implements OnInit {
 
     if (currentSort !== undefined || this.isFilter === true) {
       this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    } else {
+      this.loadDataFromServer(pageIndex, pageSize, null, null, []);
     }
   }
 
