@@ -61,9 +61,14 @@
         </nz-form-control>
       </nz-form-item>
       <ng-template #suffixImage>
-        <button nz-button nzType="primary" nzSearch>
+        <a
+          nz-button
+          nzType="primary"
+          (click)="showImagePicker('image')"
+          nzSearch
+        >
           Chọn ảnh
-        </button>
+        </a>
       </ng-template>
     </div>
     <div nz-col nzSpan="16">
@@ -82,7 +87,7 @@
             class="editable-tag"
             nzNoAnimation
             (click)="showInput()"
-            (click)="showImagePicker()"
+            (click)="showImagePicker('images')"
           >
             <i nz-icon nzType="plus"></i> Ảnh mới
           </nz-tag>

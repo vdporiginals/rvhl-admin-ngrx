@@ -16,6 +16,10 @@ export const adapter: EntityAdapter<IImage> = createEntityAdapter<IImage>({
 });
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
+    pageSize: 0,
+    totalPages: 0,
     imagesLoaded: false
 });
 

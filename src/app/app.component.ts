@@ -5,8 +5,6 @@ import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, BehaviorSubject } from 'rxjs';
 const helper = new JwtHelperService();
-const authorize = helper.decodeToken(JSON.parse(localStorage.getItem('rvhl_token')).token);
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,6 +23,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const authorize = helper.decodeToken(JSON.parse(localStorage.getItem('rvhl_token')).token) || null;
     this.http.get<any>(`${environment.apiUrl}/web-config/routes`).toPromise().then(res => {
       let result;
       const data = [];
@@ -62,7 +61,7 @@ export class AppComponent implements OnInit {
           }
         });
         this.isAdmin = authorize.role;
-      })
+      });
     });
   }
   isPermitted(item) {

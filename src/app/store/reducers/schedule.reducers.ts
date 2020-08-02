@@ -16,6 +16,8 @@ export const adapter: EntityAdapter<ISchedule> = createEntityAdapter<ISchedule>(
 );
 
 export const initialState = adapter.getInitialState({
+    count: 0,
+    pageNum: 0,
     schedulesLoaded: false
 });
 

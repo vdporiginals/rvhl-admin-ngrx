@@ -14,6 +14,8 @@ export const adapter: EntityAdapter<IReviews> = createEntityAdapter<IReviews>({
 });
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     reviewsLoaded: false
 });
 

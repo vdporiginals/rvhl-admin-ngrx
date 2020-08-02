@@ -14,6 +14,8 @@ export const adapter: EntityAdapter<IAdvertise> = createEntityAdapter<IAdvertise
 });
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     advertisesLoaded: false
 });
 

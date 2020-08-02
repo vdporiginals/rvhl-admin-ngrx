@@ -16,6 +16,8 @@ export const adapter: EntityAdapter<ICuisine> = createEntityAdapter<ICuisine>(
 );
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     cuisinesLoaded: false
 });
 

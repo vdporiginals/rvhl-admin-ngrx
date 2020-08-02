@@ -16,6 +16,8 @@ export const adapter: EntityAdapter<ITransfer> = createEntityAdapter<ITransfer>(
 );
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     transfersLoaded: false
 });
 

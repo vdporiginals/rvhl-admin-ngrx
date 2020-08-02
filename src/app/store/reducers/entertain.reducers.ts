@@ -14,6 +14,8 @@ export const adapter: EntityAdapter<IEntertain> = createEntityAdapter<IEntertain
 });
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     entertainsLoaded: false
 });
 

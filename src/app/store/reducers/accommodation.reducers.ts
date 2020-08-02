@@ -16,12 +16,13 @@ export const adapter: EntityAdapter<IAccommodation> = createEntityAdapter<IAccom
 
 export const initialState = adapter.getInitialState({
     apiName: '',
+    pageNum: 0,
+    count: 0,
     accommodationsLoaded: false
 });
 
 export const accommodationReducer = createReducer(
     initialState,
-
     on(accommodationActionTypes.accommodationsLoaded, (state, action) => {
         return adapter.setAll(
             action.accommodations,

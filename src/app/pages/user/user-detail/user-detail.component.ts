@@ -50,14 +50,6 @@ export class UserDetailComponent implements OnInit {
     private store: Store<AppState>,
     private drawerRef: NzDrawerRef<any>) {
 
-    this.scheduleData = [
-      {
-        locationStart: '',
-        locationEnd: '',
-        price: ''
-      }
-    ];
-
     const phoneValid = /^[0]{1}[2]{1}[0-9]\d{8}$|^[0]{1}([3]|[5]|[9]|[7]|[8]){1}[0-9]\d{7}$/g;
     // this.images = new FormControl([]);
     this.detailForm = this.fb.group({
@@ -65,6 +57,7 @@ export class UserDetailComponent implements OnInit {
       description: [''],
       phone: ['', Validators.compose([Validators.pattern(phoneValid)])],
       avatar: [''],
+      password: [''],
       role: [''],
       email: ['', Validators.required]
     });
@@ -105,14 +98,7 @@ export class UserDetailComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
-      if (type === 'images') {
-        if (data !== null && data !== undefined) {
-          this.inputValue = data;
-          this.handleInputConfirm();
-        }
-      } else {
-        this.detailForm.get('image').setValue(data);
-      }
+      this.detailForm.get('avatar').setValue(data);
     });
   }
 

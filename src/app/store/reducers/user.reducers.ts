@@ -16,6 +16,8 @@ export const adapter: EntityAdapter<IUser> = createEntityAdapter<IUser>(
 );
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     usersLoaded: false
 });
 

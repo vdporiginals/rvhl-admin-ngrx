@@ -15,6 +15,8 @@ export const adapter: EntityAdapter<ICategory> = createEntityAdapter<ICategory>(
 });
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     routeName: '',
     categoriesLoaded: false
 });

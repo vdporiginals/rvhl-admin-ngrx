@@ -14,6 +14,8 @@ export const adapter: EntityAdapter<ITour> = createEntityAdapter<ITour>({
 });
 
 export const initialState = adapter.getInitialState({
+    pageNum: 0,
+    count: 0,
     toursLoaded: false
 });
 
