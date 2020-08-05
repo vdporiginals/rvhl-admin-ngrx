@@ -21,7 +21,6 @@ export const initialState = adapter.getInitialState({
 
 export const advertiseReducer = createReducer(
     initialState,
-
     on(advertiseActionTypes.advertisesLoaded, (state, action) => {
         return adapter.setAll(
             action.advertises,
