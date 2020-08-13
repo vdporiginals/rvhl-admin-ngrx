@@ -22,12 +22,9 @@ export class ErrorInterceptor implements HttpInterceptor {
             .handle(request)
             .pipe(
                 catchError((error: HttpErrorResponse) => {
-                    this.noti.showError(error.error.error, 'Lỗi !!!')
+                    this.noti.showError(error.error.error, 'Lỗi !!!');
                     this.store.dispatch(new AddGlobalError(error));
                     console.log(error);
-                    if (error.status === 403) {
-                        localStorage.removeItem('rvhl_token');
-                    }
                     this.router.navigateByUrl('/login');
                     return throwError(error);
                 })
