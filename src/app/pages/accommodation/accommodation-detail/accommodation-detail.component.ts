@@ -109,6 +109,14 @@ export class AccommodationDetailComponent implements OnInit, OnDestroy {
 
   get getImages() { return this.detailForm.get('images') as FormArray; }
   ngOnInit(): void {
+    this.getDetailEdit();
+  }
+
+  ngOnDestroy() {
+    this.storeSubcription.unsubscribe();
+  }
+
+  getDetailEdit() {
     if (this.value !== undefined) {
       this.accommodationToBeUpdated = this.value;
       this.visible = true;
@@ -161,9 +169,6 @@ export class AccommodationDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.storeSubcription.unsubscribe();
-  }
   close(): void {
     this.drawerRef.close();
   }
@@ -203,7 +208,10 @@ export class AccommodationDetailComponent implements OnInit, OnDestroy {
 
   createOrUpdate() {
     if (!this.value) {
-      this.store.dispatch(accommodationActionTypes.createAccommodation({ apiName: this.routePathName, accommodation: this.detailForm.value }));
+      this.store.dispatch(accommodationActionTypes.createAccommodation({
+        apiName: this.routePathName,
+        accommodation: this.detailForm.value
+      }));
       this.isUpdateActivated = false;
       this.drawerRef.close();
     } else {

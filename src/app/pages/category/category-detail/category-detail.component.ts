@@ -36,12 +36,12 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   categoryToBeUpdated: ICategory;
   detailForm: FormGroup;
   isUpdateActivated = false;
-  positionAccommodation = ['Hotel', 'Villa', 'Homestay']
+  positionAccommodation = ['Hotel', 'Villa', 'Homestay'];
   positionAdvertise = [
     { value: 'slider', name: 'Slider trang chủ' },
     { value: 'video', name: 'Video trang chủ' },
     { name: 'Quảng cáo trang chủ', value: 'HomepageAdvertise' },
-    { name: 'Quảng cáo trang khác', value: 'AdvertisePage' }]
+    { name: 'Quảng cáo trang khác', value: 'AdvertisePage' }];
   constructor(
     private fb: FormBuilder,
     // private http: HttpClient,
@@ -69,6 +69,9 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
 
   get getImages() { return this.detailForm.get('images') as FormArray; }
   ngOnInit(): void {
+    this.getDataEdit();
+  }
+  getDataEdit() {
     if (this.value !== undefined) {
       this.categoryToBeUpdated = this.value;
       this.visible = true;

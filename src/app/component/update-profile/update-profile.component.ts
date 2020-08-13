@@ -34,6 +34,10 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getDetailEdit();
+  }
+
+  getDetailEdit() {
     this.detailForm.get('email').setValue(this.value.email);
     this.detailForm.get('name').setValue(this.value.name);
     this.detailForm.get('avatar').setValue(this.value.avatar);

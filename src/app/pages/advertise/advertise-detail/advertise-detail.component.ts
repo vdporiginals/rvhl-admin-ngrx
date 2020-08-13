@@ -72,6 +72,10 @@ export class AdvertiseDetailComponent implements OnInit {
 
   get getImages() { return this.detailForm.get('images') as FormArray; }
   ngOnInit(): void {
+    this.getDataEdit();
+  }
+
+  getDataEdit() {
     if (this.value !== undefined) {
       this.advertiseToBeUpdated = this.value;
       this.visible = true;
